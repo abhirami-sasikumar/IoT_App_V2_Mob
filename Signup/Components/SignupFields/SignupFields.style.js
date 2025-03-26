@@ -1,48 +1,61 @@
 import { StyleSheet } from "react-native";
+import { scale, verticalScale } from "react-native-size-matters";
 
-export default StyleSheet.create({
+const styles = StyleSheet.create({
   view: {
-    width: "100%",
-    alignItems: "center",
+    marginTop: verticalScale(320),
+    flex: 1,
     justifyContent: "center",
-    paddingHorizontal: 20,
-    marginTop: 20,
-    top:260
+    alignItems: "center",
   },
-
-  inputContainer: {
-    width: "100%",
-    marginBottom: 10,
-  },
-
   input: {
-    width: "100%",
-    height: 55,
+    marginTop: verticalScale(13),
     borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 29,
-    paddingHorizontal: 10,
-    backgroundColor: "#fff",
+    borderColor: "grey",
+    paddingHorizontal: scale(8),
+    borderRadius: 30,
+    width: scale(310),
+    height: verticalScale(50),
   },
-
-  buttonContainer: {
-    width: "100%",
-    marginTop: 15,
+  passwordContainer: {
+    flexDirection: "row",
     alignItems: "center",
+    borderWidth: 1,
+    borderColor: "grey",
+    borderRadius: 30,
+    width: scale(310),
+    height: verticalScale(50),
+    marginTop: verticalScale(13),
+    paddingHorizontal: scale(8),
   },
-
-  button: {
-    width: "100%",
-    height: 60,
-    backgroundColor: "#133E87",
+  passwordInput: {
+    flex: 1,
+    height: "100%",
+  },
+  eyeIcon: {
+    position: "absolute",
+    right: scale(15),
+  },
+  button_view: {
+    marginTop: verticalScale(165),
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 29,
+    marginBottom: verticalScale(60),
   },
-
+  button: {
+    backgroundColor: "#133E87",
+    width: scale(310),
+    borderRadius: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    height: verticalScale(55),
+  },
   buttonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
+    color: "#FFFFFF",
+    fontSize: scale(25),
+    fontFamily:"Roboto",
   },
 });
+
+export default styles;

@@ -5,8 +5,6 @@ export const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
-    top:363
-    
   },
   textWithLine: {
     flexDirection: "row", // Align the text and line horizontally
@@ -15,9 +13,10 @@ export const styles = StyleSheet.create({
   text: {
     fontSize: scale(15),
     textAlign: "center",
-    marginLeft: scale(1),
-    marginRight: scale(0),
-    color: "black",
+    marginLeft: scale(2),
+    marginRight: scale(2),
+    color: "#A9A9A9",
+    fontFamily:"Roboto",
   },
   line: {
     height: verticalScale(0.6),
@@ -27,6 +26,5 @@ export const styles = StyleSheet.create({
   image: {
     width: scale(112),
     height: verticalScale(60),
-    top:7
   },
 });
