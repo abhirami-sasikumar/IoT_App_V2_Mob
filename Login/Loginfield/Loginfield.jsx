@@ -5,16 +5,17 @@ import styles from "./Loginfield.style"; // Import styles
 const LoginField = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [ClusterID, setClusterID]=useState("");
+  const [showPassword, setShowPassword] = useState(false)
+  const [ClusterID, setClusterID] = useState("");
 
   const handleSubmit = () => {
     console.log("Login clicked with:", { email, password });
   };
 
   return (
-    <View style={styles.view}>
-      {/* Email Input */}
-      <View style={styles.inputContainer}>
+    
+    <>
+      <View style={styles.view}>
         <TextInput
           style={styles.input}
           placeholder="Email"
@@ -24,39 +25,48 @@ const LoginField = () => {
           autoCapitalize="none"
           autoCorrect={false}
         />
-      </View>
 
-      {/* Password Input */}
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry={true}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Cluster ID"
-          value={ClusterID}
-          onChangeText={setClusterID}
-          autoCorrect={false}
-      />
-      </View>
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!showPassword}
+          />
+          <TouchableOpacity
+            style={styles.eyeIcon}
+            onPress={() => setShowPassword(!showPassword)}
+          >
+            {/* <Icon name={showPassword ? "eye" : "eye-off"} size={24} color="grey" /> */}
+          </TouchableOpacity>
 
-      {/* Login Button */}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>LOGIN</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+        </View>
+        <View style={styles.cluster}>
+          <TextInput
+            style={styles.Cluster}
+            placeholder="ClusterID"
+            value={ClusterID}
+            onChangeText={setEmail}
+            keyboardType="ClusterID"
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          </View>
+        </View>
+
+        <View style={styles.button_view}>
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>LOGIN</Text>
+          </TouchableOpacity>
+        </View>
+      </>
+      );
 };
 
-export default LoginField;
+
+
+      export default LoginField;
 
 
 

@@ -11,11 +11,9 @@ const Login = () => {
   return (
     <View style={styles.container}>
       <Logo /> */
-      <LoginField /> 
+      <LoginField />
+      <ForgotAndReset /> 
       <Register />
-
-
-      <ForgotAndReset />
       <Icfosslogo/>
 
 

@@ -7,9 +7,9 @@ import SignUp from './Signup/Signup';
 export default function App() {
   return (
     <View>
-      {/* <Login/> */}
+      <Login/>
       {/* <ClusterName/> */}
-      <SignUp/>
+      {/* <SignUp/> */}
     </View>
     
   );

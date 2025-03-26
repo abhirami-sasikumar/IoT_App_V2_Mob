@@ -5,11 +5,13 @@ import styles from "./ForgotAndReset.style";
 
 const ForgotAndReset = () => {
   return (
-    <View style={styles.view}>
-      <TouchableOpacity>
-        <Text style={styles.forgotText}>Forgot Password?</Text>
-      </TouchableOpacity>
-    </View>
+    <>
+      <View style={styles.view}>
+        <TouchableOpacity>
+          <Text style={styles.text}>Forgot Password?</Text>
+        </TouchableOpacity>
+      </View>
+    </>
   );
 };
 

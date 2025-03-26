@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    top:360
+    marginBottom: moderateVerticalScale(63),
   },
   Text: { fontFamily:"Roboto", color: "black", fontSize: scale(15) },
 

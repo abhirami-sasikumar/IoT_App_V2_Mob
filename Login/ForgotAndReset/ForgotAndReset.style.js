@@ -1,19 +1,22 @@
 import { StyleSheet } from "react-native";
 
-export default StyleSheet.create({
-  view: {
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 20,
-    marginTop: 25,
-    top:220,
-    marginLeft:200
+import { scale, verticalScale } from "react-native-size-matters";
+
+const styles = StyleSheet.create({
+  view : {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "right",
+    paddingHorizontal: scale(9),
+    paddingVertical: verticalScale(34),
+    
   },
 
-  forgotText: {
-    color: "black",
-    fontSize: 19,
-    fontWeight: "",
+  text: {
+    fontSize: scale(16),
+    fontFamily:"Roboto",
+    marginTop:verticalScale(10)
   },
 });
+
+export default styles;
