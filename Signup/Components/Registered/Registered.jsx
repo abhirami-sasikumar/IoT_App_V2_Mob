@@ -3,7 +3,7 @@ import { styles } from "./Registered.style";
 import { useNavigation } from "@react-navigation/native";
 
 const Registration = () => {
-  // const nav = useNavigation();
+  const nav = useNavigation();
 
   return (
     <View style={styles.view}>

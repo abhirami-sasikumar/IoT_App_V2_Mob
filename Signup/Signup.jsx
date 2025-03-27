@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import SignupField from "./Components/SignupFields/SignupFields";
-import Logo from "../Components/logo/logo";
+import Logo from "../Components/Logo/Logo";
 import { Icfosslogo } from "../Components/Icfosslogo/icfosslogo";
 import styles from "./Signup.style";
 import Registration from "./Components/Registered/Registered";

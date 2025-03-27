@@ -1,25 +1,27 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
- import Login from './Login/Login';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Signup from './Signup/Signup';  // Import your signup screen
+import {Otp} from './Otp/Otp';
+import Login from './Login/Login';
 import ClusterName from './ClusterName/ClusterName';
-import SignUp from './Signup/Signup';
+import Parameters from './ParameterScreen/Parameters';
 
-export default function App() {
+const Stack = createStackNavigator();
+
+function App() {
   return (
-    <View>
-      <Login/>
-      {/* <ClusterName/> */}
-      {/* <SignUp/> */}
-    </View>
-    
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Signup" component={Signup} />
+        <Stack.Screen name="Otp" component={Otp} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="ClusterName" component={ClusterName} />
+        <Stack.Screen name="Parameters" component={Parameters} />
+
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
