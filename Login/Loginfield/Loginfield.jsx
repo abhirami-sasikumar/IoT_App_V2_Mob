@@ -88,7 +88,6 @@ const LoginField = () => {
             style={styles.eyeIcon}
             onPress={() => setShowPassword(!showPassword)}
           >
-            <Text>{showPassword ? "👁️" : "🙈"}</Text>
           </TouchableOpacity>
         </View>
 
