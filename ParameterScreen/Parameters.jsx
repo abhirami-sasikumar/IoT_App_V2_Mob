@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, Text, ActivityIndicator, ScrollView } from "react-native";
 import Footer from "../Components/Footer/Footer";
-import { LongCard } from "./components/LongCard/LongCard"; // Fix import
+import { LongCard } from "./components/LongCard/LongCard";
 import styles from "./Parameters.style";
 import API from "../Api";
 import { useRoute } from "@react-navigation/native";
@@ -9,12 +9,13 @@ import { useRoute } from "@react-navigation/native";
 const Parameters = () => {
     const route = useRoute();
     const clusterId = route?.params?.clusterId;
+
     const [parameters, setParameters] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        console.log("Received Cluster ID:", clusterId);
+        console.log("Fetching parameters for cluster ID:", clusterId);
 
         if (!clusterId) {
             setError("Cluster ID is missing.");
@@ -22,45 +23,62 @@ const Parameters = () => {
             return;
         }
 
+        let isMounted = true; // Prevent memory leaks
+
         const fetchParameters = async () => {
             try {
-                const response = await API.get(`/getParameterByCluster/${clusterId}`);
+                const response = await API.get(`/get_parameter/${clusterId}`);
                 console.log("Fetched Parameters:", response.data.parameters);
-                setParameters(response.data.parameters);
+
+                if (isMounted) {
+                    setParameters(response.data.parameters);
+                    setError(null);
+                }
             } catch (err) {
-                console.error("Error fetching parameters:", err);
-                setError("Failed to fetch parameters.");
+                console.error("Error fetching parameters:", err.response?.data || err.message);
+                if (isMounted) setError("Failed to fetch parameters.");
             } finally {
-                setLoading(false);
+                if (isMounted) setLoading(false);
             }
         };
 
         fetchParameters();
+
+        return () => {
+            isMounted = false; // Cleanup to prevent memory leaks
+        };
     }, [clusterId]);
 
+    // Filter out duplicate parameter names
+    const uniqueParameters = parameters.reduce((acc, parameter) => {
+        if (!acc.some((p) => p.parameterName === parameter.parameterName)) {
+            acc.push(parameter);
+        }
+        return acc;
+    }, []);
+
     return (
-        <View>
+        <View style={styles.container}>
             <Text style={styles.header}>PARAMETERS</Text>
 
-            <View style={styles.container}>
-                {loading ? (
-                    <ActivityIndicator size="large" color="#0000ff" />
-                ) : error ? (
-                    <Text style={{ color: "red", textAlign: "center" }}>{error}</Text>
-                ) : parameters.length > 0 ? (
-                    <View style={styles.content}>
-                        {parameters.map((parameter, index) => (
-                            <LongCard key={parameter._id || index} parameterName={parameter.parameterName} />
-                        ))}
-                    </View>
-                ) : (
-                    <Text>No parameters found.</Text>
-                )}
-            </View>
+            {loading ? (
+                <ActivityIndicator size="large" color="#0000ff" style={styles.loader} />
+            ) : error ? (
+                <Text style={styles.errorText}>{error}</Text>
+            ) : uniqueParameters.length > 0 ? (
+                <ScrollView style={styles.content}>
+                    {uniqueParameters.map((parameter, index) => (
+                        <LongCard
+                            key={index}
+                            clusterId={clusterId}
+                            parameterName={parameter.parameterName}
+                        />
+                    ))}
+                </ScrollView>
+            ) : (
+                <Text style={styles.noDataText}>No parameters found.</Text>
+            )}
 
-            <View style={styles.Footer}>
-                <Footer />
-            </View>
         </View>
     );
 };
