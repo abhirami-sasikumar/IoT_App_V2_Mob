@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ActivityIndicator, FlatList } from "react-native";
-import { useRoute } from "@react-navigation/native";
+import { View, Text, ActivityIndicator, FlatList, TouchableOpacity } from "react-native";
+import { useRoute, useNavigation } from "@react-navigation/native";
 import styles from "./Location.style";
 import API from "../Api"; // Ensure API is correctly set up
 
 const LocationScreen = () => {
   const route = useRoute();
-  const { clusterId, parameterName } = route.params || {}; 
+  const navigation = useNavigation();
+  const { clusterId, parameterName } = route.params || {};
 
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -50,7 +51,7 @@ const LocationScreen = () => {
 
             return {
               ...location,
-              latestValue: latestValue.value ?? "N/A", // Extract `value` from object
+              latestValue: latestValue.value ?? "N/A",
               time: latestValue.time ?? "N/A",
               unit,
             };
@@ -83,13 +84,20 @@ const LocationScreen = () => {
           data={locations}
           keyExtractor={(item) => item.id || item._id} // Ensures a valid unique key
           renderItem={({ item }) => (
-            <View style={styles.locationItem}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Chart", {
+                clusterId,
+                parameterName,
+                locationName: item.name,
+              })}
+              style={styles.locationItem}
+            >
               <Text style={styles.text}>{item.name}</Text>
               <Text style={styles.latestValue}>
                 Latest: {item.latestValue} {item.unit}
               </Text>
               <Text style={styles.timestamp}>Time: {item.time}</Text>
-            </View>
+            </TouchableOpacity>
           )}
         />
       ) : (
