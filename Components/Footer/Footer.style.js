@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    bottom: 75,
+    bottom: 0,
     paddingHorizontal: scale(10),
     borderTopWidth: scale(2), //border
     borderTopColor: "#FFFFFF",
