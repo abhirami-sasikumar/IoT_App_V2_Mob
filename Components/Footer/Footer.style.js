@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
   footer: {
     width: scale(350),
     height: verticalScale(55),
-    backgroundColor: "lightblue",
+    backgroundColor: "#c3bfc3",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -23,13 +23,14 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: scale(13),
-    color: "#133E87",
+    color: "#000000",
     fontFamily:"Roboto",
   },
   home_image: {
     width: scale(35),
     height: verticalScale(28),
     resizeMode: "contain",
+    
   },
   user_image: {
     width: scale(35),
