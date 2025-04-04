@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { View, TextInput, TouchableOpacity, Text, Alert } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import API from "../../../Api"; // Import API with AsyncStorage setup
+import API from "../../../Api"; // Import API
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation hook
 import styles from "./SignupFields.style"; // Import styles
 
@@ -10,10 +9,11 @@ const SignupField = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [clusterID, setClusterID] = useState(""); // Added Cluster ID input
   const navigation = useNavigation(); // Initialize navigation hook
 
   const handleSubmit = async () => {
-    if (!name || !email || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword || !clusterID) {
       Alert.alert("Error", "All fields are required!");
       return;
     }
@@ -21,9 +21,9 @@ const SignupField = () => {
       Alert.alert("Error", "Passwords do not match!");
       return;
     }
-  
+
     try {
-      const response = await API.post("/signup", { name, email, password });
+      const response = await API.post("/signup", { name, email, password, clustersCode: clusterID });
       Alert.alert("Success", "Signup successful! Check your email for OTP.");
       
       // Navigate to OTP screen, passing email as a parameter
@@ -69,6 +69,15 @@ const SignupField = () => {
           value={confirmPassword}
           onChangeText={setConfirmPassword}
           secureTextEntry
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Cluster ID"
+          value={clusterID}
+          onChangeText={setClusterID}
+          autoCapitalize="none"
+          autoCorrect={false}
         />
       </View>
 

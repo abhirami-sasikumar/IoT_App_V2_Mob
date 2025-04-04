@@ -37,7 +37,7 @@ const ChartComponent = () => {
         clusterId,
         parameterName,
         location: locationName,
-        interval: "1h", // Adjust the interval as needed
+        interval: "360h", // Adjust the interval as needed
       });
 
       if (response.data.success) {

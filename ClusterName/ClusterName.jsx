@@ -16,26 +16,26 @@ const ClusterName = () => {
             try {
                 const token = await AsyncStorage.getItem("token");
                 const userId = await AsyncStorage.getItem("userId");
-    
+
                 console.log("Stored Token:", token);
                 console.log("Stored User ID:", userId);
-    
+
                 if (!token || !userId) {
                     setError("Missing authentication credentials.");
                     setLoading(false);
                     return;
                 }
-    
+
                 const response = await API.get(`/get_clusters/${userId}`);
                 console.log("Full API Response:", response);
                 console.log("API Response Data:", response.data);
-    
+
                 if (response.data.clusters) {
                     console.log("Received Clusters:", response.data.clusters);
                 } else {
                     console.log("Clusters key missing in response");
                 }
-    
+
                 setClusters(response.data.clusters || []);
             } catch (err) {
                 console.error("Error fetching clusters:", err.response ? err.response.data : err.message);
@@ -44,10 +44,10 @@ const ClusterName = () => {
                 setLoading(false);
             }
         };
-    
+
         fetchClusters();
     }, []);
-    
+
     return (
         <View>
             <Text style={styles.header}>CLUSTERS</Text>
@@ -60,12 +60,12 @@ const ClusterName = () => {
                 ) : (
                     <View style={styles.content}>
                         {clusters.length > 0 ? (
-    clusters.map((cluster) => (
-  <LongCard key={cluster._id} clusterName={cluster.clusterName} clusterId={cluster._id} />
-    ))
-) : (
-    <Text>No clusters found.</Text>
-)}
+                            clusters.map((cluster) => (
+                                <LongCard key={cluster._id} clusterName={cluster.clusterName} clusterId={cluster._id} />
+                            ))
+                        ) : (
+                            <Text>No clusters found.</Text>
+                        )}
 
                     </View>
                 )}
