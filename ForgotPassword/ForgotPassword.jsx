@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, Alert, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, Alert, TouchableOpacity } from "react-native";
 import { styles } from "./ForgotPassword.style";
-import { useNavigation } from "@react-navigation/native";
 import { Icfosslogo } from "../Components/Icfosslogo/Icfosslogo";
 import * as ScreenOrientation from "expo-screen-orientation";
-import Logo from "../Components/Logo/Logo";
-import { User } from "../api/user";
+import {Logo} from "../Components/logo/logo";
 
 const ForgotPassword = () => {
+  const [email, setEmail] = useState("");
+  const [buttonDisable, setButtonDisable] = useState(false);
+
   useEffect(() => {
     const lockOrientation = async () => {
       await ScreenOrientation.lockAsync(
         ScreenOrientation.OrientationLock.PORTRAIT_UP
       );
     };
-
     lockOrientation();
 
     return () => {
@@ -22,31 +22,20 @@ const ForgotPassword = () => {
     };
   }, []);
 
-  const nav = useNavigation();
-  const [email, setEmail] = useState("");
-  const [buttonDisable, setButtonDisabel] = useState(false);
+  const handleSubmit = () => {
+    setButtonDisable(true);
 
-  const handleSubmit = async () => {
-    setButtonDisabel(true);
     if (!email) {
       Alert.alert("Error", "Please enter your email address.");
-      setButtonDisabel(false);
+      setButtonDisable(false);
       return;
     }
-    try {
-      const response = await User.resetPasswordOtp(email);
-      Alert.alert(response.message);
-      nav.reset({
-        index: 1,
-        routes: [
-          { name: "Login" },
-          { name: "resetOtp", params: { email: email } },
-        ],
-      });
-    } catch (error) {
-      setButtonDisabel(false);
-      Alert.alert(error.response.data.message || "Error");
-    }
+
+    // Simulated response
+    setTimeout(() => {
+      Alert.alert("Success", "Password reset link has been sent to your email.");
+      setButtonDisable(false);
+    }, 1500);
   };
 
   return (

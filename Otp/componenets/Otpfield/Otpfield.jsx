@@ -1,7 +1,7 @@
 import { View, TextInput } from "react-native";
 import styles from "./Otpfield.style";
 
-export const Otpfield = ({ otp, setOtp }) => {
+const Otpfield = ({ otp, setOtp }) => {
   return (
     <View style={styles.view}>
       <TextInput
@@ -14,3 +14,4 @@ export const Otpfield = ({ otp, setOtp }) => {
     </View>
   );
 };
+export default Otpfield;

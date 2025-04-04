@@ -1,7 +1,7 @@
 import React from "react";
 import { View, ScrollView } from "react-native";
 import Footer from "../Components/Footer/Footer";
-import LongCard from "./componenets/LongCard/LongCard"; // Ensure correct import path
+import LongCard from "./LongCard/LongCard"; // Ensure correct import path
 import styles from "./ParameterScreen.style";
 import Header from "../Components/Header/Header";
 
@@ -28,9 +28,7 @@ const ParameterName = () => {
             </ScrollView>
 
             {/* Footer Always at Bottom */}
-            <View style={styles.footerContainer}>
-                <Footer />
-            </View>
+            
         </View>
     );
 };

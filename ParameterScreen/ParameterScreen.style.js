@@ -6,13 +6,13 @@ const { height } = Dimensions.get("window");
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop:verticalScale(25),
+    marginTop:verticalScale(10),
 
     backgroundColor: "white",
   },
   scrollContainer: {
     flexGrow: 1, // Allows scrolling when content overflows
-    paddingBottom: verticalScale(80), // Prevents content from overlapping with footer
+    paddingBottom: verticalScale(60), // Prevents content from overlapping with footer
   },
   header: {
     textAlign: "center",
@@ -23,18 +23,10 @@ const styles = StyleSheet.create({
     
   },
   content: {
-    padding: moderateScale(10),
-    marginTop: verticalScale(15),
+    padding: moderateScale(1),
+    marginTop: verticalScale(5),
   },
-  footerContainer: {
-    flex:1,
-
-    
-    width: "100%",
-    backgroundColor: "#fff", // Ensure it has a background to stand out
-    height: verticalScale(60),
-     // Adjust height based on Footer component
-  },
+  
 });
 
 export default styles;

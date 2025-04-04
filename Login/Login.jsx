@@ -4,7 +4,7 @@ import Logo from "../Components/logo/logo";
 import ForgotAndReset from "./ForgotAndReset/ForgotAndReset";
 import LoginField from "./Loginfield/Loginfield";
 import Register from "./Register/Registration";
-import { Icfosslogo } from "../Components/Icfosslogo/icfosslogo";
+import { Icfosslogo } from "../Components/Icfosslogo/Icfosslogo";
 import styles from "./Login.style"; // Import styles
 
 const Login = () => {

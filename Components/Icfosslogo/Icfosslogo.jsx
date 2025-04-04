@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Image } from "react-native";
-import { styles } from "./icfosslogo.style";
+import { styles } from "./Icfosslogo.style";
 import logo from "./../../assets/ICFOSS_Logo.png";
 
 export const Icfosslogo = () => {
