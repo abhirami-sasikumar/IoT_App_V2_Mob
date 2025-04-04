@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, TextInput, TouchableOpacity, Text, Alert } from "react-native";
 import styles from "./Loginfield.style";
-import API from "../../Api"; 
+import API from "../../../Api";
 import { useNavigation, CommonActions } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";  
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Icon from "react-native-vector-icons/Feather";
+import { UserContext } from "../../../Components/Context/Context";
 
 const LoginField = () => {
   const [email, setEmail] = useState("");
@@ -11,48 +13,46 @@ const LoginField = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation();
 
-  const handleSubmit = async () => {  
-    if (!email || !password) {  
-      Alert.alert("Error", "Email and Password are required!");  
-      return;  
-    }  
-  
-    try {  
-      console.log("Sending login request with:", { email, password });
-  
-      const response = await API.post("/login", {  
-        email,  
-        password,  
+  const { setUser } = useContext(UserContext);
+
+  const handleSubmit = async () => {
+    if (!email || !password) {
+      Alert.alert("Error", "Email and Password are required!");
+      return;
+    }
+
+    try {
+      const response = await API.post("/login", {
+        email,
+        password,
       });
-  
-      console.log("Login Successful! Response:", response.data);  
-  
-      // Extract Data from Response
-      const { jwtToken, userId, name } = response.data;  
-  
-      // 🔹 Store Token & User ID properly  
-      await AsyncStorage.setItem("token", jwtToken);  
-      await AsyncStorage.setItem("userId", userId);  
-  
-      console.log("Stored Token:", jwtToken);  
-      console.log("Stored User ID:", userId);  
-  
-      Alert.alert("Success", `Welcome ${name}!`);  
-  
-      // 🔹 Navigate to ClusterName screen with token & userId  
-      navigation.dispatch(  
-        CommonActions.reset({  
-          index: 0,  
-          routes: [{  
-            name: "ClusterName",  
-            params: { userId, jwtToken },  
-          }],  
-        })  
-      );  
-    } catch (error) {  
-      console.error("Login Error:", error.message || error);  
-      Alert.alert("Login Failed", error.response?.data?.message || "Please try again.");  
-    }  
+
+      const { jwtToken, userId, name } = response.data;
+
+      // Save in AsyncStorage
+      await AsyncStorage.setItem("token", jwtToken);
+      await AsyncStorage.setItem("userId", userId);
+
+      // Save in Context
+      setUser({ jwtToken, userId, name, email });
+
+      Alert.alert("Success", `Welcome ${name}!`);
+
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [
+            {
+              name: "Clusters",
+              params: { userId, jwtToken },
+            },
+          ],
+        })
+      );
+    } catch (error) {
+      console.error("Login Error:", error.message || error);
+      Alert.alert("Login Failed", error.response?.data?.message || "Please try again.");
+    }
   };
 
   return (
@@ -80,6 +80,7 @@ const LoginField = () => {
             style={styles.eyeIcon}
             onPress={() => setShowPassword(!showPassword)}
           >
+            <Icon name={showPassword ? "eye" : "eye-off"} size={24} color="grey" />
           </TouchableOpacity>
         </View>
       </View>

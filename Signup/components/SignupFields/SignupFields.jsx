@@ -3,6 +3,7 @@ import { View, TextInput, TouchableOpacity, Text, Alert } from "react-native";
 import API from "../../../Api"; // Import API
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation hook
 import styles from "./SignupFields.style"; // Import styles
+import Icon from "react-native-vector-icons/Feather";
 
 const SignupField = () => {
   const [name, setName] = useState("");
@@ -11,6 +12,7 @@ const SignupField = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [clusterID, setClusterID] = useState(""); // Added Cluster ID input
   const navigation = useNavigation(); // Initialize navigation hook
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
 
   const handleSubmit = async () => {
     if (!name || !email || !password || !confirmPassword || !clusterID) {
@@ -63,13 +65,22 @@ const SignupField = () => {
           secureTextEntry
         />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Confirm Password"
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-          secureTextEntry
-        />
+       <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            secureTextEntry={!showConfirmPassword}
+            fontFamily="Roboto"
+          />
+          <TouchableOpacity
+            style={styles.eyeIcon}
+            onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+          >
+            <Icon name={showConfirmPassword ? "eye" : "eye-off"} size={24} color="grey" />
+          </TouchableOpacity>
+        </View>
 
         <TextInput
           style={styles.input}

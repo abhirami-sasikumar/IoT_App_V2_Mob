@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, ActivityIndicator } from "react-native";
 import Footer from "../Components/Footer/Footer";
 import LongCard from "./components/LongCard/LongCard";
-import styles from "./ClusterName.style";
+import styles from "./Cluster.style";
 import API from "../Api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 

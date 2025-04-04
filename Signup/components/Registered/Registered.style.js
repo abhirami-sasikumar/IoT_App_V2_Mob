@@ -8,10 +8,11 @@ import {
 
 export const styles = StyleSheet.create({
   view: {
+    marginTop:moderateVerticalScale(50),
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: moderateVerticalScale(65.2),
+    marginBottom: moderateVerticalScale(23),
   },
   Text: { color: "black", fontSize: scale(15), fontFamily:"Roboto", },
 

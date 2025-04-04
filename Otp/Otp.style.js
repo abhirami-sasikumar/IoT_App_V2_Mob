@@ -4,7 +4,7 @@ import { scale, verticalScale } from "react-native-size-matters";
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
+
     marginTop: verticalScale(30),
   },
   button_view: {

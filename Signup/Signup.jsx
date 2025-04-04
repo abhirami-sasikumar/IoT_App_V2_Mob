@@ -1,24 +1,41 @@
-import React from "react";
+import  Signupfield  from "./components/SignupFields/SignupFields";
+import Registration from "./components/Registered/Registered";
+import { Icfosslogo } from "../Components/Icfosslogo/Icfosslogo";
 import { View } from "react-native";
-import SignupField from "./Components/SignupFields/SignupFields";
+import { useState, useEffect } from "react";
+import { styles } from "./Signup.style";
+import Loading from "../Components/Loading/Loading";
+import * as ScreenOrientation from "expo-screen-orientation";
 import Logo from "../Components/Logo/Logo";
-import { Icfosslogo } from "../Components/Icfosslogo/icfosslogo";
-import styles from "./Signup.style";
-import Registration from "./Components/Registered/Registered";
 
-const SignUp = () => {
-  return ( 
-  <View style={styles.container}>
-  
-      <>
-        <Logo />
-        <SignupField  />
-        <Registration />
-        <Icfosslogo />
-      </>
-    
-  </View>
-  )
-}
+export const Signup = () => {
+  useEffect(() => {
+    const lockOrientation = async () => {
+      await ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.PORTRAIT_UP
+      );
+    };
 
-export default SignUp;
+    lockOrientation();
+
+    return () => {
+      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
+    };
+  }, []);
+
+  const [loading, setLoading] = useState(false);
+  return (
+    <View style={styles.container}>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <Logo />
+          <Signupfield loading={loading} setLoading={setLoading} />
+          <Registration />
+          <Icfosslogo />
+        </>
+      )}
+    </View>
+  );
+};
