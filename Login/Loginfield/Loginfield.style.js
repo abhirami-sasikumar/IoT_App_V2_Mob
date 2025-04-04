@@ -34,22 +34,12 @@ const styles = StyleSheet.create({
     height: "100%",
     fontFamily:"Roboto",
   },
-  Cluster: {
-    marginTop: verticalScale(13),
-    borderWidth: 1,
-    borderColor: "grey",
-    paddingHorizontal: scale(8),
-    borderRadius: 30,
-    width: scale(310),
-    height: verticalScale(50),
-    fontFamily:"Roboto",
-  },
   eyeIcon: {
     position: "absolute",
     right: scale(15),
   },
   button_view: {
-    marginTop: verticalScale(170),
+    marginTop: verticalScale(110),
     flex: 1,
     justifyContent: "center",
     alignItems: "center",

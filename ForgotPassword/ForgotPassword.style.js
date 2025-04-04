@@ -3,8 +3,7 @@ import { scale, verticalScale } from "react-native-size-matters";
 
 export const styles = StyleSheet.create({
   container: {
-    flex:1,
-    
+    flex: 1,
     padding: scale(15),
     marginTop: verticalScale(250),
   },
@@ -33,7 +32,6 @@ export const styles = StyleSheet.create({
   button: {
     backgroundColor: "#133E87",
     padding: verticalScale(10),
-  
     borderRadius: 5,
     alignItems: "center",
   },
@@ -43,6 +41,6 @@ export const styles = StyleSheet.create({
     fontFamily: "Roboto",
   },
   footer: {
-    marginTop: verticalScale(199),
+    marginTop: verticalScale(161),
   },
 });

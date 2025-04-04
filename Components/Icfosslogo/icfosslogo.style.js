@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "#A9A9A9",
   },
   image: {
-    width: scale(112),
+    width: scale(122),
     height: verticalScale(60),
   },
 });

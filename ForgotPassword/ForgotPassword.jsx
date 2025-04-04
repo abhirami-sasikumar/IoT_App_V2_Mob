@@ -1,25 +1,52 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, Alert, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, TextInput, Alert, ScrollView, TouchableOpacity } from "react-native";
 import { styles } from "./ForgotPassword.style";
-import { Icfosslogo } from "../Components/Icfosslogo/icfosslogo";
-import Logo from "../Components/logo/logo";
+import { useNavigation } from "@react-navigation/native";
+import { Icfosslogo } from "../Components/Icfosslogo/Icfosslogo";
+import * as ScreenOrientation from "expo-screen-orientation";
+import Logo from "../Components/Logo/Logo";
+import { User } from "../api/user";
 
 const ForgotPassword = () => {
+  useEffect(() => {
+    const lockOrientation = async () => {
+      await ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.PORTRAIT_UP
+      );
+    };
+
+    lockOrientation();
+
+    return () => {
+      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
+    };
+  }, []);
+
+  const nav = useNavigation();
   const [email, setEmail] = useState("");
-  const [buttonDisable, setButtonDisable] = useState(false);
+  const [buttonDisable, setButtonDisabel] = useState(false);
 
-  const handleSubmit = () => {
-    setButtonDisable(true);
-
+  const handleSubmit = async () => {
+    setButtonDisabel(true);
     if (!email) {
       Alert.alert("Error", "Please enter your email address.");
-      setButtonDisable(false);
+      setButtonDisabel(false);
       return;
     }
-
-    // Dummy response alert
-    Alert.alert("Success", "Reset password link sent to your email.");
-    setButtonDisable(false);
+    try {
+      const response = await User.resetPasswordOtp(email);
+      Alert.alert(response.message);
+      nav.reset({
+        index: 1,
+        routes: [
+          { name: "Login" },
+          { name: "resetOtp", params: { email: email } },
+        ],
+      });
+    } catch (error) {
+      setButtonDisabel(false);
+      Alert.alert(error.response.data.message || "Error");
+    }
   };
 
   return (

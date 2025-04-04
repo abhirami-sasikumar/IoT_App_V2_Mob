@@ -13,56 +13,44 @@ const LoginField = () => {
   };
 
   return (
-    
-    <>
-      <View style={styles.view}>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-
-        <View style={styles.passwordContainer}>
+  
+      <>
+        <View style={styles.view}>
           <TextInput
-            style={styles.passwordInput}
-            placeholder="Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry={!showPassword}
-          />
-          <TouchableOpacity
-            style={styles.eyeIcon}
-            onPress={() => setShowPassword(!showPassword)}
-          >
-            {/* <Icon name={showPassword ? "eye" : "eye-off"} size={24} color="grey" /> */}
-          </TouchableOpacity>
-
-        </View>
-        <View style={styles.cluster}>
-          <TextInput
-            style={styles.Cluster}
-            placeholder="ClusterID"
-            value={ClusterID}
+            style={styles.input}
+            placeholder="Email"
+            value={email}
             onChangeText={setEmail}
-            keyboardType="ClusterID"
+            keyboardType="email-address"
             autoCapitalize="none"
             autoCorrect={false}
           />
+  
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={styles.passwordInput}
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!showPassword}
+            />
+            <TouchableOpacity
+              style={styles.eyeIcon}
+              onPress={() => setShowPassword(!showPassword)}
+            >
+
+            </TouchableOpacity>
           </View>
         </View>
-
+  
         <View style={styles.button_view}>
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>
             <Text style={styles.buttonText}>LOGIN</Text>
           </TouchableOpacity>
         </View>
       </>
-      );
-};
+    );
+  };
 
 
 
