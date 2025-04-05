@@ -1,37 +1,34 @@
 import { StyleSheet } from "react-native";
+import { scale, verticalScale } from "react-native-size-matters";
 
 const styles = StyleSheet.create({
-    card: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      backgroundColor: "lightblue",
-      padding: 15,
-      margin: 7,
-      borderRadius: 15,
-      elevation: 3, // Shadow for Android
-      shadowColor: "#000",
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 5,
-      width: "95%",
-      alignSelf: "center",
-      height: 55, // ⬆ Increased height
-    },
-    cardText: {
-      fontSize: 16,
-      fontWeight: "bold",
-      color: "#133E87",
-      
+  card: {
+    backgroundColor: "#CBDCEB",
+    width: scale(320),
+    height: verticalScale(52),
+    borderRadius: 10,
+    marginTop: verticalScale(15),
+    flexDirection: "row",
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "space-between",
+    elevation: verticalScale(6),
+    paddingHorizontal: scale(10),
+  },
 
-    },
-    arrow: {
-      width: 20,
-      height: 20,
-      resizeMode: "contain",
-      tintColor: "#133E87",
-    },
-  });
-  
-  export default styles;
-  
+  cardText: {
+    fontSize: scale(18),
+    color: "#133E87",
+    textAlign: "left",
+    flex: 1,
+    fontFamily: "Roboto",
+  },
+
+  arrow: {
+    width: scale(18),
+    height: verticalScale(20),
+    tintColor: "#133E87",
+  },
+});
+
+export default styles;

@@ -27,11 +27,6 @@ const styles = StyleSheet.create({
     paddingBottom: verticalScale(5),
   },
 
-  content: {
-    flex: 1,
-    padding: 10,
-    marginTop: 10,
-  },
 
 });
 

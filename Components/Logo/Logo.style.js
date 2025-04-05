@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    marginTop: verticalScale(240),
+    marginTop: verticalScale(200),
     width: scale(200),
     height: verticalScale(200),
     resizeMode: "contain", // Ensures the image maintains its aspect ratio

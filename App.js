@@ -49,7 +49,7 @@ export default function App() {
                 screenOptions={{
                   headerShown: false,
                   animationEnabled: true,
-                  ...TransitionPresets.FadeFromBottomAndroid, // 👈 custom animation
+                  ...TransitionPresets.FadeFromBottomAndroid, 
                 }}
                 initialRouteName="Login"
               >
