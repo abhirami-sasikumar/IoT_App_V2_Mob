@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ActivityIndicator, FlatList, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
-import styles from "./Location.style";
-import API from "../Api"; // Ensure API is correctly set up
+import LocationCard from "./components/LocationCard/LocationCard";
+import { styles } from "./Location.style";
+import Header from "../Components/Header/Header";
+import API from "../Api";
+import Loading from "../Components/Loading/Loading";
 
-const LocationScreen = () => {
+const Location = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const { clusterId, parameterName } = route.params || {};
@@ -14,97 +17,94 @@ const LocationScreen = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log("LocationScreen Mounted");
-    console.log("Received Params - Cluster ID:", clusterId, "Parameter Name:", parameterName);
-
     if (clusterId && parameterName) {
       fetchLocations();
     } else {
       console.error("Missing clusterId or parameterName in route params.");
+      setError("Missing cluster or parameter info.");
       setLoading(false);
     }
   }, [clusterId, parameterName]);
 
   const fetchLocations = async () => {
     try {
-      console.log("Fetching locations for:", clusterId, parameterName);
+      console.log(`Fetching locations for clusterId: ${clusterId}, parameterName: ${parameterName}`);
+  
       const response = await API.get(`/get_location/${clusterId}/${parameterName}`);
       const locationData = response.data.locations || [];
-
-      console.log("Fetched Locations:", locationData);
-
-      // Fetch latest value for each location
+  
+      console.log("Received location data from API:", locationData);
+  
       const enrichedLocations = await Promise.all(
         locationData.map(async (location) => {
           try {
-            console.log(`Fetching latest value for ${location.name} with Cluster ID:`, clusterId);
             const latestValueResponse = await API.post(`/get_latest_value`, {
               clusterId,
               parameterName,
               location: location.name,
             });
-
-            console.log(`Latest Value for ${location.name}:`, latestValueResponse.data);
-
+      
             const latestValue = latestValueResponse.data?.data?.latestValue || {};
             const unit = latestValueResponse.data?.data?.unit || "";
-
+            const isChart = latestValueResponse.data?.data?.isChart ?? false;
+      
             return {
               ...location,
               latestValue: latestValue.value ?? "N/A",
               time: latestValue.time ?? "N/A",
               unit,
+              isChart,
             };
           } catch (err) {
             console.error(`Error fetching latest value for ${location.name}:`, err.message);
-            return { ...location, latestValue: "N/A", time: "N/A", unit: "" };
+            return { ...location, latestValue: "N/A", time: "N/A", unit: "", isChart: false };
           }
         })
       );
-
+      
+  
+      console.log("Enriched locations with latest values:", enrichedLocations);
+  
       setLocations(enrichedLocations);
     } catch (err) {
+      console.error("Failed to fetch locations:", err.message);
       setError("Failed to fetch locations: " + err.message);
-      console.error("Error fetching locations:", err.message);
     } finally {
       setLoading(false);
     }
   };
+  
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>LOCATIONS</Text>
+    <View style={styles.screen}>
+      <Header title={parameterName || "Locations"} />
 
       {loading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
+        <Loading />
       ) : error ? (
         <Text style={styles.errorText}>{error}</Text>
-      ) : locations.length > 0 ? (
-        <FlatList
-          data={locations}
-          keyExtractor={(item) => item.id || item._id} // Ensures a valid unique key
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Chart", {
-                clusterId,
-                parameterName,
-                locationName: item.name,
-              })}
-              style={styles.locationItem}
-            >
-              <Text style={styles.text}>{item.name}</Text>
-              <Text style={styles.latestValue}>
-                Latest: {item.latestValue} {item.unit}
-              </Text>
-              <Text style={styles.timestamp}>Time: {item.time}</Text>
-            </TouchableOpacity>
-          )}
-        />
       ) : (
-        <Text style={styles.text}>No locations available</Text>
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          <View style={styles.container}>
+            <View style={styles.cardContainer}>
+              {locations.map((location, index) => (
+                <LocationCard
+                key={index}
+                LocationName={location.name}
+                Value={location.latestValue}
+                Measurement={location.unit}
+                isChart={location.isChart}
+                clusterId={clusterId}
+                parameterName={parameterName}
+              />
+              
+              ))}
+            </View>
+          </View>
+        </ScrollView>
       )}
     </View>
   );
 };
 
-export default LocationScreen;
+export default Location;
