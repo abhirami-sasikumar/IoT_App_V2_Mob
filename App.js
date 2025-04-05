@@ -5,13 +5,13 @@ import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 //  import Login from "./Login/Login"
-// import ForgotPassword from "./ForgotPassword/ForgotPassword"
+import ForgotPassword from "./ForgotPassword/ForgotPassword"
 // import ClusterName from "./ClusterScreen/ClusterScreen"
 // import SignUp from "./Signup/Signup";
 // import ParameterName from "./ParameterScreen/ParameterScreen";
-// import ResetOtp from "./ForgotPassword/components/Otp/Otp";
+import ResetOtp from "./ForgotPassword/components/Otp/Otp";
 // import  {Otp}  from "./Otp/Otp";
-import LocationScreen from "./LocationScreen/LocationScreen";
+// import LocationScreen from "./LocationScreen/LocationScreen";
 
 
 
@@ -55,18 +55,18 @@ export default function App() {
           >
             <Stack.Navigator
               screenOptions={{ headerShown: false, animation: "fade" }}
-              initialRouteName="Location"
+              initialRouteName="ForgotPassword"
             >
               {/* <Stack.Screen name="otp" component={Otp} />  */}
               {/* <Stack.Screen name="Login" component={Login} /> */}
               {/* <Stack.Screen name="SignUp" component={SignUp} /> */}
               {/* <Stack.Screen name="clusters" component={ClusterName} />    */}
 
-              <Stack.Screen name="Location" component={LocationScreen} />
+              {/* <Stack.Screen name="Location" component={LocationScreen} /> */}
               {/* <Stack.Screen name="parameter" component={ParameterName} />  */}
               {/* <Stack.Screen name="profile" component={Profile} /> */}
-              {/* <Stack.Screen name="ForgotPassword" component={ForgotPassword} /> */}
-              {/* <Stack.Screen name="resetOtp" component={ResetOtp} /> */}
+              <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+              <Stack.Screen name="resetOtp" component={ResetOtp} />
             </Stack.Navigator>
           </SafeAreaView>
         </SafeAreaProvider>

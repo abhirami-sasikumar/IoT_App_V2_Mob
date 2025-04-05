@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, Alert, TouchableOpacity } from "react-native";
 import { styles } from "./ForgotPassword.style";
+import { useNavigation } from "@react-navigation/native";
 import { Icfosslogo } from "../Components/Icfosslogo/Icfosslogo";
 import * as ScreenOrientation from "expo-screen-orientation";
-import {Logo} from "../Components/logo/logo";
+import Logo from "../Components/logo/logo";
+// Make sure to import your User service/API
+
 
 const ForgotPassword = () => {
-  const [email, setEmail] = useState("");
-  const [buttonDisable, setButtonDisable] = useState(false);
-
   useEffect(() => {
     const lockOrientation = async () => {
-      await ScreenOrientation.lockAsync(
-        ScreenOrientation.OrientationLock.PORTRAIT_UP
-      );
+      await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
     };
     lockOrientation();
 
@@ -22,20 +20,26 @@ const ForgotPassword = () => {
     };
   }, []);
 
-  const handleSubmit = () => {
-    setButtonDisable(true);
+  const nav = useNavigation();
+  const [email, setEmail] = useState("");
+  const [buttonDisable, setButtonDisabel] = useState(false);
 
+  const handleSubmit = async () => {
+    setButtonDisabel(true);
     if (!email) {
       Alert.alert("Error", "Please enter your email address.");
-      setButtonDisable(false);
+      setButtonDisabel(false);
       return;
     }
 
-    // Simulated response
-    setTimeout(() => {
-      Alert.alert("Success", "Password reset link has been sent to your email.");
-      setButtonDisable(false);
-    }, 1500);
+    try {
+      const response = await User.resetPasswordOtp(email);
+      Alert.alert(response.message);
+      nav.navigate("resetOtp", {  }); 
+    } catch (error) {
+      setButtonDisabel(false);
+      Alert.alert(error.response?.data?.message || "Error");
+    }
   };
 
   return (
