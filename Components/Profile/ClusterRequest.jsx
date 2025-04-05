@@ -1,28 +1,45 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import Footer from "../Footer/Footer";
 
 const ClusterRequest = ({ navigation }) => {
-  const [requestDetails, setRequestDetails] = useState("");
+  const [clusterCode, setClusterCode] = useState("");
+
+  const handleRequest = () => {
+    alert(`Cluster request sent for code: ${clusterCode}`);
+  };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Cluster Request</Text>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+    >
+      <View style={styles.content}>
+        <Text style={styles.header}>Cluster Request</Text>
 
-      <TextInput 
-        style={styles.input} 
-        placeholder="Enter request details..."
-        multiline
-        value={requestDetails}
-        onChangeText={setRequestDetails}
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Enter Cluster Code..."
+          value={clusterCode}
+          onChangeText={setClusterCode}
+        />
 
-      <TouchableOpacity style={styles.button} onPress={() => alert("Cluster Request Sent!")}>
-        <Text style={styles.buttonText}>Submit Request</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleRequest}>
+          <Text style={styles.buttonText}>Request</Text>
+        </TouchableOpacity>
+      </View>
 
+      {/* 📌 Stick Footer to the Bottom */}
       <Footer />
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -31,16 +48,19 @@ export default ClusterRequest;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#f8f9fa",
+  },
+  content: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f8f9fa",
     paddingHorizontal: 20,
   },
   header: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
-    color: "#000080",
+    color: "#000000",
   },
   input: {
     width: "85%",
@@ -50,19 +70,21 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginVertical: 10,
     backgroundColor: "#fff",
-    minHeight: 100,
-    textAlignVertical: "top",
   },
   button: {
-    backgroundColor: "#000080",
+    backgroundColor: "#000000",
     paddingVertical: 15,
     width: "85%",
     borderRadius: 8,
     alignItems: "center",
     marginTop: 10,
+    justifyContent: "center",
+    minHeight: 50,
   },
   buttonText: {
     color: "#fff",
-    fontSize: 18,
+  fontSize: 20, 
+  fontWeight: "bold",
+  lineHeight: 22, 
   },
 });

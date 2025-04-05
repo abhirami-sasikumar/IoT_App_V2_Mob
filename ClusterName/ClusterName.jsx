@@ -70,7 +70,7 @@ const ClusterName = () => {
                     </View>
                 )}
 
-                <View style={styles.Footer}>
+                <View>
                     <Footer />
                 </View>
             </View>

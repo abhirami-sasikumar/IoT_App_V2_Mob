@@ -27,14 +27,6 @@ const styles = StyleSheet.create({
 
     
   },
-  Footer:{
-    flex:1,
-
-    marginTop:747
-    
-
-
-  }
 });
 
 export default styles;
