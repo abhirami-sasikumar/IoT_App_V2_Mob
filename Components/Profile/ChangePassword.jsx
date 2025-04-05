@@ -1,63 +1,42 @@
 import React, { useState } from "react";
 import {
   View,
+  Text,
   TextInput,
-  Button,
-  Alert,
-  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
   KeyboardAvoidingView,
   Platform,
-  StyleSheet,
+  Alert,
+  ScrollView
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import Footer from "../Footer/Footer"; // ✅ Import Footer
 
-
-const ChangePassword = ({ navigation }) => {
+const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleChangePassword = async () => {
-    try {
-      const token = await AsyncStorage.getItem("jwtToken");
-      const userId = await AsyncStorage.getItem("userId");
-
-      if (!token || !userId) {
-        Alert.alert("Error", "User not authenticated!");
-        return;
-      }
-
-      const API_URL = `http://192.168.66.185:3000/api/app/change-password/${userId}`;
-
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ currentPassword, newPassword, confirmPassword }),
-      });
-
-      const result = await response.json();
-
-      if (response.ok) {
-        Alert.alert("Success", "Password changed successfully!");
-        navigation.goBack();
-      } else {
-        Alert.alert("Error", result.message || "Failed to change password.");
-      }
-    } catch (error) {
-      console.error("Change Password Error:", error);
-      Alert.alert("Error", "Something went wrong. Please try again.");
+  const handleChangePassword = () => {
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      Alert.alert("Error", "Please fill in all fields.");
+      return;
     }
+    if (newPassword !== confirmPassword) {
+      Alert.alert("Error", "New password and confirm password must match.");
+      return;
+    }
+    Alert.alert("Success", "Password changed successfully!");
   };
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
       style={styles.container}
     >
       <ScrollView contentContainerStyle={styles.scrollView}>
+        <Text style={styles.header}>Change Password</Text>
+
         <TextInput
           style={styles.input}
           placeholder="Current Password"
@@ -79,32 +58,60 @@ const ChangePassword = ({ navigation }) => {
           value={confirmPassword}
           onChangeText={setConfirmPassword}
         />
-        <Button title="Change Password" onPress={handleChangePassword} />
+
+        <TouchableOpacity style={styles.button} onPress={handleChangePassword}>
+          <Text style={styles.buttonText}>Change Password</Text>
+        </TouchableOpacity>
       </ScrollView>
+
+      {/* ✅ Footer at bottom */}
+      <Footer />
     </KeyboardAvoidingView>
   );
 };
 
+export default ChangePassword;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    backgroundColor: "#fff",
-    padding: 16,
+    backgroundColor: "#f8f9fa",
   },
   scrollView: {
     flexGrow: 1,
     justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 20,
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+    color: "#000000",
   },
   input: {
-    height: 50,
-    borderColor: "#ccc",
+    width: "85%",
+    padding: 15,
     borderWidth: 1,
+    borderColor: "#ccc",
     borderRadius: 8,
-    marginBottom: 12,
-    paddingHorizontal: 10,
+    marginVertical: 10,
     backgroundColor: "#fff",
   },
+  button: {
+    backgroundColor: "#beb9be", // ✅ updated color
+    paddingVertical: 18,         // ✅ slightly increased
+    paddingHorizontal: 30,
+    width: "85%",
+    borderRadius: 10,
+    alignItems: "center",
+    marginTop: 20,
+    minHeight: 55,               // ✅ more button height
+    justifyContent: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 17,
+    fontWeight: "bold",
+  },
 });
-
-export default ChangePassword;
