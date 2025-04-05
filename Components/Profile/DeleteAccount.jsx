@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 20,
-    color: "#000080",
+    color: "#000000",
   },
   buttonDelete: {
     backgroundColor: "#000000", // black
