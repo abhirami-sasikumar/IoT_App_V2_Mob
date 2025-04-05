@@ -63,11 +63,13 @@ const ProfilePage = ({ navigation }) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.button, styles.deleteAccountButton]}
-          onPress={() => navigation.navigate("DeleteAccount")}
-        >
-          <Text style={styles.buttonText}>Delete Account</Text>
-        </TouchableOpacity>
+  style={[styles.button, styles.deleteAccountButton]}
+  onPress={() => navigation.navigate("DeleteAccount")}
+>
+  <Text style={[styles.buttonText, styles.deleteAccountText]}>
+    Delete Account
+  </Text>
+</TouchableOpacity>
       </ScrollView>
 
       {/* Footer Component */}
@@ -134,4 +136,9 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     marginBottom: 20,
   },
+  deleteAccountText: {
+    color: '#d9645b',
+    // You can add fontWeight or other styles if needed
+  },
+  
 });
