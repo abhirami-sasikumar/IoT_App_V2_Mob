@@ -4,7 +4,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { useNavigation } from "@react-navigation/native";
 
-// UI Components
 import Logo from "../Components/Logo/Logo";
 import ForgotAndReset from "./components/ForgotAndReset/ForgotAndReset";
 import LoginField from "./components/Loginfield/Loginfield";
@@ -13,7 +12,6 @@ import { Icfosslogo } from "../Components/Icfosslogo/Icfosslogo";
 import Loading from "../Components/Loading/Loading"; 
 import { styles } from "./Login.style";
 
-// Context and API
 import { UserContext } from "../Components/Context/Context";
 import API from "../Api"; 
 
@@ -25,7 +23,7 @@ const Login = () => {
   const getUser = async () => {
     try {
       const storedUser = await AsyncStorage.getItem("@user");
-      if (storedUser !== null) {
+      if (storedUser) {
         const parsedUser = JSON.parse(storedUser);
         const res = await API.post("/refresh_token", {
           token: parsedUser.jwtToken,
@@ -33,15 +31,15 @@ const Login = () => {
 
         const data = res.data;
 
-        // Update AsyncStorage and Context
         await AsyncStorage.setItem("@user", JSON.stringify(data));
         setUser({
           jwtToken: data.jwtToken,
           email: data.email,
           name: data.name,
+          userId: data._id,
         });
 
-        nav.replace("cluster");
+        nav.replace("Clusters");
       } else {
         setLoading(false);
       }

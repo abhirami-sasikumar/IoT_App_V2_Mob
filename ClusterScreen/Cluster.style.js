@@ -1,41 +1,38 @@
+// Cluster.style.js
 import { StyleSheet } from "react-native";
+import {
+  scale,
+  verticalScale,
+  moderateVerticalScale,
+} from "react-native-size-matters";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5", // Light background color
-    
   },
+
+  header: {
+    fontSize: scale(22),
+    textAlign: "center",
+    color: "#133E87",
+    marginTop: verticalScale(8),
+    fontFamily: "Roboto",
+  },
+
+  scrollView: {
+    flex: 1,
+  },
+
+  scrollContent: {
+    paddingBottom: verticalScale(5),
+  },
+
   content: {
     flex: 1,
     padding: 10,
-    marginTop:10
-    
-    
+    marginTop: 10,
   },
-  header:{
-    
-    
-    
-    textAlign:"center",
-    marginTop: 50,
-    color: "#333",
-    fontSize:25,
-    fontWeight:"medium",
-    color: "#133E87",
-    
 
-    
-  },
-  Footer:{
-    flex:1,
-
-    marginTop:747
-    
-
-
-  }
 });
 
 export default styles;
-

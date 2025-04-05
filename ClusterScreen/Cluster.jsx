@@ -1,81 +1,77 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, ActivityIndicator } from "react-native";
-import Footer from "../Components/Footer/Footer";
+import React, { useEffect, useState, useContext } from "react";
+import { View, Text, ScrollView } from "react-native";import Footer from "../Components/Footer/Footer";
 import LongCard from "./components/LongCard/LongCard";
 import styles from "./Cluster.style";
 import API from "../Api";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserContext } from "../Components/Context/Context";
+import * as ScreenOrientation from "expo-screen-orientation";
 
-const ClusterName = () => {
-    const [clusters, setClusters] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+const Cluster = () => {
+  const [clusters, setClusters] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetchClusters = async () => {
-            try {
-                const token = await AsyncStorage.getItem("token");
-                const userId = await AsyncStorage.getItem("userId");
+  const { user } = useContext(UserContext);
 
-                console.log("Stored Token:", token);
-                console.log("Stored User ID:", userId);
+  useEffect(() => {
+    const lockOrientation = async () => {
+      await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+    };
 
-                if (!token || !userId) {
-                    setError("Missing authentication credentials.");
-                    setLoading(false);
-                    return;
-                }
+    const fetchClusters = async () => {
+      try {
+        if (!user.jwtToken || !user.userId) {
+          setError("Missing user credentials.");
+          setLoading(false);
+          return;
+        }
 
-                const response = await API.get(`/get_clusters/${userId}`);
-                console.log("Full API Response:", response);
-                console.log("API Response Data:", response.data);
+        const response = await API.get(`/get_clusters/${user.userId}`);
+        setClusters(response.data.clusters || []);
+      } catch (err) {
+        console.error("Error fetching clusters:", err.message);
+        setError("Failed to fetch clusters.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-                if (response.data.clusters) {
-                    console.log("Received Clusters:", response.data.clusters);
-                } else {
-                    console.log("Clusters key missing in response");
-                }
+    lockOrientation();     
+    fetchClusters();
 
-                setClusters(response.data.clusters || []);
-            } catch (err) {
-                console.error("Error fetching clusters:", err.response ? err.response.data : err.message);
-                setError("Failed to fetch clusters.");
-            } finally {
-                setLoading(false);
-            }
-        };
+    return () => {
+      // Reset orientation when unmounting
+      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
+    };
+  }, [user]);
 
-        fetchClusters();
-    }, []);
-
-    return (
-        <View>
-            <Text style={styles.header}>CLUSTERS</Text>
-
-            <View style={styles.container}>
-                {loading ? (
-                    <ActivityIndicator size="large" color="#0000ff" />
-                ) : error ? (
-                    <Text style={{ color: "red", textAlign: "center" }}>{error}</Text>
-                ) : (
-                    <View style={styles.content}>
-                        {clusters.length > 0 ? (
-                            clusters.map((cluster) => (
-                                <LongCard key={cluster._id} clusterName={cluster.clusterName} clusterId={cluster._id} />
-                            ))
-                        ) : (
-                            <Text>No clusters found.</Text>
-                        )}
-
-                    </View>
-                )}
-
-                <View style={styles.Footer}>
-                    <Footer />
-                </View>
-            </View>
-        </View>
-    );
+  return (
+    <View style={styles.container}>
+    <Text style={styles.header}>CLUSTERS</Text>
+  
+    <ScrollView
+      style={styles.scrollView}
+      contentContainerStyle={styles.scrollContent}
+    >
+      {clusters.length > 0 ? (
+        clusters.map((cluster) => (
+          <LongCard
+            key={cluster._id}
+            clusterName={cluster.clusterName}
+            clusterId={cluster._id}
+          />
+        ))
+      ) : (
+        <Text>No clusters found.</Text>
+      )}
+    </ScrollView>
+  
+    <View >
+      <Footer />
+    </View>
+  </View>
+  
+  );
 };
 
-export default ClusterName;
+export default Cluster;

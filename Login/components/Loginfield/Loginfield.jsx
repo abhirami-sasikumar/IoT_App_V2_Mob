@@ -20,33 +20,29 @@ const LoginField = () => {
       Alert.alert("Error", "Email and Password are required!");
       return;
     }
-
+  
     try {
       const response = await API.post("/login", {
         email,
         password,
       });
-
+  
       const { jwtToken, userId, name } = response.data;
-
-      // Save in AsyncStorage
-      await AsyncStorage.setItem("token", jwtToken);
-      await AsyncStorage.setItem("userId", userId);
-
-      // Save in Context
-      setUser({ jwtToken, userId, name, email });
-
+  
+      const userData = { jwtToken, userId, name, email };
+  
+      // Save all user data as one object
+      await AsyncStorage.setItem("@user", JSON.stringify(userData));
+  
+      // Update Context
+      setUser(userData);
+  
       Alert.alert("Success", `Welcome ${name}!`);
-
+  
       navigation.dispatch(
         CommonActions.reset({
           index: 0,
-          routes: [
-            {
-              name: "Clusters",
-              params: { userId, jwtToken },
-            },
-          ],
+          routes: [{ name: "Clusters" }],
         })
       );
     } catch (error) {
@@ -54,6 +50,7 @@ const LoginField = () => {
       Alert.alert("Login Failed", error.response?.data?.message || "Please try again.");
     }
   };
+  
 
   return (
     <>
