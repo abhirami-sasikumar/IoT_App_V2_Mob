@@ -32,12 +32,14 @@ const LoginField = () => {
   
       // 🔹 Store Token & User ID properly  
       await AsyncStorage.setItem("token", jwtToken);  
-      await AsyncStorage.setItem("userId", userId);  
+      await AsyncStorage.setItem("userId", userId);
+      await AsyncStorage.setItem("email", email);   
   
       console.log("Stored Token:", jwtToken);  
       console.log("Stored User ID:", userId);  
   
-      Alert.alert("Success", `Welcome ${name}!`);  
+      Alert.alert("Success", `Welcome ${name}!\nEmail: ${email}`);
+
   
       // 🔹 Navigate to ClusterName screen with token & userId  
       navigation.dispatch(  

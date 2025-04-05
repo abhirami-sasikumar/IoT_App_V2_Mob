@@ -6,21 +6,64 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { CommonActions } from "@react-navigation/native";
 import Footer from "../Footer/Footer";
+import API from "../../Api"; // Make sure your API instance is set up correctly
 
 const DeleteAccount = ({ navigation }) => {
+  const handleDelete = async () => {
+    try {
+      const email = await AsyncStorage.getItem("email");
+
+      if (!email) {
+        Alert.alert("Error", "User email not found.");
+        return;
+      }
+
+      const response = await API.delete("/delete", {
+        data: { email },
+      });
+
+      if (response.status === 200) {
+        Alert.alert("Deleted", "Your account has been deleted.", [
+          {
+            text: "OK",
+            onPress: async () => {
+              await AsyncStorage.clear(); // Clear all data
+              navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [{ name: "Login" }],
+                })
+              );
+            },
+          },
+        ]);
+      } else {
+        Alert.alert("Error", "Unable to delete account. Please try again.");
+      }
+    } catch (error) {
+      console.error("Delete Error:", error);
+      Alert.alert("Error", "Something went wrong during deletion.");
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <View style={styles.content}>
-        <Text style={styles.header}>Are you sure you want to delete your account?</Text>
+        <Text style={styles.header}>
+          Are you sure you want to delete your account?
+        </Text>
 
         <TouchableOpacity
           style={styles.buttonDelete}
-          onPress={() => alert("Account Deleted!")}
+          onPress={handleDelete}
         >
           <Text style={styles.buttonText}>Yes, Delete</Text>
         </TouchableOpacity>
@@ -33,7 +76,6 @@ const DeleteAccount = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      {/* 📌 Footer fixed at bottom */}
       <Footer />
     </KeyboardAvoidingView>
   );
@@ -60,7 +102,7 @@ const styles = StyleSheet.create({
     color: "#000000",
   },
   buttonDelete: {
-    backgroundColor: "#000000", // black
+    backgroundColor: "#000000",
     paddingVertical: 15,
     width: "85%",
     borderRadius: 8,
@@ -68,7 +110,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   buttonCancel: {
-    backgroundColor: "#beb9be", // grey
+    backgroundColor: "#beb9be",
     paddingVertical: 15,
     width: "85%",
     borderRadius: 8,
@@ -76,6 +118,11 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#d9645b",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  buttonText1: {
+    color: "#fff",
     fontSize: 18,
     fontWeight: "bold",
   },
