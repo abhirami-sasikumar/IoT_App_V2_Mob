@@ -1,15 +1,17 @@
 import React from "react";
-import { View, Text, ScrollView } from "react-native";
-import { moderateScale, verticalScale } from "react-native-size-matters"; // Import scaling
-import Footer from "../Components/Footer/Footer";
-import { LocationCard } from "./Components/LocationCard/LocationCard";
-import styles from "./LocationScreen.style";
+import { View, Text, ScrollView } from "react-native";// Import scaling
+import LocationCard from "./components/LocationCard/LocationCard"
+import {styles} from "./LocationScreen.style";
+import Header from "../Components/Header/Header";
+
 
 const LocationScreen = () => {
     return (
         <View style={styles.screen}>
             {/* Page Title */}
-            <Text style={styles.header}>Parameter</Text>
+            <Header title="Temperature"  />
+
+            
 
             {/* Scrollable Content */}
             <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -23,9 +25,7 @@ const LocationScreen = () => {
             </ScrollView>
 
             {/* Footer (Positioned Correctly) */}
-            <View style={styles.footerContainer}>
-                <Footer />
-            </View>
+           
         </View>
     );
 };

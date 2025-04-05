@@ -11,22 +11,33 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: moderateScale(2) },
     shadowRadius: moderateScale(4),
     width: "100%", // Responsive width
-    height: verticalScale(120), // Adjust height dynamically
+    height: verticalScale(110), // Adjust height dynamically
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: verticalScale(10),
-    marginVertical: verticalScale(10),
+    marginVertical: verticalScale(2),
+    marginTop:verticalScale(10)
+  },
+  footerContainer: {
+    bottom: 0,
+    width: "100%",
+    backgroundColor: "#black",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: verticalScale(10),
   },
   headText: {
-    fontSize: scale(22),
+    fontSize: scale(18),
     fontWeight: "400",
     textAlign: "center",
     color: "#133E87",
   },
   line: {
-    width: "100%",
-    height: verticalScale(2),
-    backgroundColor: "#133E87",
+    width: scale(328),
+    borderBottomWidth: scale(1),
+    borderBottomColor: "#A6A6A6",
+    marginTop: verticalScale(5),
+    alignSelf: "center",
   },
   bottomRow: {
     flexDirection: "row",
@@ -44,22 +55,39 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   value: {
-    fontSize: scale(20),
+    fontSize: scale(30),
     fontWeight: "bold",
     textAlign: "center",
     color: "#133E87",
   },
   measurementText: {
-    fontSize: scale(18),
+    fontSize: scale(25),
     color: "#133E87",
     marginLeft: scale(5),
   },
+ 
+  chartIconContainer: {
+     
+     
+    right: scale(5), 
+    width: scale(37),
+    height: verticalScale(37),
+    borderRadius: scale(20),
+    backgroundColor: "#133E87",
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
+    marginTop:verticalScale(7)
+    
+  },
   chartIcon: {
     width: scale(30),
-    height: scale(30),
+    height: scale(20),
     resizeMode: "contain",
-    marginLeft: "auto",
+    marginLeft: "5",
+    
   },
+
 });
 
 export default styles;

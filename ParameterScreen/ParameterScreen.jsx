@@ -1,7 +1,7 @@
 import React from "react";
 import { View, ScrollView } from "react-native";
-import Footer from "../Components/Footer/Footer";
-import LongCard from "./LongCard/LongCard"; // Ensure correct import path
+
+import LongCard from "./LongCard/LongCard" // Ensure correct import path
 import styles from "./ParameterScreen.style";
 import Header from "../Components/Header/Header";
 
@@ -18,7 +18,7 @@ const ParameterName = () => {
                     <LongCard ParameterName="Parameter 2" />
                     <LongCard ParameterName="Parameter 3" />
                     <LongCard ParameterName="Parameter 4" />
-                    <LongCard ParameterName="Parameter 5" />
+                    <LongCard ParameterName="Parayyyyfffffffffmeter 5" />
                     <LongCard ParameterName="Parameter 6" />
                     <LongCard ParameterName="Parameter 7" />
                     <LongCard ParameterName="Parameter 8" />

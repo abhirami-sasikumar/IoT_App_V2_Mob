@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Image, View } from "react-native";
+import { Text, Image,TouchableOpacity, View } from "react-native";
 import PropTypes from "prop-types";
 import styles from "./LocationCard.style";
 import chartIcon from "../../../assets/chart.png";
@@ -22,7 +22,13 @@ export const LocationCard = ({ LocationName, Value, Measurement, showChart = tru
         </View>
 
         {/* Chart Icon at the End */}
-        {showChart && <Image source={chartIcon} style={styles.chartIcon} />}
+        {showChart && (
+        <TouchableOpacity onPress={showChart}>
+          <View style={styles.chartIconContainer}>
+            <Image source={chartIcon} style={[styles.chartIcon, { tintColor: 'lightblue' }]} />
+          </View>
+        </TouchableOpacity>
+      )}
       </View>
     </View>
   );

@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { scale, verticalScale, moderateScale } from "react-native-size-matters";
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -32,6 +32,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export default styles;
+
 
   

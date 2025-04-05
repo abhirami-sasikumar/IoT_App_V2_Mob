@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, Image, View } from "react-native";
 import Arrow from "../../assets/arrowIcon.png"
-import styles from "./LongCard.style";
+import {styles} from "./LongCard.style";
 
 const LongCard = ({ ParameterName }) => {
   return (
