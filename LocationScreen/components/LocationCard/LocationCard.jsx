@@ -1,10 +1,10 @@
 import React from "react";
 import { Text, Image,TouchableOpacity, View } from "react-native";
 import PropTypes from "prop-types";
-import styles from "./LocationCard.style";
+import {styles} from "./LocationCard.style";
 import chartIcon from "../../../assets/chart.png";
 
-export const LocationCard = ({ LocationName, Value, Measurement, showChart = true }) => {
+const LocationCard = ({ LocationName, Value, Measurement, showChart = true }) => {
   return (
     <View style={styles.card}>
       {/* Location Name */}
@@ -41,3 +41,4 @@ LocationCard.propTypes = {
   Measurement: PropTypes.string.isRequired,
   showChart: PropTypes.bool,
 };
+export default LocationCard;

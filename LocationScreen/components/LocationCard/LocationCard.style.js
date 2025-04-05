@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { scale, verticalScale, moderateScale, moderateVerticalScale } from "react-native-size-matters";
 
-const styles = StyleSheet.create({
+ export const styles = StyleSheet.create({
   card: {
     backgroundColor: "lightblue",
     borderRadius: moderateScale(10),
