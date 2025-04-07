@@ -15,6 +15,10 @@ import Logout from "./Components/Profile/Logout.jsx";
 import ClusterRequest from "./Components/Profile/ClusterRequest";
 import DeleteAccount from "./Components/Profile/DeleteAccount";
 
+import ForgotAndReset from './Login/ForgotAndReset/ForgotAndReset';
+import ForgotPassword from './Login/ForgotAndReset/ForgotPassword';
+import ResetPassword from './Login/ForgotAndReset/ResetPassword';
+
 const Stack = createStackNavigator();
 
 function App() {
@@ -23,6 +27,9 @@ function App() {
       <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Signup" component={Signup} />
         <Stack.Screen name="Otp" component={Otp} />
+        <Stack.Screen name="ForgotAndReset" component={ForgotAndReset} />
+        <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+        <Stack.Screen name="ResetPassword" component={ResetPassword} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="ClusterName" component={ClusterName} />
         <Stack.Screen name="Parameters" component={Parameters} />
