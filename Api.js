@@ -8,15 +8,17 @@ const API = axios.create({
 
     });
 
-API.interceptors.request.use(
-  async (config) => {
-    const token = await AsyncStorage.getItem("token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+    API.interceptors.request.use(
+      async (config) => {
+        const userData = await AsyncStorage.getItem("@user");
+        if (userData) {
+          const parsed = JSON.parse(userData);
+          config.headers.Authorization = `Bearer ${parsed.jwtToken}`;
+        }
+        return config;
+      },
+      (error) => Promise.reject(error)
+    );
+    
 
 export default API;
