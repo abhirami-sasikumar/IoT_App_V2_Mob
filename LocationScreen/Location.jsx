@@ -6,6 +6,7 @@ import { styles } from "./Location.style";
 import Header from "../Components/Header/Header";
 import API from "../Api";
 import Loading from "../Components/Loading/Loading";
+import Footer from "../Components/Footer/Footer";
 
 const Location = () => {
   const route = useRoute();
@@ -94,7 +95,11 @@ const Location = () => {
           </View>
         </ScrollView>
       )}
+    <View>
+      <Footer/>
+      </View>
     </View>
+   
   );
 };
 

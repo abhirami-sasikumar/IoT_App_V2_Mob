@@ -3,7 +3,7 @@ import { moderateScale, verticalScale } from "react-native-size-matters";
 
 export const styles = StyleSheet.create({
   screen: {
-     // Ensures full screen usage
+   flex: 1,
     
     paddingTop: verticalScale(5),
   },
@@ -15,12 +15,11 @@ export const styles = StyleSheet.create({
     color:"#133E87"
   },
   scrollContent: {
-    flexGrow: 1, // Makes sure ScrollView expands
-    justifyContent: "center",
+    flexGrow: 1,
+    justifyContent: "flex-start", // ✅ Align content from the top
     alignItems: "center",
-    paddingBottom: verticalScale(10),
-    marginTop:verticalScale(10) // Ensures no overlap with footer
   },
+  
   container: {
     width: "100%",
     paddingHorizontal: moderateScale(10),

@@ -17,10 +17,10 @@ export const Footer = () => {
     <View style={styles.footer}>
       <TouchableOpacity
         style={styles.iconContainer}
-        onPress={() => navigation.replace("clusters")}
+        onPress={() => navigation.replace("Clusters")}
       >
         <Image
-          source={isActive("clusters") ? HomeIcon : HomeIconActive}
+          source={isActive("Clusters") ? HomeIcon : HomeIconActive}
           style={[styles.home_image]}
         />
         <Text style={[styles.text]}>Home</Text>
