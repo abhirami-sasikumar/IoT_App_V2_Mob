@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
-import { View, Text, ScrollView } from "react-native";import Footer from "../Components/Footer/Footer";
+import { View, Text, ScrollView } from "react-native";
+import Footer from "../Components/Footer/Footer";
 import LongCard from "./components/LongCard/LongCard";
 import styles from "./Cluster.style";
 import API from "../Api";
 import { UserContext } from "../Components/Context/Context";
 import * as ScreenOrientation from "expo-screen-orientation";
+import Loading from "../Components/Loading/Loading";
 
 const Cluster = () => {
   const [clusters, setClusters] = useState([]);
@@ -36,41 +38,45 @@ const Cluster = () => {
       }
     };
 
-    lockOrientation();     
+    lockOrientation();
     fetchClusters();
 
     return () => {
-      // Reset orientation when unmounting
-      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
+      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
     };
   }, [user]);
 
   return (
     <View style={styles.container}>
-    <Text style={styles.header}>CLUSTERS</Text>
-  
-    <ScrollView
-      style={styles.scrollView}
-      contentContainerStyle={styles.scrollContent}
-    >
-      {clusters.length > 0 ? (
-        clusters.map((cluster) => (
-          <LongCard
-            key={cluster._id}
-            clusterName={cluster.clusterName}
-            clusterId={cluster._id}
-          />
-        ))
+      {loading ? (
+        <Loading />
       ) : (
-        <Text>No clusters found.</Text>
+        <>
+          <Text style={styles.header}>CLUSTERS</Text>
+
+          <ScrollView
+            style={styles.scrollView}
+            contentContainerStyle={styles.scrollContent}
+          >
+            {error ? (
+              <Text>{error}</Text>
+            ) : clusters.length > 0 ? (
+              clusters.map((cluster) => (
+                <LongCard
+                  key={cluster._id}
+                  clusterName={cluster.clusterName}
+                  clusterId={cluster._id}
+                />
+              ))
+            ) : (
+              <Text>No clusters found.</Text>
+            )}
+          </ScrollView>
+
+          <Footer />
+        </>
       )}
-    </ScrollView>
-  
-    <View >
-      <Footer />
     </View>
-  </View>
-  
   );
 };
 

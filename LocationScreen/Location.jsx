@@ -28,13 +28,9 @@ const Location = () => {
 
   const fetchLocations = async () => {
     try {
-      console.log(`Fetching locations for clusterId: ${clusterId}, parameterName: ${parameterName}`);
-  
       const response = await API.get(`/get_location/${clusterId}/${parameterName}`);
       const locationData = response.data.locations || [];
-  
-      console.log("Received location data from API:", locationData);
-  
+
       const enrichedLocations = await Promise.all(
         locationData.map(async (location) => {
           try {
@@ -43,11 +39,11 @@ const Location = () => {
               parameterName,
               location: location.name,
             });
-      
+
             const latestValue = latestValueResponse.data?.data?.latestValue || {};
             const unit = latestValueResponse.data?.data?.unit || "";
             const isChart = latestValueResponse.data?.data?.isChart ?? false;
-      
+
             return {
               ...location,
               latestValue: latestValue.value ?? "N/A",
@@ -61,10 +57,7 @@ const Location = () => {
           }
         })
       );
-      
-  
-      console.log("Enriched locations with latest values:", enrichedLocations);
-  
+
       setLocations(enrichedLocations);
     } catch (err) {
       console.error("Failed to fetch locations:", err.message);
@@ -73,7 +66,6 @@ const Location = () => {
       setLoading(false);
     }
   };
-  
 
   return (
     <View style={styles.screen}>
@@ -89,15 +81,14 @@ const Location = () => {
             <View style={styles.cardContainer}>
               {locations.map((location, index) => (
                 <LocationCard
-                key={index}
-                LocationName={location.name}
-                Value={location.latestValue}
-                Measurement={location.unit}
-                isChart={location.isChart}
-                clusterId={clusterId}
-                parameterName={parameterName}
-              />
-              
+                  key={index}
+                  LocationName={location.name}
+                  Value={location.latestValue}
+                  Measurement={location.unit}
+                  isChart={location.isChart}
+                  clusterId={clusterId}
+                  parameterName={parameterName}
+                />
               ))}
             </View>
           </View>

@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Dimensions, StyleSheet, ActivityIndicator } from "react-native";
-import { LineChart } from "react-native-chart-kit";
+import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { WebView } from "react-native-webview";
 import * as ScreenOrientation from "expo-screen-orientation";
-import { useRoute } from "@react-navigation/native";
-import API from "../Api"; // Ensure API is correctly configured
-
-const screenWidth = Dimensions.get("window").width;
+import { scale, verticalScale } from "react-native-size-matters";
+import backArrow from "../assets/BackArrow.png";
+import DropDown from "./components/Dropdown/Dropdown";
+import Loading from "../Components/Loading/Loading";
+import API from "../Api";
 
 const ChartComponent = () => {
-  const route = useRoute();
-  const { clusterId, parameterName, locationName } = route.params || {};
+  const nav = useNavigation();
+  const { params } = useRoute();
+  const { clusterId, parameterName, locationName } = params || {};
 
-  const [chartData, setChartData] = useState([]);
-  const [timestamps, setTimestamps] = useState([]);
-  const [unit, setUnit] = useState("");
+  const [time, setTime] = useState(3);
+  const [disable, setDisable] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [min, setMin] = useState({ value: 0, time: "" });
+  const [max, setMax] = useState({ value: 0, time: "" });
+  const [unit, setUnit] = useState("");
+  const [htmlContent, setHtmlContent] = useState("");
 
   useEffect(() => {
     const lockOrientation = async () => {
@@ -23,81 +28,206 @@ const ChartComponent = () => {
     };
     lockOrientation();
 
-    fetchChartData();
-
     return () => {
-      ScreenOrientation.unlockAsync(); // Unlock when leaving
+      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
     };
   }, []);
 
-  const fetchChartData = async () => {
-    try {
-      console.log("Fetching chart data for:", clusterId, parameterName, locationName);
-      const response = await API.post("/getValuesByInterval", {
-        clusterId,
-        parameterName,
-        location: locationName,
-        interval: "360h", // Adjust the interval as needed
-      });
+  useEffect(() => {
+    const fetchChartData = async () => {
+      try {
+        setLoading(true);
+        setDisable(true);
 
-      if (response.data.success) {
-        const { values, unit } = response.data.data;
-        
-        const extractedValues = values.map(entry => entry.value);
-        const extractedTimestamps = values.map(entry => new Date(entry.time).toLocaleTimeString());
+        const response = await API.post("/getValuesByInterval", {
+          clusterId,
+          parameterName,
+          location: locationName,
+          interval: `${time}h`,
+        });
 
-        setChartData(extractedValues);
-        setTimestamps(extractedTimestamps);
-        setUnit(unit);
-      } else {
-        setError("No data available.");
+        if (response.data.success) {
+          const { values, unit } = response.data.data;
+
+          let minEntry = values[0];
+          let maxEntry = values[0];
+
+          values.forEach((item) => {
+            if (item.value < minEntry.value) minEntry = item;
+            if (item.value > maxEntry.value) maxEntry = item;
+          });
+
+          setMin({ value: minEntry.value, time: minEntry.time });
+          setMax({ value: maxEntry.value, time: maxEntry.time });
+          setUnit(unit);
+
+          const chartHtml = generateHtmlContent(values, parameterName, unit);
+          setHtmlContent(chartHtml);
+        }
+
+        setLoading(false);
+        setDisable(false);
+      } catch (error) {
+        console.error("Error fetching chart data:", error.message);
+        setLoading(false);
+        setDisable(false);
       }
-    } catch (err) {
-      console.error("Error fetching chart data:", err.message);
-      setError("Failed to fetch chart data.");
-    } finally {
-      setLoading(false);
-    }
+    };
+
+    fetchChartData();
+  }, [time]);
+
+  const generateHtmlContent = (data, name, unit) => {
+    const chartData = data.map(
+      (item) => `{ x: new Date("${item.time}"), y: ${item.value} }`
+    );
+
+    return `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <script src="https://api.app.openiot.in/static/chart.js@4.4.1"></script>
+          <script src="https://api.app.openiot.in/static/chartjs-adapter-date-fns@3.0.0"></script>
+          <style>
+            html, body { margin: 0; padding: 0; height: 100%; }
+            canvas { width: 100% !important; height: 100% !important; display: block; }
+          </style>
+        </head>
+        <body>
+          <canvas id="chart"></canvas>
+          <script>
+            const { LineElement, PointElement, TimeScale, LinearScale, Tooltip, Legend, Filler } = Chart;
+            Chart.register(LineElement, PointElement, TimeScale, LinearScale, Tooltip, Legend, Filler);
+            const data = [${chartData.join(",")}];
+            const ctx = document.getElementById('chart').getContext('2d');
+            new Chart(ctx, {
+              type: 'line',
+              data: {
+                datasets: [{
+                  label: '${name} (${unit})',
+                  data: data,
+                  fill: true,
+                  backgroundColor: '#CBDCEB',
+                  borderColor: '#133E87',
+                  pointRadius: 0,
+                  pointHoverRadius: 0,
+                  tension: 0.4,
+                }]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                  x: {
+                    type: 'time',
+                    time: { unit: 'hour', displayFormats: { hour: 'HH:mm' }, stepSize: 1 },
+                    title: { display: true, text: 'Time' },
+                    ticks: { autoSkip: true, maxTicksLimit: 10 }
+                  },
+                  y: {
+                    title: { display: true, text: '${name} (${unit})' }
+                  }
+                },
+                plugins: {
+                  legend: { display: false },
+                  tooltip: { mode: 'index', intersect: false }
+                }
+              }
+            });
+          </script>
+        </body>
+      </html>
+    `;
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{parameterName} Data</Text>
-
+    <View style={{ flex: 1 }}>
       {loading ? (
-        <ActivityIndicator size="large" color="#003399" />
-      ) : error ? (
-        <Text style={styles.errorText}>{error}</Text>
+        <Loading />
       ) : (
-        <LineChart
-          data={{
-            labels: timestamps,
-            datasets: [{ data: chartData }],
-          }}
-          width={screenWidth - 20}
-          height={250}
-          yAxisSuffix={` ${unit}`}
-          chartConfig={{
-            backgroundGradientFrom: "#ffffff",
-            backgroundGradientTo: "#ffffff",
-            decimalPlaces: 1,
-            color: (opacity = 1) => `rgba(0, 50, 150, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-            propsForDots: { r: "6", strokeWidth: "2", stroke: "#003399" },
-          }}
-          bezier
-          style={styles.chart}
-        />
+        <>
+          <View style={styles.headerContainer}>
+            <TouchableOpacity onPress={() => nav.goBack()}>
+              <Image source={backArrow} style={styles.backArrow} />
+            </TouchableOpacity>
+            <View style={styles.headerTextContainer}>
+              <Text style={styles.smallHeaderText}>{parameterName}</Text>
+            </View>
+            <DropDown time={time} setTime={setTime} disable={disable} />
+          </View>
+          <WebView
+            style={{ flex: 1 }}
+            originWhitelist={["*"]}
+            source={{ html: htmlContent }}
+          />
+          <View style={styles.rowContainer}>
+            <View style={styles.columnMin}>
+              <Text style={styles.columnText}>Min: {min.value} {unit}</Text>
+              <Text style={styles.columnTextSmall}>
+                {new Date(min.time).toLocaleString()}
+              </Text>
+            </View>
+            <View style={styles.columnMax}>
+              <Text style={styles.columnText}>Max: {max.value} {unit}</Text>
+              <Text style={styles.columnTextSmall}>
+                {new Date(max.time).toLocaleString()}
+              </Text>
+            </View>
+          </View>
+        </>
       )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f5f5f5", alignItems: "center", padding: 10 },
-  title: { fontSize: 18, fontWeight: "bold", marginBottom: 10 },
-  chart: { borderRadius: 16 },
-  errorText: { fontSize: 16, color: "red", textAlign: "center", marginTop: 20 },
+  headerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: verticalScale(10),
+  },
+  backArrow: {
+    width: verticalScale(24),
+    height: scale(24),
+  },
+  headerTextContainer: {
+    flex: 1,
+    alignItems: "center",
+  },
+  smallHeaderText: {
+    fontSize: verticalScale(14),
+    color: "#133E87",
+    fontFamily: "Roboto",
+  },
+  rowContainer: {
+    flexDirection: "row",
+    width: verticalScale(680),
+    height: scale(45),
+  },
+  columnMin: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#7A91A8",
+  },
+  columnMax: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#133E87",
+  },
+  columnText: {
+    color: "white",
+    fontSize: verticalScale(16),
+    fontFamily: "Roboto",
+  },
+  columnTextSmall: {
+    color: "white",
+    fontSize: verticalScale(10),
+    fontFamily: "Roboto",
+  },
 });
 
 export default ChartComponent;

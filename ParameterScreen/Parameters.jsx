@@ -17,8 +17,6 @@ const Parameters = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // console.log("Fetching parameters for cluster ID:", clusterId);
-
     if (!clusterId) {
       setError("Cluster ID is missing.");
       setLoading(false);
@@ -30,8 +28,6 @@ const Parameters = () => {
     const fetchParameters = async () => {
       try {
         const response = await API.get(`/get_parameter/${clusterId}`);
-        // console.log("Fetched Parameters:", response.data.parameters);
-
         if (isMounted) {
           setParameters(response.data.parameters || []);
           setError(null);
@@ -51,7 +47,6 @@ const Parameters = () => {
     };
   }, [clusterId]);
 
-  // Filter unique parameters by parameterName
   const uniqueParameters = parameters.reduce((acc, parameter) => {
     if (!acc.some((p) => p.parameterName === parameter.parameterName)) {
       acc.push(parameter);
@@ -63,27 +58,31 @@ const Parameters = () => {
     <View style={styles.container}>
       <Header title="Parameters" styles={styles.header} />
 
-      <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
-        <View style={styles.content}>
-          {loading ? (
-            <Loading />
-          ) : error ? (
-            <Text style={styles.errorText}>{error}</Text>
-          ) : uniqueParameters.length > 0 ? (
-            uniqueParameters.map((parameter, index) => (
-              <LongCard
-                key={index}
-                clusterId={clusterId}
-                parameterName={parameter.parameterName}
-              />
-            ))
-          ) : (
-            <Text style={styles.noDataText}>No parameters found.</Text>
-          )}
-        </View>
-      </ScrollView>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+            <View style={styles.content}>
+              {error ? (
+                <Text style={styles.errorText}>{error}</Text>
+              ) : uniqueParameters.length > 0 ? (
+                uniqueParameters.map((parameter) => (
+                  <LongCard
+                    key={parameter._id || parameter.parameterName}
+                    clusterId={clusterId}
+                    parameterName={parameter.parameterName}
+                  />
+                ))
+              ) : (
+                <Text style={styles.noDataText}>No parameters found.</Text>
+              )}
+            </View>
+          </ScrollView>
 
-      <Footer />
+          <Footer />
+        </>
+      )}
     </View>
   );
 };

@@ -25,9 +25,8 @@ const Login = () => {
       const storedUser = await AsyncStorage.getItem("@user");
       if (storedUser) {
         const parsedUser = JSON.parse(storedUser);
-        const res = await API.post("/refresh_token", {
-          token: parsedUser.jwtToken,
-        });
+        const res = await API.get("/refresh_token");
+
 
         const data = res.data;
 
