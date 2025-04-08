@@ -32,7 +32,7 @@ const ResetPassword = ({ route }) => {
       });
 
       Alert.alert("Success", "Password reset successfully", [
-        {
+        { 
           text: "OK",
           onPress: () => navigation.navigate("Login"), // ✅ Navigate to Login
         },
