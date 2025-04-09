@@ -1,21 +1,57 @@
 import React, { useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
+import API from "../../Api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Logout = ({ navigation }) => {
   useEffect(() => {
-    setTimeout(() => {
-      alert("Session Expired!");
-      navigation.navigate("Login"); 
-    }, 3000); 
-  }, []);
+    const performLogout = async () => {
+      try {
+        // Call the logout endpoint
+        const response = await API.post("/logout");
+        
+        // Clear AsyncStorage on successful logout
+        await AsyncStorage.clear();
+        
+        Alert.alert("Success", response.data.message, [
+          {
+            text: "OK",
+            onPress: () => {
+              // Reset navigation stack and navigate to Login screen
+              navigation.reset({
+                index: 0,
+                routes: [{ name: "Login" }],
+              });
+            },
+          },
+        ]);
+      } catch (error) {
+        console.error("Logout error:", error);
+        Alert.alert(
+          "Error",
+          error.response?.data?.message || "Error logging out.",
+          [
+            {
+              text: "Go to Login",
+              onPress: () => {
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: "Login" }],
+                });
+              },
+            },
+          ]
+        );
+      }
+    };
+
+    performLogout();
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Session Expired</Text>
-
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Login")}>
-        <Text style={styles.buttonText}>Go to Login</Text>
-      </TouchableOpacity>
+      <Text style={styles.header}>Logging Out...</Text>
+      {/* Fallback button removed so it doesn't show */}
     </View>
   );
 };
@@ -33,19 +69,6 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 22,
     fontWeight: "bold",
-    marginBottom: 20,
     color: "#d9534f",
-  },
-  button: {
-    backgroundColor: "#000080",
-    paddingVertical: 15,
-    width: "85%",
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 10,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 18,
   },
 });
