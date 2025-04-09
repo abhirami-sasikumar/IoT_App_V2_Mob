@@ -56,7 +56,10 @@ const Parameters = () => {
 
   return (
     <View style={styles.container}>
-      <Header title="Parameters" styles={styles.header} />
+      <View style={styles.header1}>
+        <Header title="PARAMETERS" style={styles.header} />
+      </View>
+    
 
       {loading ? (
         <Loading />
