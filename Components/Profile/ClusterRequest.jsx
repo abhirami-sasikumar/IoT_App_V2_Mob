@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import API from "../../Api"; // Make sure your API instance is set up correctly
 import {
   View,
   Text,
@@ -9,14 +10,54 @@ import {
   Platform,
 } from "react-native";
 import Footer from "../Footer/Footer";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ClusterRequest = ({ navigation }) => {
   const [clusterCode, setClusterCode] = useState("");
 
-  const handleRequest = () => {
-    alert(`Cluster request sent for code: ${clusterCode}`);
-  };
+  const handleRequest = async () => {
+    const token = await AsyncStorage.getItem("token");
+    const userEmail = await AsyncStorage.getItem("email");
+    const userName = await AsyncStorage.getItem("name");
+    console.log("Cluster Code:", clusterCode);
+    console.log("Email:", userEmail);
+    console.log("Name:", userName);
+    console.log("Token:", token);
 
+  
+    // Check if any field is missing
+    if (!clusterCode || !userEmail || !userName) {
+      alert("All fields are required.");
+      return;
+    }
+  
+    try {
+      const response = await API.post(
+        "/request_cluster",
+        {
+          email: userEmail,
+          name: userName,
+          clusterCode: clusterCode,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      alert(response.data.message);
+      setClusterCode(""); // Reset input
+    } catch (error) {
+      console.error("Cluster request error:", error.response?.data);
+      alert(
+        error.response?.data?.message ||
+          "Failed to send cluster request. Please try again."
+      );
+    }
+  };
+  
+  
   return (
     <KeyboardAvoidingView
       style={styles.container}

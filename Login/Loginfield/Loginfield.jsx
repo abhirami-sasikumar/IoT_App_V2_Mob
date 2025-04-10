@@ -33,7 +33,8 @@ const LoginField = () => {
       // 🔹 Store Token & User ID properly  
       await AsyncStorage.setItem("token", jwtToken);  
       await AsyncStorage.setItem("userId", userId);
-      await AsyncStorage.setItem("email", email);   
+      await AsyncStorage.setItem("email", email); 
+      await AsyncStorage.setItem("name", name); 
   
       console.log("Stored Token:", jwtToken);  
       console.log("Stored User ID:", userId);  
