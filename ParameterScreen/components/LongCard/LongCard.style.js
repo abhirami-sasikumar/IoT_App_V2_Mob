@@ -3,7 +3,7 @@ import { scale, verticalScale } from "react-native-size-matters";
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#CBDCEB",
+    backgroundColor: "white",
     width: scale(320),
     height: verticalScale(52),
     borderRadius: 10,
@@ -13,12 +13,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     elevation: verticalScale(6),
+    borderColor:"#7D0552",
+    borderWidth:scale(0.5),
+
     paddingHorizontal: scale(10),
   },
 
   cardText: {
     fontSize: scale(18),
-    color: "#133E87",
+    color: "#810541",
     textAlign: "left",
     flex: 1,
     fontFamily: "Roboto",
@@ -27,7 +30,7 @@ const styles = StyleSheet.create({
   arrow: {
     width: scale(18),
     height: verticalScale(20),
-    tintColor: "#133E87",
+    tintColor: "#810541",
   },
 });
 

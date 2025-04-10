@@ -5,7 +5,8 @@ const styles = StyleSheet.create({
   footer: {
     width: "100%",
     height: verticalScale(55),
-    backgroundColor: "#7D0552",
+    backgroundColor: "#810541",
+
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",

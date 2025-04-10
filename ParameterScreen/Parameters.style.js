@@ -10,6 +10,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  header1: {
+    backgroundColor: "#810541",
+    borderBottomRightRadius:scale(120),
+    height:verticalScale(70),
+    justifyContent:"center"
+
+
+    
+
+
+  },
 
   header: {
     fontSize: scale(22),

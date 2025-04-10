@@ -40,13 +40,4 @@ const LocationCard = ({ LocationName, Value, Measurement, isChart, clusterId, pa
   );
 };
 
-
-// Prop validation
-// LocationCard.propTypes = {
-//   LocationName: PropTypes.string.isRequired,
-//   Value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-//   Measurement: PropTypes.string.isRequired,
-//   showChart: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]), // ✅ accepts function now
-// };
-
 export default LocationCard;

@@ -52,7 +52,9 @@ const Cluster = () => {
         <Loading />
       ) : (
         <>
-          <Text style={styles.header}>CLUSTERS</Text>
+          <View style={styles.header1}>
+            <Text style={styles.header}>CLUSTERS</Text>
+          </View>
 
           <ScrollView
             style={styles.scrollView}

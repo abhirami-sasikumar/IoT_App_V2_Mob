@@ -70,7 +70,10 @@ const Location = () => {
 
   return (
     <View style={styles.screen}>
-      <Header title={parameterName || "Locations"} />
+      <View style={styles.header1}>
+
+        <Header title={parameterName || "Locations"}  />
+      </View>
 
       {loading ? (
         <Loading />
@@ -95,11 +98,10 @@ const Location = () => {
           </View>
         </ScrollView>
       )}
-    <View>
-      <Footer/>
+      <View>
+        <Footer />
       </View>
     </View>
-   
   );
 };
 
