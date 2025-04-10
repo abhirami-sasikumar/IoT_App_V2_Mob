@@ -1,38 +1,47 @@
 import { StyleSheet } from "react-native";
-
 import { scale, verticalScale } from "react-native-size-matters";
 
 const styles = StyleSheet.create({
   footer: {
-    width: scale(350),
+    width: "100%",
     height: verticalScale(55),
     backgroundColor: "#810541",
+
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    bottom: 0,
-    paddingHorizontal: scale(10),
-    borderTopWidth: scale(2), //border
-    borderTopColor: "#FFFFFF",
+    paddingHorizontal: scale(20),
+    borderTopWidth: scale(2),
+    borderTopColor: "#7D0552",
   },
   iconContainer: {
     alignItems: "center",
     justifyContent: "center",
   },
-  text: {
-    fontSize: scale(13),
-    color: "#133E87",
-    fontFamily:"Roboto",
+  circleWrapper: {
+    width: scale(45),
+    height: scale(45),
+    borderRadius: scale(22.5),
+    backgroundColor: "#FFFFFF",
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 10, 
   },
   home_image: {
-    width: scale(35),
-    height: verticalScale(28),
+    width: scale(28),
+    height: verticalScale(22),
     resizeMode: "contain",
   },
   user_image: {
-    width: scale(29),
-    height: verticalScale(28),
+    width: scale(26),
+    height: verticalScale(22),
     resizeMode: "contain",
+  },
+  backArrow: {
+    width: scale(24),
+    height: verticalScale(24),
+    resizeMode: "contain",
+    tintColor: "#7D0552",
   },
 });
 

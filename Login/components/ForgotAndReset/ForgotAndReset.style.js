@@ -3,19 +3,24 @@ import { StyleSheet } from "react-native";
 import { scale, verticalScale } from "react-native-size-matters";
 
 const styles = StyleSheet.create({
-  view : {
+  screen : {
+    
+    
     flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "right",
-    paddingHorizontal: scale(9),
+    justifyContent:"center",
+      
+  
+    
     paddingVertical: verticalScale(34),
     
   },
 
   text: {
-    fontSize: scale(16),
+    fontSize: scale(19),
     fontFamily:"Roboto",
-    marginTop:verticalScale(10)
+    
+    
+    color:"black"
   },
 });
 

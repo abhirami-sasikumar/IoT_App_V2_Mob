@@ -94,7 +94,7 @@ const SignupField = () => {
 
       <View style={styles.button_view}>
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>SIGNUP</Text>
+          <Text style={styles.buttonText}>Sign up</Text>
         </TouchableOpacity>
       </View>
     </>

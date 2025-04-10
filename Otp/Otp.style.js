@@ -9,22 +9,22 @@ export const styles = StyleSheet.create({
   },
   button_view: {
     flex: 1,
-    marginTop: verticalScale(50),
+    marginTop: verticalScale(35),
     justifyContent: "center",
     alignItems: "center",
   },
   button: {
-    backgroundColor: "#133E87",
+    backgroundColor: "#810541",
     width: scale(315),
     borderRadius: 30,
     alignItems: "center",
     justifyContent: "center",
-    height: verticalScale(55),
+    height: verticalScale(40),
   },
   buttonText: {
     color: "#FFFFFF",
-    fontSize: scale(25),
+    fontSize: scale(20),
     fontFamily:"Roboto"
   },
-  logo: { marginTop: scale(200) },
+  logo: { marginTop: scale(225) },
 });

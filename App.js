@@ -15,6 +15,9 @@ import Cluster from './ClusterScreen/Cluster';
 import Parameters from './ParameterScreen/Parameters';
 import LocationScreen from './LocationScreen/Location';
 import ChartComponent from './Chart/ChartComponent';
+import ForgotPassword from './ForgotPassword/ForgotPassword';
+import ResetOtp from './ForgotPassword/componenets/Otp/Otp';
+
 
 const Stack = createStackNavigator();
 
@@ -51,11 +54,13 @@ export default function App() {
                   animationEnabled: true,
                   ...TransitionPresets.FadeFromBottomAndroid, 
                 }}
-                initialRouteName="Login"
+                initialRouteName="resetotp"
               >
                 <Stack.Screen name="Signup" component={Signup} />
                 <Stack.Screen name="Otp" component={Otp} />
                 <Stack.Screen name="Login" component={Login} />
+                <Stack.Screen name="forgotpassword" component={ForgotPassword}/>
+                <Stack.Screen name="resetotp" component={ResetOtp}/>
                 <Stack.Screen name="Clusters" component={Cluster} />
                 <Stack.Screen name="Parameters" component={Parameters} />
                 <Stack.Screen name="Location" component={LocationScreen} />

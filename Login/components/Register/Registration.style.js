@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-
 import {
   scale,
   verticalScale,
@@ -11,13 +10,36 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: moderateVerticalScale(63),
+    marginBottom: moderateVerticalScale(20),
   },
-  Text: { fontFamily:"Roboto", color: "black", fontSize: scale(15) },
-
+  Text: {
+    fontFamily: "Roboto",
+    color: "black",
+    fontSize: scale(15),
+  },
   TextHighlight: {
-    fontFamily:"Roboto",
+    fontFamily: "Roboto",
     fontSize: verticalScale(15),
     color: "#133E87",
+  },
+  button_view: {
+    marginTop: verticalScale(20),
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  button: {
+    width: scale(310),
+    borderRadius: scale(20),
+    alignItems: "center",
+    justifyContent: "center",
+    height: verticalScale(45),
+    borderColor: "#810541",
+    borderWidth:scale(1),
+  },
+  buttonText: {
+    color: "#810541",
+    fontSize: scale(20),
+    fontFamily: "Roboto",
   },
 });

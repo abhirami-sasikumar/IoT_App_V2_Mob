@@ -3,58 +3,65 @@ import { scale, verticalScale } from "react-native-size-matters";
 
 const styles = StyleSheet.create({
   view: {
-    marginTop: verticalScale(285),
+    marginTop: verticalScale(200),
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  
   },
   input: {
-    marginTop: verticalScale(13),
+    marginTop: verticalScale(10),
     borderWidth: 1,
-    borderColor: "grey",
-    paddingHorizontal: scale(8),
-    borderRadius: 30,
+    borderColor: "#810541",
+    paddingHorizontal: scale(10),
+    borderRadius: 15,
     width: scale(310),
     height: verticalScale(50),
     fontFamily:"Roboto",
+    fontSize:scale(15)
+    
+    
   },
   passwordContainer: {
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "grey",
-    borderRadius: 30,
+    borderColor: "#810541",
+    borderRadius: 15,
     width: scale(310),
     height: verticalScale(50),
     marginTop: verticalScale(13),
-    paddingHorizontal: scale(8),
+    paddingHorizontal: scale(10),
+  
   },
   passwordInput: {
     flex: 1,
     height: "100%",
     fontFamily:"Roboto",
+    fontSize:scale(15)
   },
   eyeIcon: {
     position: "absolute",
     right: scale(15),
+    tintColor: "#810541"
   },
   button_view: {
-    marginTop: verticalScale(110),
+    marginTop: verticalScale(25),
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
   button: {
-    backgroundColor: "#133E87",
+    backgroundColor: "#810541",
     width: scale(310),
     borderRadius: 30,
     alignItems: "center",
     justifyContent: "center",
-    height: verticalScale(55),
+    height: verticalScale(40),
   },
   buttonText: {
     color: "#FFFFFF",
-    fontSize: scale(25),
+    fontSize: scale(20),
     fontFamily:"Roboto",
   },
 });
