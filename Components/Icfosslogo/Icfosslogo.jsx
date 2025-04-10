@@ -7,9 +7,7 @@ export const Icfosslogo = () => {
   return (
     <View style={styles.container}>
       <View style={styles.textWithLine}>
-        <View style={styles.line} />
-        <Text style={styles.text}>Powered by</Text>
-        <View style={styles.line} />
+       
       </View>
 
       <Image source={logo} style={styles.image} />

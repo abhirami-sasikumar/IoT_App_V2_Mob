@@ -10,17 +10,20 @@ const styles = StyleSheet.create({
     marginBottom: verticalScale(30),
   },
   input: {
-    marginTop: verticalScale(30),
+    marginTop: verticalScale(3),
     borderWidth: 1,
-    borderColor: "grey",
+    borderColor: "#810541",
     paddingHorizontal: scale(10),
-    borderRadius: 35,
+    borderRadius: 15,
     width: scale(310),
     height: verticalScale(50),
-    fontFamily:"Roboto"
+    fontFamily:"Roboto",
+    fontSize:scale(15),
   },
   placeholder: {
-    color: "grey",
+    color: "#810451",    
+    fontSize:scale(15),
+    
   },
 });
 

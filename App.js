@@ -16,6 +16,7 @@ import Parameters from './ParameterScreen/Parameters';
 import LocationScreen from './LocationScreen/Location';
 import ChartComponent from './Chart/ChartComponent';
 
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -51,11 +52,12 @@ export default function App() {
                   animationEnabled: true,
                   ...TransitionPresets.FadeFromBottomAndroid, 
                 }}
-                initialRouteName="Login"
+                initialRouteName="Otp"
               >
                 <Stack.Screen name="Signup" component={Signup} />
                 <Stack.Screen name="Otp" component={Otp} />
                 <Stack.Screen name="Login" component={Login} />
+                
                 <Stack.Screen name="Clusters" component={Cluster} />
                 <Stack.Screen name="Parameters" component={Parameters} />
                 <Stack.Screen name="Location" component={LocationScreen} />

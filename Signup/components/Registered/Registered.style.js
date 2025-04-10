@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
 
   TextHighlight: {
     fontSize: verticalScale(15),
-    color: "#133E87",
+    color: "#810541",
     fontFamily:"Roboto",
   },
 });

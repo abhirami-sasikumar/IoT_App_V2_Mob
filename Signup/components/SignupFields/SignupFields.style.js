@@ -11,18 +11,19 @@ const styles = StyleSheet.create({
   input: {
     marginTop: verticalScale(13),
     borderWidth: 1,
-    borderColor: "grey",
+    borderColor: "#810541",
     paddingHorizontal: scale(8),
-    borderRadius: 30,
+    borderRadius: 15,
     width: scale(310),
     height: verticalScale(50),
+    fontSize:scale(15)
   },
   passwordContainer: {
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "grey",
-    borderRadius: 30,
+    borderColor: "#810541",
+    borderRadius: 15,
     width: scale(310),
     height: verticalScale(50),
     marginTop: verticalScale(13),
@@ -31,6 +32,7 @@ const styles = StyleSheet.create({
   passwordInput: {
     flex: 1,
     height: "100%",
+    fontSize:scale(15)
   },
   eyeIcon: {
     position: "absolute",
@@ -43,16 +45,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
-    backgroundColor: "#133E87",
+    backgroundColor: "#810541",
     width: scale(310),
     borderRadius: 30,
     alignItems: "center",
     justifyContent: "center",
-    height: verticalScale(55),
+    height: verticalScale(40),
   },
   buttonText: {
     color: "#FFFFFF",
-    fontSize: scale(25),
+    fontSize: scale(20),
     fontFamily:"Roboto",
   },
 });

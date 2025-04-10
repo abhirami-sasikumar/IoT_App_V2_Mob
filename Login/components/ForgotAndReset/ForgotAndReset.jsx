@@ -6,9 +6,9 @@ import styles from "./ForgotAndReset.style";
 const ForgotAndReset = () => {
   return (
     <>
-      <View style={styles.view}>
+      <View style={styles.screen}>
         <TouchableOpacity>
-          <Text style={styles.text}>Forgot Password?</Text>
+          <Text style={styles.text}>Forgotten Password?</Text>
         </TouchableOpacity>
       </View>
     </>

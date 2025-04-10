@@ -6,6 +6,7 @@ import { useNavigation, CommonActions } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/Feather";
 import { UserContext } from "../../../Components/Context/Context";
+import ForgotAndReset from "../ForgotAndReset/ForgotAndReset";
 
 const LoginField = () => {
   const [email, setEmail] = useState("");
@@ -84,8 +85,9 @@ const LoginField = () => {
 
       <View style={styles.button_view}>
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>LOGIN</Text>
+          <Text style={styles.buttonText}>Log in</Text>
         </TouchableOpacity>
+        
       </View>
     </>
   );
