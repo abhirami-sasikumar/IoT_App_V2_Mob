@@ -31,7 +31,7 @@ const LocationCard = ({ LocationName, Value, Measurement, isChart, clusterId, pa
         {isChart && (
           <TouchableOpacity onPress={handleChartPress}>
             <View style={styles.chartIconContainer}>
-              <Image source={chartIcon} style={[styles.chartIcon, { tintColor: 'lightblue' }]} />
+              <Image source={chartIcon} style={[styles.chartIcon, { tintColor: 'white' }]} />
             </View>
           </TouchableOpacity>
         )}

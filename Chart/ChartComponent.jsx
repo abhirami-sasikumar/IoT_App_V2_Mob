@@ -109,8 +109,8 @@ const ChartComponent = () => {
                   label: '${name} (${unit})',
                   data: data,
                   fill: true,
-                  backgroundColor: '#CBDCEB',
-                  borderColor: '#133E87',
+    backgroundColor: 'rgba(232, 169, 195, 0.5)', 
+                     borderColor: '#810541',
                   pointRadius: 0,
                   pointHoverRadius: 0,
                   tension: 0.4,
@@ -191,14 +191,15 @@ const styles = StyleSheet.create({
   backArrow: {
     width: verticalScale(24),
     height: scale(24),
+    tintColor: '#810541'
   },
   headerTextContainer: {
     flex: 1,
     alignItems: "center",
   },
   smallHeaderText: {
-    fontSize: verticalScale(14),
-    color: "#133E87",
+    fontSize: verticalScale(19),
+    color: "#810541",
     fontFamily: "Roboto",
   },
   rowContainer: {
@@ -210,13 +211,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#7A91A8",
+    backgroundColor: "#B35A82",
   },
   columnMax: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#133E87",
+    backgroundColor: "#810541",
   },
   columnText: {
     color: "white",

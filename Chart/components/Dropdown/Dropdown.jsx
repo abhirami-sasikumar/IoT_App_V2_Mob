@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   dropdown: {
     height: scale(25),
     width: verticalScale(115),
-    backgroundColor: "#CBDCEB",
+    backgroundColor: "#810541",
     borderRadius: 22,
     paddingHorizontal: scale(8),
     position: "absolute",
@@ -76,19 +76,19 @@ const styles = StyleSheet.create({
     width: verticalScale(19),
     height: scale(19.5),
     borderRadius: 12,
-    tintColor: "#133E87",
+    tintColor: "white",
   },
   placeholderStyle: {
     fontSize: verticalScale(16),
   },
   selectedTextStyle: {
     fontSize: verticalScale(12),
-    color: "#133E87",
+    color: "white",
     fontFamily:"Roboto",
   },
   iconStyle: {
     width: verticalScale(20),
     height: scale(20),
-    tintColor: "#133E87",
+    tintColor: "white",
   },
 });

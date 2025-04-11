@@ -18,30 +18,32 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  circleWrapper: {
-    width: scale(45),
-    height: scale(45),
-    borderRadius: scale(22.5),
-    backgroundColor: "#FFFFFF",
-    alignItems: "center",
-    justifyContent: "center",
-    elevation: 10, 
-  },
+  // circleWrapper: {
+  //   width: scale(45),
+  //   height: scale(45),
+  //   borderRadius: scale(22.5),
+  //   backgroundColor: "#FFFFFF",
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  //   elevation: 10, 
+  // },
   home_image: {
-    width: scale(28),
-    height: verticalScale(22),
+    width: scale(40),
+    height: verticalScale(30),
     resizeMode: "contain",
+
+
   },
   user_image: {
-    width: scale(26),
-    height: verticalScale(22),
+    width: scale(40),
+    height: verticalScale(30),
     resizeMode: "contain",
   },
   backArrow: {
-    width: scale(24),
-    height: verticalScale(24),
+    width: scale(40),
+    height: verticalScale(30),
     resizeMode: "contain",
-    tintColor: "#7D0552",
+    tintColor: "white",
   },
 });
 

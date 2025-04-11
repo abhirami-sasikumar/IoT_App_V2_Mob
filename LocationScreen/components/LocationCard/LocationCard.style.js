@@ -54,6 +54,8 @@ export const styles = StyleSheet.create({
     fontSize: scale(25),
     color: "#810541",
     marginLeft: scale(5),
+    fontWeight: "bold",
+
   },
   chartIconContainer: {
     right: scale(5),

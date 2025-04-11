@@ -12,24 +12,23 @@ export const Footer = () => {
   const navigation = useNavigation();
   const route = useRoute();
 
-  const isActive = (screenName) => route.name === screenName;
-  const showBackArrow = route.name !== "Clusters"; // Hide back arrow on Clusters page
-
   return (
     <View style={styles.footer}>
-      {/* Back Arrow (hidden on Clusters page) */}
-      {showBackArrow ? (
-        <TouchableOpacity
-          style={styles.iconContainer}
-          onPress={() => navigation.goBack()}
-        >
-          <View style={styles.circleWrapper}>
-            <Image source={GoBack} style={styles.backArrow} />
-          </View>
-        </TouchableOpacity>
-      ) : (
-        <View style={styles.iconContainer} /> // Empty space to keep layout balanced
-      )}
+      {/* Back Arrow - Always visible */}
+      <TouchableOpacity
+        style={styles.iconContainer}
+        onPress={() => navigation.goBack()}
+      >
+        <View style={styles.circleWrapper}>
+          <Image
+            source={GoBack}
+            style={[
+              styles.backArrow,
+              { tintColor: route.name === "Clusters" ? "#810541" : "white" },
+            ]}
+          />
+        </View>
+      </TouchableOpacity>
 
       {/* Home Icon */}
       <TouchableOpacity
@@ -37,10 +36,7 @@ export const Footer = () => {
         onPress={() => navigation.replace("Clusters")}
       >
         <View style={styles.circleWrapper}>
-          <Image
-            source={isActive("Clusters") ? HomeIcon : HomeIconActive}
-            style={styles.home_image}
-          />
+          <Image source={HomeIconActive} style={styles.home_image} />
         </View>
       </TouchableOpacity>
 
@@ -50,10 +46,7 @@ export const Footer = () => {
         onPress={() => navigation.replace("profile")}
       >
         <View style={styles.circleWrapper}>
-          <Image
-            source={isActive("profile") ? UserIcon : UserIconActive}
-            style={styles.user_image}
-          />
+          <Image source={UserIconActive} style={styles.user_image} />
         </View>
       </TouchableOpacity>
     </View>
