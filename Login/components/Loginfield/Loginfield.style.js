@@ -3,8 +3,10 @@ import { scale, verticalScale } from "react-native-size-matters";
 
 const styles = StyleSheet.create({
   view: {
+    
     marginTop: verticalScale(200),
-    flex: 1,
+    
+  
     justifyContent: "center",
     alignItems: "center",
   
@@ -46,12 +48,13 @@ const styles = StyleSheet.create({
     tintColor: "#810541"
   },
   button_view: {
-    marginTop: verticalScale(25),
-    flex: 1,
+    marginTop: verticalScale(20),
+  
     justifyContent: "center",
     alignItems: "center",
   },
   button: {
+    
     backgroundColor: "#810541",
     width: scale(310),
     borderRadius: 30,

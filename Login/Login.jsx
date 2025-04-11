@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View } from "react-native";
+import { View,KeyboardAvoidingView,Keyboard,Platform } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { useNavigation } from "@react-navigation/native";
@@ -11,6 +11,7 @@ import Register from "./components/Register/Registration";
 import { Icfosslogo } from "../Components/Icfosslogo/Icfosslogo";
 import Loading from "../Components/Loading/Loading"; 
 import { styles } from "./Login.style";
+
 
 import { UserContext } from "../Components/Context/Context";
 import API from "../Api"; 

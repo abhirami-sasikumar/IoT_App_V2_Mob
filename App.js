@@ -54,7 +54,7 @@ export default function App() {
                   animationEnabled: true,
                   ...TransitionPresets.FadeFromBottomAndroid, 
                 }}
-                initialRouteName="resetotp"
+                initialRouteName="Login"
               >
                 <Stack.Screen name="Signup" component={Signup} />
                 <Stack.Screen name="Otp" component={Otp} />
