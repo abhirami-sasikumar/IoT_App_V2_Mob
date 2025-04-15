@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { View, Text, StyleSheet, Alert } from "react-native";
-import API from "../../Api";
+import API from "../../../Api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import styles from "./Logout.style"
 
 const Logout = ({ navigation }) => {
   useEffect(() => {
@@ -58,17 +59,6 @@ const Logout = ({ navigation }) => {
 
 export default Logout;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#f8f9fa",
-    paddingHorizontal: 20,
-  },
-  header: {
-    fontSize: 22,
-    fontWeight: "bold",
-    color: "#d9534f",
-  },
-});
+
+ 
+

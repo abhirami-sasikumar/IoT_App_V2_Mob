@@ -9,11 +9,11 @@ import Parameters from './ParameterScreen/Parameters';
 import LocationScreen from './LocationScreen/Location';
 import ChartComponent from './Chart/ChartComponent';
 
-import ProfilePage from "./Components/Profile/ProfilePage";
-import ChangePassword from "./Components/Profile/ChangePassword.jsx";
-import Logout from "./Components/Profile/Logout.jsx";
-import ClusterRequest from "./Components/Profile/ClusterRequest";
-import DeleteAccount from "./Components/Profile/DeleteAccount";
+import ProfilePage from './Components/Profile/Profile/ProfilePage.jsx';
+import ChangePassword from "./Components/Profile/ChangePassword/ChangePassword.jsx";
+import Logout from "./Components/Profile/Logout/Logout.jsx";
+import ClusterRequest from "./Components/Profile/ClusterRequest/ClusterRequest.jsx";
+import DeleteAccount from "./Components/Profile/DeleteAccount/DeleteAccount.jsx";
 
 import ForgotAndReset from './Login/ForgotAndReset/ForgotAndReset';
 import ForgotPassword from './Login/ForgotAndReset/ForgotPassword';
@@ -24,7 +24,7 @@ const Stack = createStackNavigator();
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName="Profile" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Signup" component={Signup} />
         <Stack.Screen name="Otp" component={Otp} />
         <Stack.Screen name="ForgotAndReset" component={ForgotAndReset} />

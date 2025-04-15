@@ -10,8 +10,9 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
-import Footer from "../Footer/Footer";
-import API from "../../Api"; // Make sure your API instance is set up correctly
+import Footer from "../../Footer/Footer";
+import API from "../../../Api"; // Make sure your API instance is set up correctly
+import styles from "./DeleteAccount.style"
 
 const DeleteAccount = ({ navigation }) => {
   const handleDelete = async () => {
@@ -54,7 +55,7 @@ const DeleteAccount = ({ navigation }) => {
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <View style={styles.content}>
         <Text style={styles.header}>
@@ -83,47 +84,4 @@ const DeleteAccount = ({ navigation }) => {
 
 export default DeleteAccount;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f8f9fa",
-  },
-  content: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 20,
-  },
-  header: {
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 20,
-    color: "#000000",
-  },
-  buttonDelete: {
-    backgroundColor: "#000000",
-    paddingVertical: 15,
-    width: "85%",
-    borderRadius: 8,
-    alignItems: "center",
-    marginVertical: 10,
-  },
-  buttonCancel: {
-    backgroundColor: "#beb9be",
-    paddingVertical: 15,
-    width: "85%",
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "#d9645b",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  buttonText1: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-});
+
