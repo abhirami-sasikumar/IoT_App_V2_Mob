@@ -19,16 +19,24 @@ const ClusterRequest = ({ navigation }) => {
   const [clusterCode, setClusterCode] = useState("");
 
   const handleRequest = async () => {
-    const token = await AsyncStorage.getItem("token");
-    const userEmail = await AsyncStorage.getItem("email");
-    const userName = await AsyncStorage.getItem("name");
-
-    if (!clusterCode || !userEmail || !userName) {
-      alert("All fields are required.");
-      return;
-    }
-
     try {
+      const userDataString = await AsyncStorage.getItem("@user");
+      const userData = JSON.parse(userDataString);
+  
+      const token = userData?.jwtToken;
+      const userEmail = userData?.email;
+      const userName = userData?.name;
+  
+      console.log("Cluster Code:", clusterCode);
+      console.log("Email:", userEmail);
+      console.log("Name:", userName);
+      console.log("Token:", token);
+  
+      if (!clusterCode || !userEmail || !userName) {
+        alert("All fields are required.");
+        return;
+      }
+  
       const response = await API.post(
         "/request_cluster",
         {
@@ -42,18 +50,18 @@ const ClusterRequest = ({ navigation }) => {
           },
         }
       );
-
+  
       alert(response.data.message);
-      setClusterCode("");
-      Keyboard.dismiss(); // Dismiss keyboard manually after submission
+      setClusterCode(""); // Reset input
     } catch (error) {
       console.error("Cluster request error:", error.response?.data);
       alert(
         error.response?.data?.message ||
-        "Failed to send cluster request. Please try again."
+          "Failed to send cluster request. Please try again."
       );
     }
   };
+  
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
