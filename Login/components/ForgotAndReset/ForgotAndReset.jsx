@@ -16,4 +16,3 @@ const ForgotAndReset = () => {
 };
 
 export default ForgotAndReset;
-

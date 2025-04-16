@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: moderateVerticalScale(20),
+    marginBottom: moderateVerticalScale(25),
   },
   Text: {
     fontFamily: "Roboto",
@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
   },
   button_view: {
     marginTop: verticalScale(20),
-    flex: 1,
+    
     justifyContent: "center",
     alignItems: "center",
   },
