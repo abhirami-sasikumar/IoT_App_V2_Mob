@@ -2,12 +2,13 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import styles from "./ForgotAndReset.style";
-
+import { useNavigation } from "@react-navigation/native";
 const ForgotAndReset = () => {
+  const navigation = useNavigation();
   return (
     <>
       <View style={styles.screen}>
-        <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
           <Text style={styles.text}>Forgotten Password?</Text>
         </TouchableOpacity>
       </View>

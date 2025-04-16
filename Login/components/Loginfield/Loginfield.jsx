@@ -38,7 +38,7 @@ const LoginField = () => {
       // Update Context
       setUser(userData);
   
-      Alert.alert("Success", `Welcome ${name}!`);
+      Alert.alert("Success", `Welcome ${name}!\nEmail: ${email}`);
   
       navigation.dispatch(
         CommonActions.reset({

@@ -5,8 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Icfosslogo } from "../Components/Icfosslogo/Icfosslogo";
 import * as ScreenOrientation from "expo-screen-orientation";
 import Logo from "../Components/Logo/Logo";
-// Make sure to import your User service/API
-
+import API from "../Api"; // ✅ Correct path
 
 const ForgotPassword = () => {
   useEffect(() => {
@@ -22,23 +21,26 @@ const ForgotPassword = () => {
 
   const nav = useNavigation();
   const [email, setEmail] = useState("");
-  const [buttonDisable, setButtonDisabel] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const handleSubmit = async () => {
-    setButtonDisabel(true);
+    setButtonDisabled(true);
     if (!email) {
       Alert.alert("Error", "Please enter your email address.");
-      setButtonDisabel(false);
+      setButtonDisabled(false);
       return;
     }
 
     try {
-      const response = await User.resetPasswordOtp(email);
-      Alert.alert(response.message);
-      nav.navigate("resetOtp", {  }); 
+      const res = await API.post("/forgetpassword", { email });
+      if (res.data.message === "OTP sent to email") {
+        Alert.alert("Success", "OTP sent to your email");
+        nav.navigate("resetotp", { email });
+      }
     } catch (error) {
-      setButtonDisabel(false);
-      Alert.alert(error.response?.data?.message || "Error");
+      Alert.alert("Error", error.response?.data?.message || "Something went wrong.");
+    } finally {
+      setButtonDisabled(false);
     }
   };
 
@@ -48,7 +50,7 @@ const ForgotPassword = () => {
         <Logo />
       </View>
       <View style={styles.container}>
-        <Text style={styles.heading}>Forgot Password ?</Text>
+        <Text style={styles.heading}>Forgot Password?</Text>
         <Text style={styles.label}>Enter your email address:</Text>
         <TextInput
           style={styles.input}
@@ -60,9 +62,9 @@ const ForgotPassword = () => {
         <TouchableOpacity
           style={styles.button}
           onPress={handleSubmit}
-          disabled={buttonDisable}
+          disabled={buttonDisabled}
         >
-          <Text style={styles.buttonText}>Submit</Text>
+          <Text style={styles.buttonText}>Send OTP</Text>
         </TouchableOpacity>
         <View style={styles.footer}>
           <Icfosslogo />

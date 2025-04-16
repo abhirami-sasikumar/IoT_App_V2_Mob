@@ -6,6 +6,8 @@ import * as ScreenOrientation from "expo-screen-orientation";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Logo from "../../../Components/Logo/Logo";
 // Adjust if needed
+import API from "../../../Api"; // ✅ Correct path
+
 
 const ResetOtp = () => {
   useEffect(() => {
@@ -39,10 +41,25 @@ const ResetOtp = () => {
     }
 
     try {
-      const response = await User.resetPasswordSubmitOtp(email, otp, newPassword);
-      Alert.alert("Success", response.message);
-      nav.replace("Login"); // Replace to prevent going back to OTP screen
-    } catch (error) {
+      const res = await API.post("/resetpassword", {
+        email,
+        otp,
+        newPassword,
+      });
+
+      Alert.alert("Success", "Password reset successfully", [
+        { 
+          text: "OK",
+          onPress: () => {
+            setOtp("");
+            setNewPassword("");
+            setConfirmPassword("");
+            nav.navigate("Login");
+          },
+        },
+      ]);
+      
+    }catch (error) {
       setOtp("");
       Alert.alert("Error", error.response?.data?.message || "Error updating password");
     }
