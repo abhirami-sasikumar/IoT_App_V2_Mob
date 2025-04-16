@@ -25,28 +25,30 @@ const ChangePassword = () => {
       Alert.alert("Error", "Please fill in all fields.");
       return;
     }
-
+  
     if (newPassword !== confirmPassword) {
       Alert.alert("Error", "New password and confirm password must match.");
       return;
     }
-
+  
     try {
-      const email = await AsyncStorage.getItem("email");
-
-      if (!email) {
-        Alert.alert("Error", "User email not found.");
+      const userDataString = await AsyncStorage.getItem("@user");
+      const userData = JSON.parse(userDataString);
+  
+      const email = userData?.email;
+      const userId = userData?.userId;
+  
+      if (!email || !userId) {
+        Alert.alert("Error", "User info not found.");
         return;
       }
-
-      const userId = await AsyncStorage.getItem("userId");
-
+  
       const response = await API.post(`/change_password/${userId}`, {
         currentPassword,
         newPassword,
         confirmPassword,
       });
-
+  
       if (response.status === 200) {
         Alert.alert("Success", "Password changed successfully!");
         setCurrentPassword("");
