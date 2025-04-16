@@ -17,6 +17,7 @@ import LocationScreen from './LocationScreen/Location';
 import ChartComponent from './Chart/ChartComponent';
 import ForgotPassword from './ForgotPassword/ForgotPassword';
 import ResetOtp from './ForgotPassword/componenets/Otp/Otp';
+import ForgotAndReset from './Login/components/ForgotAndReset/ForgotAndReset.jsx'
 
 
 import ProfilePage from './Components/Profile/Profile/ProfilePage.jsx';
@@ -67,7 +68,7 @@ export default function App() {
                 <Stack.Screen name="Otp" component={Otp} />
                 <Stack.Screen name="ForgotAndReset" component={ForgotAndReset} />
                 <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-                <Stack.Screen name="ResetPassword" component={ResetPassword} />
+                <Stack.Screen name="ResetPassword" component={ForgotAndReset} />
                 <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="forgotpassword" component={ForgotPassword} />
                 <Stack.Screen name="resetotp" component={ResetOtp} />

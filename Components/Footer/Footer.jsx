@@ -43,7 +43,7 @@ export const Footer = () => {
       {/* Profile Icon */}
       <TouchableOpacity
         style={styles.iconContainer}
-        onPress={() => navigation.replace("profile")}
+        onPress={() => navigation.replace("Profile")}
       >
         <View style={styles.circleWrapper}>
           <Image source={UserIconActive} style={styles.user_image} />
