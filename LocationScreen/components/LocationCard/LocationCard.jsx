@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { styles } from "./LocationCard.style";
 import chartIcon from "../../../assets/chart.png";
 
-const LocationCard = ({ LocationName, Value, Measurement, isChart, clusterId, parameterName }) => {
+const LocationCard = ({ LocationName, Value, Measurement, isChart, hideDevice, clusterId, parameterName }) => {
   const navigation = useNavigation();
 
   const handleChartPress = () => {
@@ -17,6 +17,8 @@ const LocationCard = ({ LocationName, Value, Measurement, isChart, clusterId, pa
     }
   };
 
+  const displayValue = hideDevice ? "Maintenance" : Value;
+
   return (
     <View style={styles.card}>
       <Text style={styles.headText}>{LocationName}</Text>
@@ -24,11 +26,11 @@ const LocationCard = ({ LocationName, Value, Measurement, isChart, clusterId, pa
 
       <View style={styles.bottomRow}>
         <View style={styles.valueContainer}>
-          <Text style={styles.value}>{Value}</Text>
-          <Text style={styles.measurementText}>{Measurement}</Text>
+          <Text style={styles.value}>{displayValue}</Text>
+          {!hideDevice && <Text style={styles.measurementText}>{Measurement}</Text>}
         </View>
 
-        {isChart && (
+        {isChart && !hideDevice && (
           <TouchableOpacity onPress={handleChartPress}>
             <View style={styles.chartIconContainer}>
               <Image source={chartIcon} style={[styles.chartIcon, { tintColor: 'white' }]} />
