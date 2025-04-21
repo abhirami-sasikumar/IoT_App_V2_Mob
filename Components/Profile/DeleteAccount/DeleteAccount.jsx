@@ -17,23 +17,30 @@ import styles from "./DeleteAccount.style"
 const DeleteAccount = ({ navigation }) => {
   const handleDelete = async () => {
     try {
-      const email = await AsyncStorage.getItem("email");
-
+      const userData = await AsyncStorage.getItem("@user");
+  
+      if (!userData) {
+        Alert.alert("Error", "User data not found.");
+        return;
+      }
+  
+      const { email } = JSON.parse(userData);
+  
       if (!email) {
         Alert.alert("Error", "User email not found.");
         return;
       }
-
+  
       const response = await API.delete("/delete", {
         data: { email },
       });
-
+  
       if (response.status === 200) {
         Alert.alert("Deleted", "Your account has been deleted.", [
           {
             text: "OK",
             onPress: async () => {
-              await AsyncStorage.clear(); // Clear all data
+              await AsyncStorage.clear();
               navigation.dispatch(
                 CommonActions.reset({
                   index: 0,
@@ -51,6 +58,7 @@ const DeleteAccount = ({ navigation }) => {
       Alert.alert("Error", "Something went wrong during deletion.");
     }
   };
+  
 
   return (
     <KeyboardAvoidingView
