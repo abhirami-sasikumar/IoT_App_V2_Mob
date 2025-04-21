@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(200),
     
   
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
   
   },

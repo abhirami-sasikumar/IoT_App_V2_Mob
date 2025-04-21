@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: moderateScale(2) },
     shadowRadius: moderateScale(4),
     width: "48%", // for 2 cards per row
-    height: verticalScale(120),
+    height: verticalScale(130),
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: verticalScale(10),
@@ -36,31 +36,39 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "100%",
     paddingHorizontal: scale(10),
+    
     flex: 1,
   },
   valueContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    
+    flexDirection: "row", // changed to column
     justifyContent: "center",
-    flex: 1,
+    marginRight: scale(8),
+    alignItems: "center",
+    flex:3
+
+    
   },
   value: {
-    fontSize: scale(30),
+    
+    fontSize: scale(35),
     fontWeight: "bold",
-    textAlign: "center",
     color: "#810541",
+    flexShrink: 1,
   },
   measurementText: {
-    fontSize: scale(25),
+    fontSize: scale(21),
     color: "#810541",
-    marginLeft: scale(5),
     fontWeight: "bold",
-
+    
+  },
+  chart: {
+    flex: 1,
+    alignItems: "flex-end",
   },
   chartIconContainer: {
-    right: scale(5),
-    width: scale(37),
-    height: verticalScale(37),
+    width: scale(30),
+    height: verticalScale(30),
     borderRadius: scale(20),
     backgroundColor: "#810541",
     justifyContent: "center",
@@ -69,8 +77,8 @@ export const styles = StyleSheet.create({
     marginTop: verticalScale(7),
   },
   chartIcon: {
-    width: scale(30),
-    height: scale(20),
+    width: scale(24),
+    height: scale(16),
     resizeMode: "contain",
   },
 });

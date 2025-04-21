@@ -3,7 +3,7 @@ import { styles } from "./Loading.style";
 
 const Loading = () =>{
     return(
-        <ActivityIndicator size="large" color="#133E87" style={styles.loader}/>
+        <ActivityIndicator size="large" color="#810541" style={styles.loader}/>
     )
 }
 

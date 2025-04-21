@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,47 +8,63 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
-  ScrollView
+  ScrollView,
+  Keyboard
 } from "react-native";
 import Footer from "../../Footer/Footer";
 import API from "../../../Api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import styles from "./ChangePassword.style"; // ✅ import styles
+import styles from "./ChangePassword.style";
 
 const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false); // 👈 Track keyboard state
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", () =>
+      setKeyboardVisible(true)
+    );
+    const keyboardDidHideListener = Keyboard.addListener("keyboardDidHide", () =>
+      setKeyboardVisible(false)
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   const handleChangePassword = async () => {
     if (!currentPassword || !newPassword || !confirmPassword) {
       Alert.alert("Error", "Please fill in all fields.");
       return;
     }
-  
+
     if (newPassword !== confirmPassword) {
       Alert.alert("Error", "New password and confirm password must match.");
       return;
     }
-  
+
     try {
       const userDataString = await AsyncStorage.getItem("@user");
       const userData = JSON.parse(userDataString);
-  
+
       const email = userData?.email;
       const userId = userData?.userId;
-  
+
       if (!email || !userId) {
         Alert.alert("Error", "User info not found.");
         return;
       }
-  
+
       const response = await API.post(`/change_password/${userId}`, {
         currentPassword,
         newPassword,
         confirmPassword,
       });
-  
+
       if (response.status === 200) {
         Alert.alert("Success", "Password changed successfully!");
         setCurrentPassword("");
@@ -98,7 +114,7 @@ const ChangePassword = () => {
         </TouchableOpacity>
       </ScrollView>
 
-      <Footer />
+      {!isKeyboardVisible && <Footer />} {/* ✅ Only show Footer when keyboard is hidden */}
     </KeyboardAvoidingView>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { View, TextInput, TouchableOpacity, Text, Alert } from "react-native";
+import { View, TextInput, TouchableOpacity, Text, Alert,KeyboardAvoidingView,ScrollView,TouchableNativeFeedback,plat } from "react-native";
 import styles from "./Loginfield.style";
 import API from "../../../Api";
 import { useNavigation, CommonActions } from "@react-navigation/native";
@@ -38,7 +38,7 @@ const LoginField = () => {
       // Update Context
       setUser(userData);
   
-      Alert.alert("Success", `Welcome ${name}!\nEmail: ${email}`);
+      Alert.alert("Success", `Welcome ${name}!`);
   
       navigation.dispatch(
         CommonActions.reset({

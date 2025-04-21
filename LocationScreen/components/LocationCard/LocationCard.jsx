@@ -25,19 +25,26 @@ const LocationCard = ({ LocationName, Value, Measurement, isChart, hideDevice, c
       <View style={styles.line} />
 
       <View style={styles.bottomRow}>
-        <View style={styles.valueContainer}>
-          <Text style={styles.value}>{displayValue}</Text>
-          {!hideDevice && <Text style={styles.measurementText}>{Measurement}</Text>}
-        </View>
+  {/* Value & Measurement Column */}
+  <View style={styles.valueContainer}>
+    <Text style={styles.value} numberOfLines={1} adjustsFontSizeToFit>{displayValue}</Text>
+    {!hideDevice && (
+      <Text style={styles.measurementText} numberOfLines={1} adjustsFontSizeToFit>{Measurement}</Text>
+    )}
+  </View>
 
-        {isChart && !hideDevice && (
-          <TouchableOpacity onPress={handleChartPress}>
-            <View style={styles.chartIconContainer}>
-              <Image source={chartIcon} style={[styles.chartIcon, { tintColor: 'white' }]} />
-            </View>
-          </TouchableOpacity>
-        )}
-      </View>
+  {/* Chart Icon Column */}
+  <View style={styles.chart}>
+    {isChart && !hideDevice && (
+      <TouchableOpacity onPress={handleChartPress}>
+        <View style={styles.chartIconContainer}>
+          <Image source={chartIcon} style={[styles.chartIcon, { tintColor: 'white' }]} />
+        </View>
+      </TouchableOpacity>
+    )}
+  </View>
+</View>
+
     </View>
   );
 };

@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
   headerContainer: {
     backgroundColor: "#810541",
     width: "100%",
-    height: verticalScale(70),
+    height: verticalScale(60),
     borderBottomWidth: 0.25,
     borderBottomRightRadius:moderateScale(170),
 
@@ -66,8 +66,8 @@ export const styles = StyleSheet.create({
     
     alignItems: "center",
     backgroundColor: "white",
-    padding: 10,
-    margin: 5,
+    padding:moderateScale( 10),
+    margin: moderateScale(5),
     borderRadius: 15,
     elevation: 3, // Shadow for Android
     shadowColor: "#000",
@@ -76,7 +76,7 @@ export const styles = StyleSheet.create({
     shadowRadius: 5,
     width: "95%",
     alignSelf: "center",
-    height: 45,
+    height: verticalScale(35),
     top:verticalScale(140)
 
 
@@ -106,7 +106,7 @@ export const styles = StyleSheet.create({
     shadowRadius: 5,
     width: "95%",
     alignSelf: "center",
-    height: 160,
+    height: verticalScale(160),
     
     marginTop: verticalScale(160),
     width: "95%",
@@ -115,8 +115,8 @@ export const styles = StyleSheet.create({
   menuButton: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: verticalScale(10),
-    borderBottomWidth: 0.25,
+    paddingVertical: verticalScale(11),
+    borderBottomWidth: verticalScale(0.25),
     borderBottomColor: "#c0c0c0",
     
     marginLeft:scale(15)
