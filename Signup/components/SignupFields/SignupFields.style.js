@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-  },
+  }, 
   input: {
     marginTop: verticalScale(13),
     borderWidth: 1,

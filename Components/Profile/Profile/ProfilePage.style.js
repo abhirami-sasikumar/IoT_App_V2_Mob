@@ -15,20 +15,28 @@ export const styles = StyleSheet.create({
   headerContainer: {
     backgroundColor: "#810541",
     width: "100%",
-    height: verticalScale(60),
-    borderBottomWidth: 0.25,
+    height: verticalScale(70),
+
     borderBottomRightRadius:moderateScale(170),
 
-    justifyContent: "flex-end",
-    alignItems: "center",
-    paddingBottom: verticalScale(4),
+    
+    justifyContent:"center",
+
+    
+    
   },
 
   Profile: {
-    fontSize: scale(17),
+    marginTop: verticalScale(8),
+
+    fontSize: scale(24),
     color: "#fff",
-    fontWeight: "bold",
-    paddingBottom:verticalScale()
+    fontFamily: "Roboto",
+    paddingBottom:verticalScale(),
+    paddingLeft:scale(18),
+    justifyContent:"center"
+
+    
   },
 
   avatarWrapper: {

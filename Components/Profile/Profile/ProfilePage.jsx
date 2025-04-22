@@ -49,7 +49,7 @@ const ProfilePage = ({ navigation }) => {
       <ScrollView contentContainerStyle={styles.scrollView}>
         {/* Header */}
         <View style={styles.headerContainer}>
-          <Text style={styles.Profile}>Profile</Text>
+          <Text style={styles.Profile}>PROFILE</Text>
         </View>
 
         {/* Avatar */}

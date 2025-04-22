@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { View, TextInput, TouchableOpacity, Text, Alert,KeyboardAvoidingView,ScrollView,TouchableNativeFeedback,plat } from "react-native";
+import { View, TextInput, TouchableOpacity, Text, Alert, KeyboardAvoidingView, ScrollView, TouchableNativeFeedback, plat } from "react-native";
 import styles from "./Loginfield.style";
 import API from "../../../Api";
 import { useNavigation, CommonActions } from "@react-navigation/native";
@@ -15,31 +15,33 @@ const LoginField = () => {
   const navigation = useNavigation();
 
   const { setUser } = useContext(UserContext);
+  const [rememberMe, setRememberMe] = useState(false);
+
 
   const handleSubmit = async () => {
     if (!email || !password) {
       Alert.alert("Error", "Email and Password are required!");
       return;
     }
-  
+
     try {
       const response = await API.post("/login", {
         email,
         password,
       });
-  
+
       const { jwtToken, userId, name } = response.data;
-  
+
       const userData = { jwtToken, userId, name, email };
-  
+
       // Save all user data as one object
       await AsyncStorage.setItem("@user", JSON.stringify(userData));
-  
+
       // Update Context
       setUser(userData);
-  
+
       Alert.alert("Success", `Welcome ${name}!`);
-  
+
       navigation.dispatch(
         CommonActions.reset({
           index: 0,
@@ -51,7 +53,7 @@ const LoginField = () => {
       Alert.alert("Login Failed", error.response?.data?.message || "Please try again.");
     }
   };
-  
+
 
   return (
     <>
@@ -82,12 +84,24 @@ const LoginField = () => {
           </TouchableOpacity>
         </View>
       </View>
+      <View style={styles.rememberMeContainer}>
+        <TouchableOpacity
+          style={styles.checkbox}
+          onPress={() => setRememberMe(!rememberMe)}
+        >
+          <View style={[styles.checkboxBox, rememberMe && styles.checkedBox]}>
+            {rememberMe && <Text style={styles.checkmark}>✓</Text>}
+          </View>
+          <Text style={styles.rememberText}>Remember Me</Text>
+        </TouchableOpacity>
+      </View>
+
 
       <View style={styles.button_view}>
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>Log in</Text>
         </TouchableOpacity>
-        
+
       </View>
     </>
   );

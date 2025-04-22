@@ -77,8 +77,13 @@ export const styles = StyleSheet.create({
     marginTop: verticalScale(7),
   },
   chartIcon: {
-    width: scale(24),
+    width: scale(20),
     height: scale(16),
     resizeMode: "contain",
+  },
+  timeText: {
+    fontSize: scale(12), // You can adjust this value as needed
+    color: "#810541", // Same as other text color or change it
+    marginTop: verticalScale(1), // Space between value and time
   },
 });

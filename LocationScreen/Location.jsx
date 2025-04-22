@@ -105,6 +105,7 @@ const Location = () => {
                   hideDevice={location.hideDevice}
                   clusterId={clusterId}
                   parameterName={parameterName}
+                  time={location.time}
                 />
               ))}
             </View>

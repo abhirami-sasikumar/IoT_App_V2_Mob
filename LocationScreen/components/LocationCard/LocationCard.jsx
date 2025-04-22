@@ -3,8 +3,18 @@ import { Text, Image, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { styles } from "./LocationCard.style";
 import chartIcon from "../../../assets/chart.png";
+import moment from "moment";  // Import moment for date formatting
 
-const LocationCard = ({ LocationName, Value, Measurement, isChart, hideDevice, clusterId, parameterName }) => {
+const LocationCard = ({
+  LocationName,
+  Value,
+  Measurement,
+  isChart,
+  hideDevice,
+  clusterId,
+  parameterName,
+  time, // Include time here as prop
+}) => {
   const navigation = useNavigation();
 
   const handleChartPress = () => {
@@ -17,6 +27,9 @@ const LocationCard = ({ LocationName, Value, Measurement, isChart, hideDevice, c
     }
   };
 
+  // Show only the time, e.g., "5:33 AM"
+  const formattedTime = time ? moment(time).format("h:mm A") : "N/A";
+
   const displayValue = hideDevice ? "Maintenance" : Value;
 
   return (
@@ -25,26 +38,35 @@ const LocationCard = ({ LocationName, Value, Measurement, isChart, hideDevice, c
       <View style={styles.line} />
 
       <View style={styles.bottomRow}>
-  {/* Value & Measurement Column */}
-  <View style={styles.valueContainer}>
-    <Text style={styles.value} numberOfLines={1} adjustsFontSizeToFit>{displayValue}</Text>
-    {!hideDevice && (
-      <Text style={styles.measurementText} numberOfLines={1} adjustsFontSizeToFit>{Measurement}</Text>
-    )}
-  </View>
+        {/* Value & Measurement Column */}
+        <View style={styles.valueContainer}>
+          <Text style={styles.value} numberOfLines={1} adjustsFontSizeToFit>{displayValue}</Text>
+          {!hideDevice && (
+            <Text style={styles.measurementText} numberOfLines={1} adjustsFontSizeToFit>{Measurement}</Text>
+          )}
 
-  {/* Chart Icon Column */}
-  <View style={styles.chart}>
-    {isChart && !hideDevice && (
-      <TouchableOpacity onPress={handleChartPress}>
-        <View style={styles.chartIconContainer}>
-          <Image source={chartIcon} style={[styles.chartIcon, { tintColor: 'white' }]} />
+         
         </View>
-      </TouchableOpacity>
-    )}
-  </View>
-</View>
 
+        {/* Chart Icon Column */}
+        <View style={styles.chart}>
+          {isChart && !hideDevice && (
+            <TouchableOpacity onPress={handleChartPress}>
+              <View style={styles.chartIconContainer}>
+                <Image source={chartIcon} style={[styles.chartIcon, { tintColor: 'white' }]} />
+              </View>
+            </TouchableOpacity>
+          )}
+        </View>
+        {/* Time Display */}
+        
+      </View>
+      <View>
+        {!hideDevice && time && (
+            <Text style={styles.timeText}>{formattedTime}</Text>
+          )}
+          </View>
+          
     </View>
   );
 };
