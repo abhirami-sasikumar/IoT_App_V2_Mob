@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: scale(15),
-    marginTop: verticalScale(230),
+    marginTop: verticalScale(200),
   },
   heading: {
     fontSize: scale(22),
@@ -30,7 +30,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: scale(8),
   },
   footer: {
-    marginTop: verticalScale(93),
+    marginTop: verticalScale(113),
   },
   button: {
     backgroundColor: "#810541",

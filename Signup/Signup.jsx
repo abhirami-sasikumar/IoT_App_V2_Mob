@@ -1,7 +1,14 @@
-import  Signupfield  from "./components/SignupFields/SignupFields";
+import Signupfield from "./components/SignupFields/SignupFields";
 import Registration from "./components/Registered/Registered";
 import { Icfosslogo } from "../Components/Icfosslogo/Icfosslogo";
-import { View } from "react-native";
+import {
+  View,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard
+} from "react-native";
 import { useState, useEffect } from "react";
 import { styles } from "./Signup.style";
 import Loading from "../Components/Loading/Loading";
@@ -24,18 +31,29 @@ export const Signup = () => {
   }, []);
 
   const [loading, setLoading] = useState(false);
+
   return (
-    <View style={styles.container}>
-      {loading ? (
-        <Loading />
-      ) : (
-        <>
-          <Logo />
-          <Signupfield loading={loading} setLoading={setLoading} />
-          <Registration />
-          <Icfosslogo />
-        </>
-      )}
-    </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView
+          contentContainerStyle={styles.container}
+          keyboardShouldPersistTaps="handled"
+        >
+          {loading ? (
+            <Loading />
+          ) : (
+            <>
+              <Logo style={styles.logo} />
+              <Signupfield loading={loading} setLoading={setLoading} />
+              <Registration />
+              <Icfosslogo />
+            </>
+          )}
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };

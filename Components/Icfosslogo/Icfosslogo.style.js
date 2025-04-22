@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
 
 
   image: {
-    marginBlockEnd:verticalScale(5),
+  
     width: scale(112),
     height: verticalScale(55),
   },

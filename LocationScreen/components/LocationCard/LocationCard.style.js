@@ -67,8 +67,8 @@ export const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   chartIconContainer: {
-    width: scale(30),
-    height: verticalScale(30),
+    width: scale(22),
+    height: verticalScale(22),
     borderRadius: scale(20),
     backgroundColor: "#810541",
     justifyContent: "center",

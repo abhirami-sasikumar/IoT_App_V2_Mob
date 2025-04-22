@@ -8,7 +8,7 @@ import {
 
 export const styles = StyleSheet.create({
   view: {
-    marginTop:moderateVerticalScale(50),
+    marginTop:moderateVerticalScale(38),
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
