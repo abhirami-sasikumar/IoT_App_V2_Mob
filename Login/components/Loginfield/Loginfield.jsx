@@ -84,7 +84,7 @@ const LoginField = () => {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.rememberMeContainer}>
+      {/* <View style={styles.rememberMeContainer}>
         <TouchableOpacity
           style={styles.checkbox}
           onPress={() => setRememberMe(!rememberMe)}
@@ -94,7 +94,7 @@ const LoginField = () => {
           </View>
           <Text style={styles.rememberText}>Remember Me</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
 
 
       <View style={styles.button_view}>
