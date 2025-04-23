@@ -9,8 +9,10 @@ import {
   Platform,
   Alert,
   ScrollView,
-  Keyboard
+  Keyboard,
+  TouchableWithoutFeedback
 } from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import Footer from "../../Footer/Footer";
 import API from "../../../Api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -20,7 +22,11 @@ const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [isKeyboardVisible, setKeyboardVisible] = useState(false); // 👈 Track keyboard state
+
+  const [showCurrent, setShowCurrent] = useState(false);
+  const [showNew, setShowNew] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", () =>
@@ -84,37 +90,80 @@ const ChangePassword = () => {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
       style={styles.container}
     >
-      <ScrollView contentContainerStyle={styles.scrollView}>
-        <Text style={styles.header}>Change Password</Text>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView
+          contentContainerStyle={styles.scrollView}
+          keyboardShouldPersistTaps="handled"
+        >
+          <Text style={styles.header}>Change Password</Text>
 
-        <TextInput
-          style={styles.input}
-          placeholder="Current Password"
-          secureTextEntry
-          value={currentPassword}
-          onChangeText={setCurrentPassword}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="New Password"
-          secureTextEntry
-          value={newPassword}
-          onChangeText={setNewPassword}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Confirm Password"
-          secureTextEntry
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-        />
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Current Password"
+              secureTextEntry={!showCurrent}
+              value={currentPassword}
+              onChangeText={setCurrentPassword}
+            />
+            <TouchableOpacity
+              style={styles.eyeIcon}
+              onPress={() => setShowCurrent(!showCurrent)}
+            >
+              <Ionicons
+                name={showCurrent ? "eye" : "eye-off"} // Corrected icon logic
+                size={22}
+                color="#999"
+              />
+            </TouchableOpacity>
+          </View>
 
-        <TouchableOpacity style={styles.button} onPress={handleChangePassword}>
-          <Text style={styles.buttonText}>Change Password</Text>
-        </TouchableOpacity>
-      </ScrollView>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="New Password"
+              secureTextEntry={!showNew}
+              value={newPassword}
+              onChangeText={setNewPassword}
+            />
+            <TouchableOpacity
+              style={styles.eyeIcon}
+              onPress={() => setShowNew(!showNew)}
+            >
+              <Ionicons
+                name={showNew ? "eye" : "eye-off"} // Corrected icon logic
+                size={22}
+                color="#999"
+              />
+            </TouchableOpacity>
+          </View>
 
-      {!isKeyboardVisible && <Footer />} {/* ✅ Only show Footer when keyboard is hidden */}
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Confirm Password"
+              secureTextEntry={!showConfirm}
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+            />
+            <TouchableOpacity
+              style={styles.eyeIcon}
+              onPress={() => setShowConfirm(!showConfirm)}
+            >
+              <Ionicons
+                name={showConfirm ? "eye" : "eye-off"} // Corrected icon logic
+                size={22}
+                color="#999"
+              />
+            </TouchableOpacity>
+          </View>
+
+          <TouchableOpacity style={styles.button} onPress={handleChangePassword}>
+            <Text style={styles.buttonText}>Change Password</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+
+      {!isKeyboardVisible && <Footer />}
     </KeyboardAvoidingView>
   );
 };

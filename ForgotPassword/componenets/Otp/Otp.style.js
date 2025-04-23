@@ -44,4 +44,23 @@ export const styles = StyleSheet.create({
     fontSize: scale(18),
     fontFamily: "Roboto",
   },
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: verticalScale(1),
+    borderColor: "#810541",
+    borderRadius: 15,
+    height: verticalScale(55),
+    marginBottom: verticalScale(10),
+    paddingHorizontal: scale(8),
+  },
+  passwordInput: {
+    flex: 1,
+    fontFamily: "Roboto",
+    fontSize: scale(16),
+  },
+  eyeIcon: {
+    padding: scale(5),
+  },
+
 });

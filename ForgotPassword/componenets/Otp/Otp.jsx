@@ -4,10 +4,10 @@ import { styles } from "./Otp.style";
 import { Icfosslogo } from "../../../Components/Icfosslogo/Icfosslogo";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import Logo from "../../../Components/Logo/Logo";
-// Adjust if needed
-import API from "../../../Api"; // ✅ Correct path
+import Icon from "react-native-vector-icons/Feather";
 
+import Logo from "../../../Components/Logo/Logo";
+import API from "../../../Api";
 
 const ResetOtp = () => {
   useEffect(() => {
@@ -15,7 +15,6 @@ const ResetOtp = () => {
       await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
     };
     lockOrientation();
-
     return () => {
       ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
     };
@@ -24,9 +23,11 @@ const ResetOtp = () => {
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const route = useRoute();
   const nav = useNavigation();
-
   const email = route?.params?.email || "";
 
   const handleResetPassword = async () => {
@@ -48,7 +49,7 @@ const ResetOtp = () => {
       });
 
       Alert.alert("Success", "Password reset successfully", [
-        { 
+        {
           text: "OK",
           onPress: () => {
             setOtp("");
@@ -58,8 +59,7 @@ const ResetOtp = () => {
           },
         },
       ]);
-      
-    }catch (error) {
+    } catch (error) {
       setOtp("");
       Alert.alert("Error", error.response?.data?.message || "Error updating password");
     }
@@ -81,25 +81,50 @@ const ResetOtp = () => {
           keyboardType="numeric"
         />
 
-        <TextInput
-          style={styles.input}
-          placeholder="New Password"
-          value={newPassword}
-          onChangeText={setNewPassword}
-          secureTextEntry
-        />
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="New Password"
+            value={newPassword}
+            onChangeText={setNewPassword}
+            secureTextEntry={!showNewPassword}
+          />
+          <TouchableOpacity
+            style={styles.eyeIcon}
+            onPress={() => setShowNewPassword(!showNewPassword)}
+          >
+            <Icon
+              name={showNewPassword ? "eye" : "eye-off"}
+              size={24}
+              color="grey"
+            />
+          </TouchableOpacity>
+        </View>
 
-        <TextInput
-          style={styles.input}
-          placeholder="Confirm Password"
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-          secureTextEntry
-        />
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            secureTextEntry={!showConfirmPassword}
+          />
+          <TouchableOpacity
+            style={styles.eyeIcon}
+            onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+          >
+            <Icon
+              name={showConfirmPassword ? "eye" : "eye-off"}
+              size={24}
+              color="grey"
+            />
+          </TouchableOpacity>
+        </View>
 
         <TouchableOpacity style={styles.button} onPress={handleResetPassword}>
           <Text style={styles.buttonText}>Reset Password</Text>
         </TouchableOpacity>
+
         <View style={styles.footer}>
           <Icfosslogo />
         </View>

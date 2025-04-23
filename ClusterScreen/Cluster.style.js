@@ -33,6 +33,30 @@ const styles = StyleSheet.create({
     
 
   },
+  emptyCard: {
+    backgroundColor: '#f9f9f9',
+    paddingVertical: 24,
+    paddingHorizontal: 20,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
+    elevation: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 20,
+    marginHorizontal: 16,
+  },
+  
+  emptyMessage: {
+    fontSize: 16,
+    color: 'black',
+    fontWeight: '500',
+    textAlign: 'center',
+  },
 
   scrollView: {
     flex: 1,

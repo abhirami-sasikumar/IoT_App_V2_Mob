@@ -71,7 +71,9 @@ const Cluster = () => {
                 />
               ))
             ) : (
-              <Text>No clusters found.</Text>
+              <View style={styles.emptyCard}>
+                <Text style={styles.emptyMessage}>"Thanks for your request! its been send to the admin and is awaiting approval." </Text>
+              </View>
             )}
           </ScrollView>
 
