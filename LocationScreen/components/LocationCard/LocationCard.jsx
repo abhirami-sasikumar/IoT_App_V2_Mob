@@ -32,41 +32,41 @@ const LocationCard = ({
 
   const displayValue = hideDevice ? "Maintenance" : Value;
 
+  // Conditional styling based on hideDevice or isChart
+  const centerAlignStyle = hideDevice || !isChart ? styles.centerContent : null;
+
   return (
     <View style={styles.card}>
       <Text style={styles.headText}>{LocationName}</Text>
       <View style={styles.line} />
 
-      <View style={styles.bottomRow}>
+      <View style={[styles.bottomRow, centerAlignStyle]}>
         {/* Value & Measurement Column */}
         <View style={styles.valueContainer}>
           <Text style={styles.value} numberOfLines={1} adjustsFontSizeToFit>{displayValue}</Text>
-          {!hideDevice && (
+          {!hideDevice && !isChart && (
             <Text style={styles.measurementText} numberOfLines={1} adjustsFontSizeToFit>{Measurement}</Text>
           )}
-
-         
         </View>
 
         {/* Chart Icon Column */}
-        <View style={styles.chart}>
-          {isChart && !hideDevice && (
+        {isChart && !hideDevice && (
+          <View style={styles.chart}>
             <TouchableOpacity onPress={handleChartPress}>
               <View style={styles.chartIconContainer}>
                 <Image source={chartIcon} style={[styles.chartIcon, { tintColor: 'white' }]} />
               </View>
             </TouchableOpacity>
-          )}
-        </View>
-        {/* Time Display */}
-        
-      </View>
-      <View>
-        {!hideDevice && time && (
-            <Text style={styles.timeText}>{formattedTime}</Text>
-          )}
           </View>
-          
+        )}
+      </View>
+
+      {/* Time Display */}
+      {!hideDevice && time && (
+        <View style={styles.timeContainer}>
+          <Text style={styles.timeText}>{formattedTime}</Text>
+        </View>
+      )}
     </View>
   );
 };

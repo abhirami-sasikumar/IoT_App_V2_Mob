@@ -43,7 +43,7 @@ export const styles = StyleSheet.create({
     
     flexDirection: "row", // changed to column
     justifyContent: "center",
-    marginRight: scale(8),
+    
     alignItems: "center",
     flex:3
 
@@ -51,13 +51,13 @@ export const styles = StyleSheet.create({
   },
   value: {
     
-    fontSize: scale(35),
+    fontSize: scale(20),
     fontWeight: "bold",
     color: "#810541",
-    flexShrink: 1,
+    
   },
   measurementText: {
-    fontSize: scale(21),
+    fontSize: scale(20),
     color: "#810541",
     fontWeight: "bold",
     
@@ -67,18 +67,18 @@ export const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   chartIconContainer: {
-    width: scale(22),
-    height: verticalScale(22),
+    width: scale(20),
+    height: verticalScale(20),
     borderRadius: scale(20),
     backgroundColor: "#810541",
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",
-    marginTop: verticalScale(7),
+    marginTop: verticalScale(2),
   },
   chartIcon: {
-    width: scale(20),
-    height: scale(16),
+    width: scale(14),
+    height: scale(12),
     resizeMode: "contain",
   },
   timeText: {
