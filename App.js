@@ -51,18 +51,17 @@ export default function App() {
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
-      <StatusBar />
-      {isFontLoaded && (
-        <NavigationContainer theme={navTheme}>
-          <SafeAreaProvider>
-            <SafeAreaView style={{ flex: 1 }}>
-              <Stack.Navigator
-                screenOptions={{
-                  headerShown: false,
-                  animationEnabled: true,
-                  ...TransitionPresets.FadeFromBottomAndroid,
-                }}
-                initialRouteName="Login"
+     <StatusBar />
+{isFontLoaded && (
+  <NavigationContainer theme={navTheme}>
+    <SafeAreaProvider>
+      <SafeAreaView style={{ flex: 1 }}>
+        <Stack.Navigator
+          initialRouteName="Login"
+          screenOptions={{
+            headerShown: false,
+            animationEnabled: false, // disables all screen transition animations
+          }}
               >
                 <Stack.Screen name="Signup" component={Signup} />
                 <Stack.Screen name="Otp" component={Otp} />

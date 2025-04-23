@@ -19,8 +19,11 @@ import UserIcon from "../../../assets/usericon.png";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons, Entypo, MaterialIcons } from "@expo/vector-icons";
 
+import Loading from "../../Loading/Loading"; // Add this import
+
 const ProfilePage = ({ navigation }) => {
   const [user, setUser] = useState({ name: "", email: "" });
+  const [loading, setLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -35,11 +38,18 @@ const ProfilePage = ({ navigation }) => {
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
+      } finally {
+        setLoading(false); // Stop loading after data fetched
       }
     };
 
     fetchUser();
   }, []);
+
+  // Show loading spinner until data is ready
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <KeyboardAvoidingView
