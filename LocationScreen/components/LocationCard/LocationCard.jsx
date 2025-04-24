@@ -30,21 +30,21 @@ const LocationCard = ({
   // Show only the time, e.g., "5:33 AM"
   const formattedTime = time ? moment(time).format("h:mm A") : "N/A";
 
-  const displayValue = hideDevice ? "Maintenance" : Value;
+  const displayValue = hideDevice ? "Under Maintenance" : Value;
 
   // Conditional styling based on hideDevice or isChart
   const centerAlignStyle = hideDevice || !isChart ? styles.centerContent : null;
 
   return (
     <View style={styles.card}>
-      <Text style={styles.headText}>{LocationName}</Text>
+      <Text style={styles.headText}  numberOfLines={1} ellipsizeMode="tail">{LocationName}</Text>
       <View style={styles.line} />
 
       <View style={[styles.bottomRow, centerAlignStyle]}>
         {/* Value & Measurement Column */}
         <View style={styles.valueContainer}>
           <Text style={styles.value} numberOfLines={1} adjustsFontSizeToFit>{displayValue}</Text>
-          {!hideDevice && !isChart && (
+          {!hideDevice && isChart && (
             <Text style={styles.measurementText} numberOfLines={1} adjustsFontSizeToFit>{Measurement}</Text>
           )}
         </View>

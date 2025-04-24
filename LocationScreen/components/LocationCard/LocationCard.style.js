@@ -19,9 +19,12 @@ export const styles = StyleSheet.create({
   },
   headText: {
     fontSize: scale(18),
-    fontWeight: "400",
+    fontWeight: "700",
     textAlign: "center",
     color: "#810541",
+    whiteSpace: "nowrap",      // Only works on web
+    overflow: "hidden",
+    textOverflow: "ellipsis"
   },
   line: {
     width: scale(155),
@@ -36,31 +39,32 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "100%",
     paddingHorizontal: scale(10),
-    
+
     flex: 1,
   },
   valueContainer: {
-    
+
     flexDirection: "row", // changed to column
     justifyContent: "center",
-    
-    alignItems: "center",
-    flex:3
 
-    
+    alignItems: "center",
+    flex: 3
+
+
   },
   value: {
-    
-    fontSize: scale(20),
+
+    fontSize: scale(35),
     fontWeight: "bold",
     color: "#810541",
-    
+    flexShrink: 1
+
   },
   measurementText: {
-    fontSize: scale(20),
+    fontSize: scale(25),
     color: "#810541",
     fontWeight: "bold",
-    
+
   },
   chart: {
     flex: 1,
