@@ -52,16 +52,18 @@ const styles = StyleSheet.create({
     padding: scale(20),
     borderRadius: 10,
     width: scale(280),
+    height:verticalScale(280),
     elevation: 10,
     alignItems: "center",
   },
 
   closeButton: {
     backgroundColor: "#810541",
-    paddingHorizontal: scale(20),
+    paddingHorizontal: scale(90),
     paddingVertical: scale(8),
     borderRadius: 5,
     marginTop: 10,
+    alignItems:"center"
   },
 
   overlay: {

@@ -1,25 +1,26 @@
 import React,{useState} from "react";
-import { Text, Image, TouchableOpacity,View,Modal,Pressable } from "react-native";
+import { Text, Image, TouchableOpacity,View,Modal,Pressable,ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Arrow from "../../../assets/arrowIcon.png";
 import styles from "./LongCard.style";
 import Icon from 'react-native-vector-icons/Ionicons'; // Import Ionicons (or any other icon you want to use)
 
 
-const LongCard = ({ clusterName, clusterId }) => {
-const navigation = useNavigation();
-const [modalVisible, setModalVisible] = useState(false);
-
+const LongCard = ({ clusterName, clusterId, clusterDescription }) => {
+  const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
 
   const handlePress = () => {
     if (clusterId) {
       navigation.navigate("Parameters", { clusterId });
     }
   };
+
   const handleInfoPress = (e) => {
-    e.stopPropagation(); // prevent triggering card navigation
+    e.stopPropagation();
     setModalVisible(true);
   };
+
   return (
     <>
       <TouchableOpacity style={styles.card} onPress={handlePress}>
@@ -28,14 +29,12 @@ const [modalVisible, setModalVisible] = useState(false);
             {clusterName}
           </Text>
           <TouchableOpacity onPress={handleInfoPress} style={styles.infoButtonContainer}>
-            {/* Information Icon directly attached to the clusterName */}
             <Icon name="information-circle" size={20} color="#810541" />
           </TouchableOpacity>
         </View>
         <Image source={Arrow} style={styles.arrow} />
       </TouchableOpacity>
 
-      {/* Modal */}
       <Modal
         transparent
         visible={modalVisible}
@@ -44,9 +43,12 @@ const [modalVisible, setModalVisible] = useState(false);
       >
         <View style={styles.overlay} />
         <View style={styles.modalContent}>
+          <ScrollView>
           <Text style={{ fontSize: 16, marginBottom: 20 }}>
-            This is some information about "{clusterName}".
+            {clusterDescription ? clusterDescription : "No description available for this cluster."}
           </Text>
+          
+          </ScrollView>
           <Pressable style={styles.closeButton} onPress={() => setModalVisible(false)}>
             <Text style={{ color: "white" }}>Close</Text>
           </Pressable>

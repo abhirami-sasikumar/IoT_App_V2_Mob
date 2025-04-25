@@ -31,7 +31,7 @@ const Location = () => {
     try {
       const response = await API.get(`/get_location/${clusterId}/${parameterName}`);
       const locationData = response.data.locations || [];
-      console.log("Fetched locations:", locationData);
+      // console.log("Fetched locations:", locationData);
   
       const enrichedLocations = await Promise.all(
         locationData.map(async (location) => {
@@ -42,7 +42,7 @@ const Location = () => {
               location: location.name,
             });
   
-            console.log(`Latest value for ${location.name}:`, latestValueResponse.data);
+            // console.log(`Latest value for ${location.name}:`, latestValueResponse.data);
   
             const latestValue = latestValueResponse.data?.data?.latestValue || {};
             const unit = latestValueResponse.data?.data?.unit || "";
@@ -71,7 +71,7 @@ const Location = () => {
         })
       );
   
-      console.log("Enriched locations with latest values:", enrichedLocations);
+      // console.log("Enriched locations with latest values:", enrichedLocations);
       setLocations(enrichedLocations);
     } catch (err) {
       console.error("Failed to fetch locations:", err.message);

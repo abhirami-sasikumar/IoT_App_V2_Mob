@@ -68,6 +68,7 @@ const Cluster = () => {
                   key={cluster._id}
                   clusterName={cluster.clusterName}
                   clusterId={cluster._id}
+                  clusterDescription={cluster.description}
                 />
               ))
             ) : (
