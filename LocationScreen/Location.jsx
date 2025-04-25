@@ -12,27 +12,15 @@ const Location = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const { clusterId, parameterName } = route.params || {};
-
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  useEffect(() => {
-    if (clusterId && parameterName) {
-      fetchLocations();
-    } else {
-      console.error("Missing clusterId or parameterName in route params.");
-      setError("Missing cluster or parameter info.");
-      setLoading(false);
-    }
-  }, [clusterId, parameterName]);
 
   const fetchLocations = async () => {
     try {
       const response = await API.get(`/get_location/${clusterId}/${parameterName}`);
       const locationData = response.data.locations || [];
-      // console.log("Fetched locations:", locationData);
-  
+
       const enrichedLocations = await Promise.all(
         locationData.map(async (location) => {
           try {
@@ -41,14 +29,12 @@ const Location = () => {
               parameterName,
               location: location.name,
             });
-  
-            // console.log(`Latest value for ${location.name}:`, latestValueResponse.data);
-  
+
             const latestValue = latestValueResponse.data?.data?.latestValue || {};
             const unit = latestValueResponse.data?.data?.unit || "";
             const isChart = latestValueResponse.data?.data?.isChart ?? false;
             const hideDevice = latestValueResponse.data?.data?.hideDevice ?? false;
-  
+
             return {
               ...location,
               latestValue: latestValue.value ?? "N/A",
@@ -70,9 +56,9 @@ const Location = () => {
           }
         })
       );
-  
-      // console.log("Enriched locations with latest values:", enrichedLocations);
+
       setLocations(enrichedLocations);
+      setError(null);
     } catch (err) {
       console.error("Failed to fetch locations:", err.message);
       setError("Failed to fetch locations: " + err.message);
@@ -80,6 +66,26 @@ const Location = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    let interval;
+
+    if (clusterId && parameterName) {
+      fetchLocations(); // initial load
+
+      interval = setInterval(() => {
+        fetchLocations();
+      }, 5000); // refresh every 5 seconds
+    } else {
+      console.error("Missing clusterId or parameterName in route params.");
+      setError("Missing cluster or parameter info.");
+      setLoading(false);
+    }
+
+    return () => {
+      clearInterval(interval); // cleanup on unmount
+    };
+  }, [clusterId, parameterName]);
 
   return (
     <View style={styles.screen}>

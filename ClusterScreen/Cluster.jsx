@@ -15,33 +15,42 @@ const Cluster = () => {
 
   const { user } = useContext(UserContext);
 
+  // Separate fetch function so it can be reused
+  const fetchClusters = async () => {
+    try {
+      if (!user.jwtToken || !user.userId) {
+        setError("Missing user credentials.");
+        setLoading(false);
+        return;
+      }
+
+      const response = await API.get(`/get_clusters/${user.userId}`);
+      setClusters(response.data.clusters || []);
+      setError(null);
+    } catch (err) {
+      console.error("Error fetching clusters:", err.message);
+      setError("Failed to fetch clusters.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const lockOrientation = async () => {
       await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
     };
 
-    const fetchClusters = async () => {
-      try {
-        if (!user.jwtToken || !user.userId) {
-          setError("Missing user credentials.");
-          setLoading(false);
-          return;
-        }
-
-        const response = await API.get(`/get_clusters/${user.userId}`);
-        setClusters(response.data.clusters || []);
-      } catch (err) {
-        console.error("Error fetching clusters:", err.message);
-        setError("Failed to fetch clusters.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     lockOrientation();
     fetchClusters();
 
+    // Set interval for polling
+    const interval = setInterval(() => {
+      fetchClusters();
+    }, 5000); // fetch every 5 seconds
+
+    // Cleanup interval and lock orientation on unmount
     return () => {
+      clearInterval(interval);
       ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
     };
   }, [user]);
@@ -73,7 +82,9 @@ const Cluster = () => {
               ))
             ) : (
               <View style={styles.emptyCard}>
-                <Text style={styles.emptyMessage}>"Thanks for your request! its been send to the admin and is awaiting approval." </Text>
+                <Text style={styles.emptyMessage}>
+                  "Thanks for your request! It has been sent to the admin and is awaiting approval."
+                </Text>
               </View>
             )}
           </ScrollView>

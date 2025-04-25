@@ -16,6 +16,19 @@ const Parameters = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const fetchParameters = async () => {
+    try {
+      const response = await API.get(`/get_parameter/${clusterId}`);
+      setParameters(response.data.parameters || []);
+      setError(null);
+    } catch (err) {
+      console.error("Error fetching parameters:", err.response?.data || err.message);
+      setError("Failed to fetch parameters.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (!clusterId) {
       setError("Cluster ID is missing.");
@@ -23,27 +36,14 @@ const Parameters = () => {
       return;
     }
 
-    let isMounted = true;
+    fetchParameters(); // initial fetch
 
-    const fetchParameters = async () => {
-      try {
-        const response = await API.get(`/get_parameter/${clusterId}`);
-        if (isMounted) {
-          setParameters(response.data.parameters || []);
-          setError(null);
-        }
-      } catch (err) {
-        console.error("Error fetching parameters:", err.response?.data || err.message);
-        if (isMounted) setError("Failed to fetch parameters.");
-      } finally {
-        if (isMounted) setLoading(false);
-      }
-    };
-
-    fetchParameters();
+    const interval = setInterval(() => {
+      fetchParameters();
+    }, 5000); // fetch every 5 seconds
 
     return () => {
-      isMounted = false;
+      clearInterval(interval); // cleanup on unmount
     };
   }, [clusterId]);
 
@@ -59,7 +59,6 @@ const Parameters = () => {
       <View style={styles.header1}>
         <Header title="PARAMETERS" style={styles.header} />
       </View>
-    
 
       {loading ? (
         <Loading />

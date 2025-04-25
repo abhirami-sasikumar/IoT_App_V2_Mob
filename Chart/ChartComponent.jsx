@@ -109,8 +109,8 @@ const ChartComponent = () => {
                   label: '${name} (${unit})',
                   data: data,
                   fill: true,
-    backgroundColor: 'rgba(232, 169, 195, 0.5)', 
-                     borderColor: '#810541',
+                  backgroundColor: 'rgba(232, 169, 195, 0.5)', 
+                  borderColor: '#810541',
                   pointRadius: 0,
                   pointHoverRadius: 0,
                   tension: 0.4,
@@ -127,7 +127,8 @@ const ChartComponent = () => {
                     ticks: { autoSkip: true, maxTicksLimit: 10 }
                   },
                   y: {
-                    title: { display: true, text: '${name} (${unit})' }
+                    title: { display: true, text: '${name} (${unit})' },
+                    min: 0 // This ensures the y-axis starts from zero
                   }
                 },
                 plugins: {

@@ -14,21 +14,20 @@ export const Footer = () => {
 
   return (
     <View style={styles.footer}>
-      {/* Back Arrow - Always visible */}
-      <TouchableOpacity
-        style={styles.iconContainer}
-        onPress={() => navigation.goBack()}
-      >
-        <View style={styles.circleWrapper}>
-          <Image
-            source={GoBack}
-            style={[
-              styles.backArrow,
-              { tintColor: route.name === "Clusters" ? "#810541" : "white" },
-            ]}
-          />
-        </View>
-      </TouchableOpacity>
+      {/* Back Arrow - Visible only when not on the 'Clusters' or 'Profile' screens */}
+      {route.name !== "Clusters" && route.name !== "Profile" && (
+        <TouchableOpacity
+          style={styles.iconContainer}
+          onPress={() => navigation.goBack()}
+        >
+          <View style={styles.circleWrapper}>
+            <Image
+              source={GoBack}
+              style={styles.backArrow}
+            />
+          </View>
+        </TouchableOpacity>
+      )}
 
       {/* Home Icon */}
       <TouchableOpacity
