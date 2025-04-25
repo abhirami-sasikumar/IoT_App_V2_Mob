@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
   headerContainer: {
     backgroundColor: "#810541",
     width: "100%",
-    height: verticalScale(70),
+    height: verticalScale(55),
 
     borderBottomRightRadius:moderateScale(170),
 
@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
   Profile: {
     marginTop: verticalScale(8),
 
-    fontSize: scale(24),
+    fontSize: scale(20),
     color: "#fff",
     fontFamily: "Roboto",
     paddingBottom:verticalScale(),

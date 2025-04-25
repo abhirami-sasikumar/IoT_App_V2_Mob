@@ -15,14 +15,14 @@ const styles = StyleSheet.create({
 
  backgroundColor:"#810541",
  borderBottomRightRadius:scale(120),
- height:verticalScale(70),
+ height:verticalScale(55),
  justifyContent:"center"
 
  
   },
 
   header: {
-    fontSize: scale(24),
+    fontSize: scale(20),
     paddingLeft:scale(18),
     color: "white",
     marginTop: verticalScale(8),

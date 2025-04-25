@@ -4,7 +4,7 @@ import { scale, verticalScale } from "react-native-size-matters";
 const styles = StyleSheet.create({
   footer: {
     width: "100%",
-    height: verticalScale(55),
+    height: verticalScale(50),
     backgroundColor: "#810541",
 
     flexDirection: "row",

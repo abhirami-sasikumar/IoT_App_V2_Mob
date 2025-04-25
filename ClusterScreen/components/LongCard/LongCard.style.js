@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { scale, verticalScale } from "react-native-size-matters";
+import { scale, verticalScale,moderateScale } from "react-native-size-matters";
 
 const styles = StyleSheet.create({
   card: {
@@ -46,15 +46,18 @@ const styles = StyleSheet.create({
 
   modalContent: {
     position: "absolute",
-    top: "35%",
+    top: verticalScale(250),
     alignSelf: "center",
+    alignItems:"center",
     backgroundColor: "white",
     padding: scale(20),
     borderRadius: 10,
     width: scale(280),
     height:verticalScale(280),
     elevation: 10,
-    alignItems: "center",
+    flexDirection:"column",
+    
+    
   },
 
   closeButton: {
@@ -62,7 +65,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(90),
     paddingVertical: scale(8),
     borderRadius: 5,
-    marginTop: 10,
+    marginTop: moderateScale(10),
     alignItems:"center"
   },
 

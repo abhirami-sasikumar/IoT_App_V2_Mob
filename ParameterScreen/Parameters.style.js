@@ -13,8 +13,9 @@ const styles = StyleSheet.create({
   header1: {
     backgroundColor: "#810541",
     borderBottomRightRadius:scale(120),
-    height:verticalScale(70),
-    justifyContent:"center"
+    height:verticalScale(55),
+    justifyContent:"center",
+    
 
 
     
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    fontSize: scale(22),
+    fontSize: scale(10),
     textAlign: "center",
     color: "#133E87",
     marginTop: verticalScale(8),

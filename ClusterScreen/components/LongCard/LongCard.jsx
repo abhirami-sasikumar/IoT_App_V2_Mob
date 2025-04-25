@@ -44,7 +44,7 @@ const LongCard = ({ clusterName, clusterId, clusterDescription }) => {
         <View style={styles.overlay} />
         <View style={styles.modalContent}>
           <ScrollView>
-          <Text style={{ fontSize: 16, marginBottom: 20 }}>
+          <Text style={{ fontSize: 16, marginBottom: 20, textAlign:"justify"}}>
             {clusterDescription ? clusterDescription : "No description available for this cluster."}
           </Text>
           

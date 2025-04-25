@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     paddingLeft:scale(18) // Center the text horizontally
   },
   text: {
-    fontSize: scale(24),
+    fontSize: scale(20),
     color: "white",
     fontFamily:"Roboto",
     marginTop: verticalScale(8),
