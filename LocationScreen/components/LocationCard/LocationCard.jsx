@@ -43,9 +43,9 @@ const LocationCard = ({
       <View style={[styles.bottomRow, centerAlignStyle]}>
         {/* Value & Measurement Column */}
         <View style={styles.valueContainer}>
-          <Text style={styles.value} numberOfLines={1} adjustsFontSizeToFit>{displayValue}</Text>
+          <Text style={styles.value} numberOfLines={1} ellipsizeMode="tail">{displayValue}</Text>
           {!hideDevice  && (
-            <Text style={styles.measurementText} numberOfLines={1} adjustsFontSizeToFit>{Measurement}</Text>
+            <Text style={styles.measurementText} numberOfLines={1} ellipsizeMode="tail">{Measurement}</Text>
           )}
         </View>
 

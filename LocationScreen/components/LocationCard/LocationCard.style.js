@@ -47,23 +47,30 @@ export const styles = StyleSheet.create({
     flexDirection: "row", // changed to column
     justifyContent: "center",
 
-    alignItems: "center",
-    flex: 3
+    alignItems: "flex-start",
+    flex: 3,
+    
 
 
   },
   value: {
 
-    fontSize: scale(35),
+    fontSize: scale(28),
     fontWeight: "bold",
     color: "#810541",
-    flexShrink: 1
+    fontFamily: "Roboto", // or "monospace"
+    
+
+
+    
 
   },
   measurementText: {
     fontSize: scale(25),
     color: "#810541",
     fontWeight: "bold",
+    justifyContent: "center",
+
 
   },
   chart: {

@@ -60,7 +60,10 @@ export default function App() {
           initialRouteName="Login"
           screenOptions={{
             headerShown: false,
-            animationEnabled: false, // disables all screen transition animations
+            ...TransitionPresets.FadeFromBottomAndroid, // You can change this to others like FadeFromBottomAndroid
+
+
+             // disables all screen transition animations
           }}
               >
                 <Stack.Screen name="Signup" component={Signup} />
