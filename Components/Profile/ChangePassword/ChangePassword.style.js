@@ -14,10 +14,11 @@ const ChangePasswordStyles = StyleSheet.create({
     paddingBottom: verticalScale(20),
   },
   header: {
-    fontSize: scale(24),
-    fontWeight: "bold",
+    fontSize: scale(20),
+    
     color: "#1e1e1e",
     marginBottom: verticalScale(20),
+    fontFamily:"Roboto"
   },
   inputContainer: {
     width: scale(310),
@@ -33,6 +34,8 @@ const ChangePasswordStyles = StyleSheet.create({
     borderRadius: scale(15),
     backgroundColor: "#fff",
     height: verticalScale(45),
+    fontSize:scale(16),
+    fontFamily:"Roboto"
   },
   eyeIcon: {
     position: "absolute",
@@ -45,13 +48,14 @@ const ChangePasswordStyles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: verticalScale(10),
-    height: verticalScale(35),
+    height: verticalScale(40),
     width: scale(310),
   },
   buttonText: {
     color: "#fff",
-    fontSize: scale(17),
-    fontWeight: "bold",
+    fontSize: scale(20),
+  
+    fontFamily:"Roboto"
   },
 });
 

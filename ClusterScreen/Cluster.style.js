@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: '500',
     textAlign: 'center',
+    fontFamily:"Roboto"
   },
 
   scrollView: {

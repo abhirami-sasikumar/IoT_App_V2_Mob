@@ -26,7 +26,9 @@ export const styles = StyleSheet.create({
     borderColor: "#810541",
     borderRadius: 15,
     height: verticalScale(55),
-    fontFamily: "Roboto",
+    fontSize:scale(16),
+    fontFamily:"Roboto",
+    
     paddingHorizontal: scale(8),
   },
   footer: {
@@ -56,7 +58,8 @@ export const styles = StyleSheet.create({
   },
   passwordInput: {
     flex: 1,
-    fontFamily: "Roboto",
+    fontFamily:"Roboto",
+    
     fontSize: scale(16),
   },
   eyeIcon: {

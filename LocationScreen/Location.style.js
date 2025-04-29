@@ -31,5 +31,6 @@ export const styles = StyleSheet.create({
     color: "red",
     textAlign: "center",
     marginVertical: verticalScale(10),
+    fontFamily:"Roboto"
   },
 });

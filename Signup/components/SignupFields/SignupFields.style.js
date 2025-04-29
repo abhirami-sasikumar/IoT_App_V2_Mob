@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     width: scale(310),
     height: verticalScale(50),
-    fontSize:scale(15)
+    fontSize:scale(16),
+    fontFamily:"Roboto"
   },
   passwordContainer: {
     flexDirection: "row",
@@ -32,7 +33,8 @@ const styles = StyleSheet.create({
   passwordInput: {
     flex: 1,
     height: "100%",
-    fontSize:scale(15)
+    fontSize:scale(16),
+    fontFamily:"Roboto"
   },
   eyeIcon: {
     position: "absolute",

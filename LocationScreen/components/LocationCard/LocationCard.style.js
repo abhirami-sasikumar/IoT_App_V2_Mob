@@ -19,12 +19,13 @@ export const styles = StyleSheet.create({
   },
   headText: {
     fontSize: scale(18),
-    fontWeight: "700",
+    fontWeight: "70",
     textAlign: "center",
     color: "#810541",
     whiteSpace: "nowrap",      // Only works on web
     overflow: "hidden",
-    textOverflow: "ellipsis"
+    textOverflow: "ellipsis",
+    fontFamily:"Roboto"
   },
   line: {
     width: scale(155),
@@ -55,7 +56,7 @@ export const styles = StyleSheet.create({
   },
   value: {
 
-    fontSize: scale(28),
+    fontSize: scale(25),
     fontWeight: "bold",
     color: "#810541",
     fontFamily: "Roboto", // or "monospace"
@@ -66,10 +67,11 @@ export const styles = StyleSheet.create({
 
   },
   measurementText: {
-    fontSize: scale(25),
+    fontSize: scale(21),
     color: "#810541",
     fontWeight: "bold",
     justifyContent: "center",
+    fontFamily:"Roboto"
 
 
   },
@@ -93,8 +95,9 @@ export const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   timeText: {
-    fontSize: scale(12), // You can adjust this value as needed
+    fontSize: scale(13), // You can adjust this value as needed
     color: "#810541", // Same as other text color or change it
     marginTop: verticalScale(1), // Space between value and time
+    fontFamily:"Roboto"
   },
 });

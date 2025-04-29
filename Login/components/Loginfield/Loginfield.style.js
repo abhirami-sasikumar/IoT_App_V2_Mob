@@ -4,7 +4,7 @@ import { scale, verticalScale } from "react-native-size-matters";
 const styles = StyleSheet.create({
   view: {
 
-    marginTop: verticalScale(200),
+    marginTop: verticalScale(277),
 
 
     justifyContent: "flex-start",
@@ -20,7 +20,8 @@ const styles = StyleSheet.create({
     width: scale(310),
     height: verticalScale(50),
     fontFamily: "Roboto",
-    fontSize: scale(15)
+    fontSize: scale(16)
+    
 
 
   },
@@ -40,7 +41,8 @@ const styles = StyleSheet.create({
     flex: 1,
     height: "100%",
     fontFamily: "Roboto",
-    fontSize: scale(15)
+    fontSize: scale(16),
+    fontFamily:"Roboto"
   },
   eyeIcon: {
     position: "absolute",

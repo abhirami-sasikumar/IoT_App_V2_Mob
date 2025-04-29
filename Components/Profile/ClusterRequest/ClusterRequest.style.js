@@ -18,9 +18,9 @@ export const styles = StyleSheet.create({
     paddingBottom: verticalScale(100), // space for footer
   },
   header: {
-    fontSize: scale(24),
+    fontSize: scale(22),
     fontFamily: "Roboto",
-    fontWeight: "bold",
+    
     marginBottom: verticalScale(20),
     color: "#1e1e1e",
   },
@@ -33,6 +33,8 @@ export const styles = StyleSheet.create({
     marginVertical: verticalScale(10),
     backgroundColor: "#fff",
     height: verticalScale(45),
+    fontSize:scale(16),
+    fontFamily:"Roboto"
   },
   button: {
     backgroundColor: "#810541",
@@ -41,13 +43,13 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: verticalScale(10),
     justifyContent: "center",
-    height: verticalScale(35),
+    height: verticalScale(40),
   },
   buttonText: {
     color: "#fff",
-    fontSize: scale(17),
+    fontSize: scale(20),
     fontFamily: "Roboto",
-    fontWeight: "bold",
+    
     lineHeight: verticalScale(22),
   },
   footerWrapper: {

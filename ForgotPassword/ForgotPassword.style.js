@@ -13,6 +13,7 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     color: "#810451",
     fontFamily: "Roboto",
+    
   },
   label: {
     fontSize: scale(18),
@@ -26,8 +27,10 @@ export const styles = StyleSheet.create({
     borderColor: "#810451",
     borderRadius: 15,
     height: verticalScale(55),
-    fontFamily: "Roboto",
     paddingHorizontal: scale(8),
+    fontSize:scale(16),
+    fontFamily:"Roboto"
+
   },
   button: {
     backgroundColor: "#810451",
@@ -38,7 +41,7 @@ export const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#fff",
-    fontSize: scale(18),
+    fontSize: scale(20),
     fontFamily: "Roboto",
   },
   footer: {

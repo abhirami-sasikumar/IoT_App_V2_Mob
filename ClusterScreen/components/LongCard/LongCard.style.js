@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     width: scale(320),
     height: verticalScale(52),
     borderRadius: 10,
-    marginTop: verticalScale(15),
+    marginTop: verticalScale(10),
     flexDirection: "row",
     alignSelf: "center",
     alignItems: "center",
@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
     height:verticalScale(280),
     elevation: 10,
     flexDirection:"column",
+    fontFamily:"Roboto"
     
     
   },

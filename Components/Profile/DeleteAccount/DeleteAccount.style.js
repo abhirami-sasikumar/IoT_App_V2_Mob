@@ -15,10 +15,11 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: scale(20),
-    fontWeight: "roboto",
+    fontFamily: "Roboto",
     textAlign: "center",
     marginBottom: verticalScale(20),
     color: "#1e1e1e",
+    
   },
   buttonDelete: {
     backgroundColor: "#810541",
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
     borderRadius: moderateScale(30),
     alignItems: "center",
     marginVertical: verticalScale(10),
-    height:verticalScale(35)
+    height:verticalScale(40)
 
   },
   buttonCancel: {    justifyContent:"center",
@@ -36,17 +37,18 @@ const styles = StyleSheet.create({
     width: scale(310),
     borderRadius: moderateScale(30),
     alignItems: "center",
-    height:verticalScale(35)
+    height:verticalScale(40)
   },
   buttonText: {
     color: "#fff",
-    fontSize: scale(17),
-    fontWeight: "roboto",
+    fontSize: scale(20),
+    
+    fontfamily:"Roboto"
   },
   buttonText1: {
     color: "#fff",
-    fontSize: scale(17),
-    fontWeight: "roboto",
+    fontSize: scale(20),
+    fontfamily: "Roboto",
   },
 });
 

@@ -23,7 +23,7 @@ const LongCard = ({ clusterName, clusterId, clusterDescription }) => {
 
   return (
     <>
-      <TouchableOpacity style={styles.card} onPress={handlePress}>
+      <View style={styles.card} onPress={handlePress}>
         <View style={styles.textContainer}>
           <Text style={styles.cardText} numberOfLines={1} ellipsizeMode="tail">
             {clusterName}
@@ -32,8 +32,11 @@ const LongCard = ({ clusterName, clusterId, clusterDescription }) => {
             <Icon name="information-circle" size={20} color="#810541" />
           </TouchableOpacity>
         </View>
+        <TouchableOpacity onPress={handlePress}>
         <Image source={Arrow} style={styles.arrow} />
-      </TouchableOpacity>
+        </TouchableOpacity>
+
+      </View>
 
       <Modal
         transparent
@@ -44,13 +47,13 @@ const LongCard = ({ clusterName, clusterId, clusterDescription }) => {
         <View style={styles.overlay} />
         <View style={styles.modalContent}>
           <ScrollView>
-          <Text style={{ fontSize: 16, marginBottom: 20, textAlign:"justify"}}>
+          <Text style={{ fontSize: 16, marginBottom: 20, fontFamily:"Roboto", textAlign:"justify"}}>
             {clusterDescription ? clusterDescription : "No description available for this cluster."}
           </Text>
           
           </ScrollView>
           <Pressable style={styles.closeButton} onPress={() => setModalVisible(false)}>
-            <Text style={{ color: "white" }}>Close</Text>
+            <Text style={{ color: "white",fontFamily:"Roboto" }}>Close</Text>
           </Pressable>
         </View>
       </Modal>

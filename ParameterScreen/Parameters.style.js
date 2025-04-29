@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    fontSize: scale(10),
+    fontSize: scale(22),
     textAlign: "center",
     color: "#133E87",
     marginTop: verticalScale(8),

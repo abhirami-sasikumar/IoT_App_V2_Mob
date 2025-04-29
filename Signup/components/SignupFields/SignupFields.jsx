@@ -59,7 +59,7 @@ const SignupField = () => {
 
         <TextInput
           style={styles.input}
-          placeholder="Password"
+          placeholder="New Password"
           value={password}
           onChangeText={setPassword}
           secureTextEntry

@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     width: scale(310),
     height: verticalScale(50),
     fontFamily:"Roboto",
-    fontSize:scale(15),
+    fontSize:scale(16),
   },
   placeholder: {
     color: "#810451",    
