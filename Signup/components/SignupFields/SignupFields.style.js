@@ -3,13 +3,14 @@ import { scale, verticalScale } from "react-native-size-matters";
 
 const styles = StyleSheet.create({
   view: {
-    marginTop: verticalScale(),
+    marginTop: verticalScale(20),
+    backgroundColor:"#fff",
   
     justifyContent: "center",
     alignItems: "center",
   }, 
   input: {
-    marginTop: verticalScale(13),
+    marginTop: verticalScale(8),
     borderWidth: 1,
     borderColor: "#810541",
     paddingHorizontal: scale(8),
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     width: scale(310),
     height: verticalScale(50),
-    marginTop: verticalScale(13),
+    marginTop: verticalScale(8),
     paddingHorizontal: scale(8),
   },
   passwordInput: {
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
     right: scale(15),
   },
   button_view: {
-    marginTop: verticalScale(20),
+    marginTop: verticalScale(15),
     
     justifyContent: "center",
     alignItems: "center",

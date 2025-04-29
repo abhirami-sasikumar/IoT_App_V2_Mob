@@ -38,7 +38,7 @@ export const Signup = () => {
       style={{ flex: 1 }}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView
+        <View
           contentContainerStyle={styles.container}
           keyboardShouldPersistTaps="handled"
         >
@@ -46,13 +46,21 @@ export const Signup = () => {
             <Loading />
           ) : (
             <>
+             <ScrollView style={styles.field}           keyboardShouldPersistTaps="handled"
+              >
               <Logo style={styles.logo} />
-              <Signupfield loading={loading} setLoading={setLoading} />
-              <Registration />
-              <Icfosslogo />
+             
+                <Signupfield   loading={loading} setLoading={setLoading} />
+              </ScrollView>
+              <View style={styles.login}>
+                <Registration />
+              </View>
+              <View style={styles.footer}>
+                    <Icfosslogo />
+              </View>
             </>
           )}
-        </ScrollView>
+        </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );

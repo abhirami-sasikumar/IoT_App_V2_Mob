@@ -3,6 +3,7 @@ import { scale, verticalScale } from "react-native-size-matters";
 
 export const styles = StyleSheet.create({
   container: {
+    backgroundColor:'#fff'
     
                    // Optional background
   },

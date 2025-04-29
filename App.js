@@ -60,6 +60,7 @@ export default function App() {
           initialRouteName="Login"
           screenOptions={{
             headerShown: false,
+            animation:"slide_from_right",
             ...TransitionPresets.FadeFromBottomAndroid, // You can change this to others like FadeFromBottomAndroid
 
 

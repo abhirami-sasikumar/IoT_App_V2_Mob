@@ -6,6 +6,8 @@ export const styles = StyleSheet.create({
     flex: 1,
     padding: scale(15),
     marginTop: verticalScale(200),
+    backgroundColor: "#fff", // Solid background to avoid override
+
   },
   heading: {
     fontSize: scale(22),
@@ -21,40 +23,41 @@ export const styles = StyleSheet.create({
     fontFamily: "Roboto",
   },
   input: {
-    marginBottom: verticalScale(10),
+    marginTop: verticalScale(5),
     borderWidth: verticalScale(1),
     borderColor: "#810541",
     borderRadius: 15,
-    height: verticalScale(55),
+    height: verticalScale(50),
     fontSize:scale(16),
     fontFamily:"Roboto",
     
-    paddingHorizontal: scale(8),
+    paddingHorizontal: scale(10),
   },
-  footer: {
-    marginTop: verticalScale(113),
-  },
+  
+  
   button: {
     backgroundColor: "#810541",
-    padding: verticalScale(10),
+    justifyContent: "center",
+    height: verticalScale(40),
     borderRadius: 35,
     alignItems: "center",
     marginTop: verticalScale(10),
   },
   buttonText: {
     color: "#fff",
-    fontSize: scale(18),
+    fontSize: scale(20),
     fontFamily: "Roboto",
   },
   passwordContainer: {
+    marginTop: verticalScale(5),
+
     flexDirection: "row",
     alignItems: "center",
     borderWidth: verticalScale(1),
     borderColor: "#810541",
     borderRadius: 15,
-    height: verticalScale(55),
-    marginBottom: verticalScale(10),
-    paddingHorizontal: scale(8),
+    height: verticalScale(50),
+    paddingHorizontal: scale(10),
   },
   passwordInput: {
     flex: 1,
@@ -64,6 +67,9 @@ export const styles = StyleSheet.create({
   },
   eyeIcon: {
     padding: scale(5),
+  },
+  footer: {
+    marginTop: verticalScale(150),
   },
 
 });

@@ -6,6 +6,8 @@ export const styles = StyleSheet.create({
     flex: 1,
     padding: scale(15),
     marginTop: verticalScale(250),
+    backgroundColor: "#fff", // Solid background to avoid override
+
   },
   heading: {
     fontSize: scale(22),
@@ -22,22 +24,25 @@ export const styles = StyleSheet.create({
     fontFamily: "Roboto",
   },
   input: {
-    marginBottom: verticalScale(10),
+    marginTop:verticalScale(5),
     borderWidth: verticalScale(1),
     borderColor: "#810451",
     borderRadius: 15,
-    height: verticalScale(55),
-    paddingHorizontal: scale(8),
+    height: verticalScale(50),
+    paddingHorizontal: scale(10),
     fontSize:scale(16),
-    fontFamily:"Roboto"
+    fontFamily:"Roboto",
+    width:scale(310)
 
   },
   button: {
+    marginTop:scale(10),
     backgroundColor: "#810451",
-    padding: verticalScale(10),
-    borderRadius: 35,
+    justifyContent: "center",
+    borderRadius: 30,
     alignItems: "center",
-    height:verticalScale(40)
+    height:verticalScale(40),
+    width:scale(310)
   },
   buttonText: {
     color: "#fff",

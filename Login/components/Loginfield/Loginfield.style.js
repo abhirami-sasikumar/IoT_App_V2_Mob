@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   },
   input: {
     marginTop: verticalScale(5),
-    borderWidth: 1,
+    borderWidth: verticalScale(1),
     borderColor: "#810541",
     paddingHorizontal: scale(10),
     borderRadius: 15,
