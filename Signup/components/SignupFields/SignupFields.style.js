@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   }, 
   input: {
-    marginTop: verticalScale(8),
+    marginTop: verticalScale(9),
     borderWidth: 1,
     borderColor: "#810541",
     paddingHorizontal: scale(8),

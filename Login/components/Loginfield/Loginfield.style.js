@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     width: scale(310),
     height: verticalScale(50),
-    marginTop: verticalScale(13),
+    marginTop: verticalScale(11),
     paddingHorizontal: scale(10),
 
   },

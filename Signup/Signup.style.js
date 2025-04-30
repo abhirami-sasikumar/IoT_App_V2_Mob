@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
    },
 
    footer :{
-    marginTop:verticalScale(75)
+    marginTop:verticalScale(45)
    },
    
    

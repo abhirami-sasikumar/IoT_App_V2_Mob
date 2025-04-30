@@ -72,7 +72,7 @@ const ResetOtp = () => {
 
   return (
     <>
-      <SafeScreen>
+      
         <View>
           <Logo />
         </View>
@@ -135,7 +135,7 @@ const ResetOtp = () => {
             <Icfosslogo />
           </View>
         </View>
-      </SafeScreen>
+    
     </>
   );
 };

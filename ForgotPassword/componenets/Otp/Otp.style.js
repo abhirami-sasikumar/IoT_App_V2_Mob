@@ -49,7 +49,7 @@ export const styles = StyleSheet.create({
     fontFamily: "Roboto",
   },
   passwordContainer: {
-    marginTop: verticalScale(5),
+    marginTop: verticalScale(9),
 
     flexDirection: "row",
     alignItems: "center",
@@ -69,7 +69,7 @@ export const styles = StyleSheet.create({
     padding: scale(5),
   },
   footer: {
-    marginTop: verticalScale(175),
+    marginTop: verticalScale(170),
   },
 
 });

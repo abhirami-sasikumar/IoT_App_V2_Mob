@@ -66,7 +66,7 @@ const Login = () => {
   }, []);
 
   return (
-    <SafeScreen>
+
     <View style={styles.container}>
       {loading ? (
         <Loading />
@@ -96,7 +96,7 @@ const Login = () => {
         </>
       )}
     </View>
-    </SafeScreen>
+  
   );
 };
 
