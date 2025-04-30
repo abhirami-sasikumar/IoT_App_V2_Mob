@@ -13,6 +13,7 @@ import { CommonActions } from "@react-navigation/native";
 import Footer from "../../Footer/Footer";
 import API from "../../../Api"; // Make sure your API instance is set up correctly
 import styles from "./DeleteAccount.style"
+import SafeScreen from "../../SafeArea/SafeArea";
 
 const DeleteAccount = ({ navigation }) => {
   const handleDelete = async () => {
@@ -61,6 +62,7 @@ const DeleteAccount = ({ navigation }) => {
   
 
   return (
+    
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -87,6 +89,7 @@ const DeleteAccount = ({ navigation }) => {
 
       <Footer />
     </KeyboardAvoidingView>
+    
   );
 };
 

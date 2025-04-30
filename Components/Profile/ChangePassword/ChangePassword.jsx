@@ -17,6 +17,7 @@ import Footer from "../../Footer/Footer";
 import API from "../../../Api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import styles from "./ChangePassword.style";
+import SafeScreen from "../../SafeArea/SafeArea";
 
 const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -86,6 +87,7 @@ const ChangePassword = () => {
   };
 
   return (
+    
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : undefined}
       style={styles.container}
@@ -165,6 +167,7 @@ const ChangePassword = () => {
 
       {!isKeyboardVisible && <Footer />}
     </KeyboardAvoidingView>
+    
   );
 };
 

@@ -7,6 +7,9 @@ import Header from "../Components/Header/Header";
 import API from "../Api";
 import Loading from "../Components/Loading/Loading";
 import Footer from "../Components/Footer/Footer";
+import SafeScreen from "../Components/SafeArea/SafeArea";
+
+
 
 const Location = () => {
   const route = useRoute();
@@ -88,41 +91,43 @@ const Location = () => {
   }, [clusterId, parameterName]);
 
   return (
-    <View style={styles.screen}>
-      <View style={styles.header1}>
-        <Header title={parameterName || "Locations"} />
-      </View>
+    <SafeScreen>
+      <View style={styles.screen}>
+        <View style={styles.header1}>
+          <Header title={parameterName || "Locations"} />
+        </View>
 
-      {loading ? (
-        <Loading />
-      ) : error ? (
-        <Text style={styles.errorText}>{error}</Text>
-      ) : (
-        <ScrollView contentContainerStyle={styles.scrollContent}>
-          <View style={styles.container}>
-            <View style={styles.cardContainer}>
-              {locations.map((location, index) => (
-                <LocationCard
-                  key={index}
-                  LocationName={location.name}
-                  Value={location.latestValue}
-                  Measurement={location.unit}
-                  isChart={location.isChart}
-                  hideDevice={location.hideDevice}
-                  clusterId={clusterId}
-                  parameterName={parameterName}
-                  time={location.time}
-                />
-              ))}
+        {loading ? (
+          <Loading />
+        ) : error ? (
+          <Text style={styles.errorText}>{error}</Text>
+        ) : (
+          <ScrollView contentContainerStyle={styles.scrollContent}>
+            <View style={styles.container}>
+              <View style={styles.cardContainer}>
+                {locations.map((location, index) => (
+                  <LocationCard
+                    key={index}
+                    LocationName={location.name}
+                    Value={location.latestValue}
+                    Measurement={location.unit}
+                    isChart={location.isChart}
+                    hideDevice={location.hideDevice}
+                    clusterId={clusterId}
+                    parameterName={parameterName}
+                    time={location.time}
+                  />
+                ))}
+              </View>
             </View>
-          </View>
-        </ScrollView>
-      )}
+          </ScrollView>
+        )}
 
-      <View>
-        <Footer />
+        <View>
+          <Footer />
+        </View>
       </View>
-    </View>
+    </SafeScreen>
   );
 };
 

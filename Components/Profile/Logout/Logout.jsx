@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Alert } from "react-native";
 import API from "../../../Api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import styles from "./Logout.style"
+import SafeScreen from "../../SafeArea/SafeArea";
 
 const Logout = ({ navigation }) => {
   useEffect(() => {
@@ -50,10 +51,12 @@ const Logout = ({ navigation }) => {
   }, [navigation]);
 
   return (
+    
     <View style={styles.container}>
       <Text style={styles.header}>Logging Out...</Text>
       {/* Fallback button removed so it doesn't show */}
     </View>
+    
   );
 };
 

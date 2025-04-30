@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { useNavigation } from "@react-navigation/native";
 
+import SafeScreen from "../Components/SafeArea/SafeArea";
 import Logo from "../Components/Logo/Logo";
 import ForgotAndReset from "./components/ForgotAndReset/ForgotAndReset";
 import LoginField from "./components/Loginfield/Loginfield";
@@ -65,6 +66,7 @@ const Login = () => {
   }, []);
 
   return (
+    <SafeScreen>
     <View style={styles.container}>
       {loading ? (
         <Loading />
@@ -94,6 +96,7 @@ const Login = () => {
         </>
       )}
     </View>
+    </SafeScreen>
   );
 };
 

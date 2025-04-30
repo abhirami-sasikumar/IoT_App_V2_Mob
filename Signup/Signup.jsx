@@ -14,6 +14,7 @@ import { styles } from "./Signup.style";
 import Loading from "../Components/Loading/Loading";
 import * as ScreenOrientation from "expo-screen-orientation";
 import Logo from "../Components/Logo/Logo";
+import SafeScreen from "../Components/SafeArea/SafeArea";
 
 export const Signup = () => {
   useEffect(() => {
@@ -33,6 +34,7 @@ export const Signup = () => {
   const [loading, setLoading] = useState(false);
 
   return (
+    <SafeScreen>
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1 }}
@@ -64,5 +66,6 @@ export const Signup = () => {
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
+    </SafeScreen>
   );
 };

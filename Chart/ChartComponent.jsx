@@ -8,6 +8,7 @@ import backArrow from "../assets/BackArrow.png";
 import DropDown from "./components/Dropdown/Dropdown";
 import Loading from "../Components/Loading/Loading";
 import API from "../Api";
+import SafeScreen from "../Components/SafeArea/SafeArea";
 
 const ChartComponent = () => {
   const nav = useNavigation();
@@ -144,6 +145,7 @@ const ChartComponent = () => {
   };
 
   return (
+    <SafeScreen>
     <View style={{ flex: 1 }}>
       {loading ? (
         <Loading />
@@ -180,6 +182,7 @@ const ChartComponent = () => {
         </>
       )}
     </View>
+    </SafeScreen>
   );
 };
 

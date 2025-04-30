@@ -50,6 +50,6 @@ export const styles = StyleSheet.create({
     fontFamily: "Roboto",
   },
   footer: {
-    marginTop: verticalScale(200),
+    marginTop: verticalScale(175),
   },
 });

@@ -15,6 +15,7 @@ import { styles } from "./ProfilePage.style";
 
 import Footer from "../../Footer/Footer";
 import UserIcon from "../../../assets/usericon.png";
+import SafeScreen from "../../SafeArea/SafeArea";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons, Entypo, MaterialIcons } from "@expo/vector-icons";
@@ -52,6 +53,7 @@ const ProfilePage = ({ navigation }) => {
   }
 
   return (
+    <SafeScreen>
     <KeyboardAvoidingView
       behavior={Platform.OS === "android" ? "padding" : "height"}
       style={styles.container}
@@ -116,6 +118,7 @@ const ProfilePage = ({ navigation }) => {
 
       <Footer />
     </KeyboardAvoidingView>
+    </SafeScreen>
   );
 };
 

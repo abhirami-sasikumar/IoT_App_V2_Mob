@@ -5,7 +5,9 @@ import { useNavigation } from "@react-navigation/native";
 import { Icfosslogo } from "../Components/Icfosslogo/Icfosslogo";
 import * as ScreenOrientation from "expo-screen-orientation";
 import Logo from "../Components/Logo/Logo";
-import API from "../Api"; // ✅ Correct path
+import API from "../Api"; // ✅ Correct pa
+import SafeScreen from "../Components/SafeArea/SafeArea";
+
 
 const ForgotPassword = () => {
   useEffect(() => {
@@ -46,6 +48,7 @@ const ForgotPassword = () => {
 
   return (
     <>
+    <SafeScreen>
       <View>
         <Logo />
       </View>
@@ -70,6 +73,7 @@ const ForgotPassword = () => {
           <Icfosslogo />
         </View>
       </View>
+      </SafeScreen>
     </>
   );
 };

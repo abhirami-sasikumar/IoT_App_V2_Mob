@@ -7,6 +7,7 @@ import Loading from "../Components/Loading/Loading";
 import styles from "./Parameters.style";
 import API from "../Api";
 import { useRoute } from "@react-navigation/native";
+import SafeScreen from "../Components/SafeArea/SafeArea";
 
 const Parameters = () => {
   const route = useRoute();
@@ -55,6 +56,7 @@ const Parameters = () => {
   }, []);
 
   return (
+    <SafeScreen>
     <View style={styles.container}>
       <View style={styles.header1}>
         <Header title="PARAMETERS" style={styles.header} />
@@ -86,6 +88,7 @@ const Parameters = () => {
         </>
       )}
     </View>
+    </SafeScreen>
   );
 };
 

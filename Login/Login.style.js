@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
   },
   icfosslogo:{
 
-    marginTop:verticalScale(25)
+    marginTop:verticalScale(5)
 
   },
 

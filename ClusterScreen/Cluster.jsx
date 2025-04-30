@@ -7,6 +7,7 @@ import API from "../Api";
 import { UserContext } from "../Components/Context/Context";
 import * as ScreenOrientation from "expo-screen-orientation";
 import Loading from "../Components/Loading/Loading";
+import SafeScreen from "../Components/SafeArea/SafeArea";
 
 const Cluster = () => {
   const [clusters, setClusters] = useState([]);
@@ -56,6 +57,8 @@ const Cluster = () => {
   }, [user]);
 
   return (
+    <SafeScreen>
+
     <View style={styles.container}>
       {loading ? (
         <Loading />
@@ -93,6 +96,7 @@ const Cluster = () => {
         </>
       )}
     </View>
+    </SafeScreen>
   );
 };
 

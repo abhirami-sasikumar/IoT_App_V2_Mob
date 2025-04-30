@@ -14,6 +14,7 @@ import {
 import Footer from "../../Footer/Footer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { styles } from "./ClusterRequest.style";
+import SafeScreen from "../../SafeArea/SafeArea";
 
 const ClusterRequest = ({ navigation }) => {
   const [clusterCode, setClusterCode] = useState("");
@@ -69,6 +70,7 @@ const ClusterRequest = ({ navigation }) => {
   };
 
   return (
+    
     <View style={styles.flexContainer}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <KeyboardAvoidingView
@@ -103,6 +105,7 @@ const ClusterRequest = ({ navigation }) => {
         </View>
       )}
     </View>
+    
   );
 };
 
