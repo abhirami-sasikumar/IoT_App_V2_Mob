@@ -47,6 +47,7 @@ export const Signup = () => {
           ) : (
             <>
              <ScrollView style={styles.field}           keyboardShouldPersistTaps="handled"
+         
               >
               <Logo style={styles.logo} />
              

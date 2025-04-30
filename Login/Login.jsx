@@ -70,11 +70,27 @@ const Login = () => {
         <Loading />
       ) : (
         <>
-          <Logo />
+        <View style={styles.logo}>
+          <Logo /> 
+        </View>
+        <View style={styles.loginfield}>
           <LoginField loading={loading} setLoading={setLoading} />
-          <ForgotAndReset />
-          <Register />
-          <Icfosslogo />
+        </View>
+        <View style={styles.forgotandreset}>
+        <ForgotAndReset />
+        </View>
+        <View style={styles.register}>
+        <Register />
+
+        </View>
+        <View style={styles.icfosslogo}>
+        <Icfosslogo />
+
+        </View>          
+
+          
+        
+          
         </>
       )}
     </View>

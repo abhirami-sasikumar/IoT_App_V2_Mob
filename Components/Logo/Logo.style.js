@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(20),
     width: scale(130),
     height: verticalScale(150),
-    resizeMode: "contain", // Ensures the image maintains its aspect ratio
+    // Ensures the image maintains its aspect ratio
   },
 });
 

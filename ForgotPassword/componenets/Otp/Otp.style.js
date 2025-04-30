@@ -69,7 +69,7 @@ export const styles = StyleSheet.create({
     padding: scale(5),
   },
   footer: {
-    marginTop: verticalScale(150),
+    marginTop: verticalScale(175),
   },
 
 });

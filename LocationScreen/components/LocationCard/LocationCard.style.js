@@ -59,7 +59,10 @@ export const styles = StyleSheet.create({
     fontSize: scale(25),
     fontWeight: "bold",
     color: "#810541",
-    fontFamily: "Roboto", // or "monospace"
+    fontFamily: "Roboto",
+    justifyContent: "center",
+
+     // or "monospace"
     
 
 

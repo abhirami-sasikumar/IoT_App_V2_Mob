@@ -26,5 +26,7 @@ export const styles = StyleSheet.create({
     fontSize: scale(20),
     fontFamily:"Roboto"
   },
-  logo: { marginTop: scale(225) },
+  logo: { 
+    marginTop: scale(1)
+   },
 });
