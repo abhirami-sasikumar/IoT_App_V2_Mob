@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(8),
   },
   passwordInput: {
-    flex: 1,
+    
     height: "100%",
     fontSize:scale(16),
     fontFamily:"Roboto"

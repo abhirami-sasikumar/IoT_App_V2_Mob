@@ -34,38 +34,40 @@ export const Signup = () => {
   const [loading, setLoading] = useState(false);
 
   return (
-    <SafeScreen>
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1 }}
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View
-          contentContainerStyle={styles.container}
-          keyboardShouldPersistTaps="handled"
-        >
-          {loading ? (
-            <Loading />
-          ) : (
-            <>
-             <ScrollView style={styles.field}           keyboardShouldPersistTaps="handled"
-         
-              >
-              <Logo style={styles.logo} />
-             
-                <Signupfield   loading={loading} setLoading={setLoading} />
-              </ScrollView>
-              <View style={styles.login}>
-                <Registration />
-              </View>
-              <View style={styles.footer}>
-                    <Icfosslogo />
-              </View>
-            </>
-          )}
-        </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
-    </SafeScreen>
+    
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View
+            contentContainerStyle={styles.container}
+            keyboardShouldPersistTaps="handled"
+          >
+            {loading ? (
+              <Loading />
+            ) : (
+              <>
+                <ScrollView style={styles.field} keyboardShouldPersistTaps="handled"
+
+                >
+                  <View style={styles.logo}>
+                    <Logo />
+                  </View>
+
+                  <Signupfield loading={loading} setLoading={setLoading} />
+                </ScrollView>
+                <View style={styles.login}>
+                  <Registration />
+                </View>
+                <View style={styles.footer}>
+                  <Icfosslogo />
+                </View>
+              </>
+            )}
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    
   );
 };

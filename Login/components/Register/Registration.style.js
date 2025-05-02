@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: moderateVerticalScale(25),
+    marginBottom: moderateVerticalScale(45),
   },
   Text: {
     fontFamily: "Roboto",

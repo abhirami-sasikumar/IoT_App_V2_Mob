@@ -11,16 +11,24 @@ export const styles = StyleSheet.create({
 
         
     },
+    logo :{
+        
+
+    },
    field :{
-    paddingBottom:verticalScale(),
-    marginTop:verticalScale()
+    flex:2,
+    
+    
+
    },
    login :{
-    marginTop:verticalScale(10)
+    
+    
    },
 
    footer :{
-    marginTop:verticalScale(45)
+    
+
    },
    
    
