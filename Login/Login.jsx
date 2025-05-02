@@ -31,15 +31,18 @@ const Login = () => {
 
 
         const data = res.data;
-
-        await AsyncStorage.setItem("@user", JSON.stringify(data));
-        setUser({
+        const updatedUser = {
           jwtToken: data.jwtToken,
           email: data.email,
           name: data.name,
-          userId: data._id,
-        });
+          userId: data._id, // Make sure your backend returns _id
+        };
+        
+        await AsyncStorage.setItem("@user", JSON.stringify(updatedUser));
+        setUser(updatedUser);
+        console.log("Storing user in AsyncStorage:", updatedUser);
 
+        
         nav.replace("Clusters");
       } else {
         setLoading(false);
