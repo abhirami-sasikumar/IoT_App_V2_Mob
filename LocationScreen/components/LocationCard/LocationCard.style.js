@@ -93,14 +93,33 @@ export const styles = StyleSheet.create({
     marginTop: verticalScale(2),
   },
   chartIcon: {
-    width: scale(14),
-    height: scale(12),
+    width: scale(12),
+    height: scale(10),
     resizeMode: "contain",
   },
+  timeContainer:{
+    flexDirection: 'row',
+    alignItems:"center",
+    justifyContent:"space-between"
+
+
+  },
   timeText: {
-    fontSize: scale(13), // You can adjust this value as needed
+    fontSize: scale(10), // You can adjust this value as needed
     color: "#810541", // Same as other text color or change it
     marginTop: verticalScale(1), // Space between value and time
-    fontFamily:"Roboto"
+    fontFamily:"Roboto",
+    justifyContent:"space-between"
+
   },
+  updatedText:{
+    fontFamily:"Roboto",
+    fontSize:scale(11),
+    color: "#810541",
+    marginRight:moderateScale(3) // Same as other text color or change it
+
+
+  },
+
+  
 });

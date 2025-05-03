@@ -63,9 +63,13 @@ const LocationCard = ({
 
       {/* Time Display */}
       {!hideDevice && time && (
+        
         <View style={styles.timeContainer}>
+          <Text style={styles.updatedText}>Last updated :</Text>
+
           <Text style={styles.timeText}>{formattedTime}</Text>
         </View>
+        
       )}
     </View>
   );

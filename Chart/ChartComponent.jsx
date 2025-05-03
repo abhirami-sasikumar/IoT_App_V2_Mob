@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { WebView } from "react-native-webview";
 import * as ScreenOrientation from "expo-screen-orientation";
-import { scale, verticalScale } from "react-native-size-matters";
+import { moderateVerticalScale, scale, verticalScale } from "react-native-size-matters";
 import backArrow from "../assets/BackArrow.png";
 import DropDown from "./components/Dropdown/Dropdown";
 import Loading from "../Components/Loading/Loading";
@@ -155,8 +155,9 @@ const ChartComponent = () => {
             <TouchableOpacity onPress={() => nav.goBack()}>
               <Image source={backArrow} style={styles.backArrow} />
             </TouchableOpacity>
+           
             <View style={styles.headerTextContainer}>
-              <Text style={styles.smallHeaderText}>{parameterName}</Text>
+              <Text style={styles.smallHeaderText}>Kollam - {parameterName}</Text>
             </View>
             <DropDown time={time} setTime={setTime} disable={disable} />
           </View>
@@ -196,6 +197,23 @@ const styles = StyleSheet.create({
     width: verticalScale(24),
     height: scale(24),
     tintColor: '#810541'
+  },
+  location:{
+    marginLeft:moderateVerticalScale(),
+    alignItems:"center"
+
+  },
+  locationtext:{
+    flex:1,
+    
+    alignItems:"center",
+    color: "#810541",
+    fontSize: verticalScale(19),
+    fontFamily: "Roboto",
+
+
+
+
   },
   headerTextContainer: {
     flex: 1,
