@@ -157,7 +157,7 @@ const ChartComponent = () => {
             </TouchableOpacity>
            
             <View style={styles.headerTextContainer}>
-              <Text style={styles.smallHeaderText}>Kollam - {parameterName}</Text>
+              <Text style={styles.smallHeaderText}>{locationName} - {parameterName}</Text>
             </View>
             <DropDown time={time} setTime={setTime} disable={disable} />
           </View>

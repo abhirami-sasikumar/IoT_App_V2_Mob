@@ -11,7 +11,7 @@ const local_data = [
     image: clock,
   },
   {
-    value: 9,
+    value: 6,
     lable: "9Hr",
     image: clock,
   },
@@ -26,15 +26,20 @@ const local_data = [
     image: clock,
   },
   {
-    value: 360,
-    lable: "15Days",
+    value: 48,
+    lable: "2Days",
+    image: clock,
+  },
+  {
+    value: 168,
+    lable: "7Days",
     image: clock,
   },
   {
     value: 720,
-    lable: "30Days",
+    lable: "30days",
     image: clock,
-  },
+  }
 ];
 
 const DropDown = ({ time, setTime, disable }) => {
