@@ -10,27 +10,39 @@ export const styles = StyleSheet.create({
                    // Optional background
   },
   logo:{
-    flexGrow: 1,
+    
 
 
   },
   loginfield:{
-    flexGrow: 1,
+    
+    
+    
 
 
 
   },
   forgotandreset:{
-    flexGrow: 1,
+    
+    
 
 
   },
   register:{
-    flexGrow: 1,
+    flexGrow:1
+    
+    
 
 
   },
   icfosslogo:{
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    alignItems: "center",
+    backgroundColor: "#fff",
+    paddingBottom: verticalScale(),
     
     
 

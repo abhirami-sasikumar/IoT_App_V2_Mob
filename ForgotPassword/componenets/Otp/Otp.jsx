@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, Alert, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, Alert,keyboardVisible, Keyboard,TouchableOpacity } from "react-native";
 import { styles } from "./Otp.style";
 import { Icfosslogo } from "../../../Components/Icfosslogo/Icfosslogo";
 import * as ScreenOrientation from "expo-screen-orientation";
@@ -24,12 +24,31 @@ const ResetOtp = () => {
       ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
     };
   }, []);
+  
 
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+useEffect(() => {
+  const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+    setKeyboardVisible(true);
+  });
+  const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+    setKeyboardVisible(false);
+  });
+
+  return () => {
+    showSubscription.remove();
+    hideSubscription.remove();
+  };
+}, []);
+
 
   const route = useRoute();
   const nav = useNavigation();
@@ -72,70 +91,73 @@ const ResetOtp = () => {
 
   return (
     <>
-      
-        <View>
-          <Logo />
-        </View>
-        <View style={styles.container}>
-          <Text style={styles.heading}>Reset Your Password</Text>
 
+      <View>
+        <Logo />
+      </View>
+      <View style={styles.container}>
+        <Text style={styles.heading}>Reset Your Password</Text>
+
+        <TextInput
+          style={styles.input}
+          placeholder="Enter OTP"
+          value={otp}
+          onChangeText={setOtp}
+          keyboardType="numeric"
+        />
+
+        <View style={styles.passwordContainer}>
           <TextInput
-            style={styles.input}
-            placeholder="Enter OTP"
-            value={otp}
-            onChangeText={setOtp}
-            keyboardType="numeric"
+            style={styles.passwordInput}
+            placeholder="New Password"
+            value={newPassword}
+            onChangeText={setNewPassword}
+            secureTextEntry={!showNewPassword}
           />
-
-          <View style={styles.passwordContainer}>
-            <TextInput
-              style={styles.passwordInput}
-              placeholder="New Password"
-              value={newPassword}
-              onChangeText={setNewPassword}
-              secureTextEntry={!showNewPassword}
+          <TouchableOpacity
+            style={styles.eyeIcon}
+            onPress={() => setShowNewPassword(!showNewPassword)}
+          >
+            <Icon
+              name={showNewPassword ? "eye" : "eye-off"}
+              size={24}
+              color="grey"
             />
-            <TouchableOpacity
-              style={styles.eyeIcon}
-              onPress={() => setShowNewPassword(!showNewPassword)}
-            >
-              <Icon
-                name={showNewPassword ? "eye" : "eye-off"}
-                size={24}
-                color="grey"
-              />
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.passwordContainer}>
-            <TextInput
-              style={styles.passwordInput}
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChangeText={setConfirmPassword}
-              secureTextEntry={!showConfirmPassword}
-            />
-            <TouchableOpacity
-              style={styles.eyeIcon}
-              onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-            >
-              <Icon
-                name={showConfirmPassword ? "eye" : "eye-off"}
-                size={24}
-                color="grey"
-              />
-            </TouchableOpacity>
-          </View>
-
-          <TouchableOpacity style={styles.button} onPress={handleResetPassword}>
-            <Text style={styles.buttonText}>Reset Password</Text>
           </TouchableOpacity>
-
-          <View style={styles.footer}>
-            <Icfosslogo />
-          </View>
         </View>
-    
+
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            secureTextEntry={!showConfirmPassword}
+          />
+          <TouchableOpacity
+            style={styles.eyeIcon}
+            onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+          >
+            <Icon
+              name={showConfirmPassword ? "eye" : "eye-off"}
+              size={24}
+              color="grey"
+            />
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity style={styles.button} onPress={handleResetPassword}>
+          <Text style={styles.buttonText}>Reset Password</Text>
+        </TouchableOpacity>
+      </View>
+      {!keyboardVisible && (
+        <View style={styles.icfosslogo}>
+          <Icfosslogo />
+        </View>
+      )}
+
+
+
     </>
   );
 };

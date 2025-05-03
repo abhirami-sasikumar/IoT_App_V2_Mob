@@ -10,9 +10,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    marginTop: verticalScale(20),
-    width: scale(130),
-    height: verticalScale(150),
+    marginTop: verticalScale(60),
+    width: scale(110),
+    height: verticalScale(120),
     // Ensures the image maintains its aspect ratio
   },
 });

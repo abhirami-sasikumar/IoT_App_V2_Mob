@@ -7,6 +7,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
+  keyboardVisible,
+
   Keyboard
 } from "react-native";
 import { useState, useEffect } from "react";
@@ -15,7 +17,6 @@ import Loading from "../Components/Loading/Loading";
 import * as ScreenOrientation from "expo-screen-orientation";
 import Logo from "../Components/Logo/Logo";
 import SafeScreen from "../Components/SafeArea/SafeArea";
-
 export const Signup = () => {
   useEffect(() => {
     const lockOrientation = async () => {
@@ -30,44 +31,62 @@ export const Signup = () => {
       ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
     };
   }, []);
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardVisible(true);
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardVisible(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
+
 
   const [loading, setLoading] = useState(false);
 
   return (
-    
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1 }}
-      >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View
-            contentContainerStyle={styles.container}
-            keyboardShouldPersistTaps="handled"
+    <View style={styles.container}>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={styles.keyboardView}
           >
-            {loading ? (
-              <Loading />
-            ) : (
-              <>
-                <ScrollView style={styles.field} keyboardShouldPersistTaps="handled"
-
-                >
-                  <View style={styles.logo}>
-                    <Logo />
-                  </View>
-
-                  <Signupfield loading={loading} setLoading={setLoading} />
-                </ScrollView>
-                <View style={styles.login}>
-                  <Registration />
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+              <ScrollView
+                style={styles.scrollView}
+                contentContainerStyle={styles.scrollContent}
+                keyboardShouldPersistTaps="handled"
+              >
+                <View style={styles.logo}>
+                  <Logo />
                 </View>
-                <View style={styles.footer}>
-                  <Icfosslogo />
-                </View>
-              </>
-            )}
+                <Signupfield loading={loading} setLoading={setLoading} />
+              </ScrollView>
+            </TouchableWithoutFeedback>
+          </KeyboardAvoidingView>
+          {!keyboardVisible && (
+          <View style={styles.registration}>
+            <Registration />
           </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
-    
+          )}
+
+          {!keyboardVisible && (
+            <View style={styles.icfosslogo}>
+              <Icfosslogo />
+            </View>
+          )}
+
+        </>
+      )}
+    </View>
   );
 };

@@ -1,36 +1,36 @@
 import { StyleSheet } from "react-native";
-import { scale, verticalScale } from "react-native-size-matters";
-
-
 
 export const styles = StyleSheet.create({
-    container : {
-        flex:1,
-        backgroundColor: "#fff",
-        // Solid background to avoid override
-
-        
-    },
-    logo :{
-        
-
-    },
-   field :{
-    flex:2,
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  keyboardView: {
+    flex:1
+  },
+  scrollView: {
+    
+  },
+  scrollContent: {
+    
+    justifyContent: "flex-start",
+    
+  },
+  logo: {
     
     
+  },
+  registration: {
 
-   },
-   login :{
+  },
+  footer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    alignItems: "center",
+    backgroundColor: "#fff",
     
     
-   },
-
-   footer :{
-    
-
-   },
-   
-   
-  
+  },
 });

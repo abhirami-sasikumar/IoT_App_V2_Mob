@@ -4,7 +4,7 @@ import { scale, verticalScale } from "react-native-size-matters";
 const styles = StyleSheet.create({
   view: {
 
-    marginTop: verticalScale(240),
+    marginTop: verticalScale(290),
 
 
     justifyContent: "flex-start",

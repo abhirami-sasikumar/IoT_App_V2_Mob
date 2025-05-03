@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View,KeyboardAvoidingView,Keyboard,Platform } from "react-native";
+import { View, keyboardVisible,KeyboardAvoidingView, Keyboard, Platform } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { useNavigation } from "@react-navigation/native";
@@ -10,17 +10,33 @@ import ForgotAndReset from "./components/ForgotAndReset/ForgotAndReset";
 import LoginField from "./components/Loginfield/Loginfield";
 import Register from "./components/Register/Registration";
 import { Icfosslogo } from "../Components/Icfosslogo/Icfosslogo";
-import Loading from "../Components/Loading/Loading"; 
+import Loading from "../Components/Loading/Loading";
 import { styles } from "./Login.style";
 
 
 import { UserContext } from "../Components/Context/Context";
-import API from "../Api"; 
+import API from "../Api";
 
 const Login = () => {
   const [loading, setLoading] = useState(true);
   const { setUser } = useContext(UserContext);
   const nav = useNavigation();
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+useEffect(() => {
+  const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+    setKeyboardVisible(true);
+  });
+  const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+    setKeyboardVisible(false);
+  });
+
+  return () => {
+    showSubscription.remove();
+    hideSubscription.remove();
+  };
+}, []);
+
 
   const getUser = async () => {
     try {
@@ -72,31 +88,34 @@ const Login = () => {
         <Loading />
       ) : (
         <>
-        <View style={styles.logo}>
-          <Logo /> 
-        </View>
-        <View style={styles.loginfield}>
-          <LoginField loading={loading} setLoading={setLoading} />
-        </View>
-        <View style={styles.forgotandreset}>
-        <ForgotAndReset />
-        </View>
-        <View style={styles.register}>
-        <Register />
 
-        </View>
-        <View style={styles.icfosslogo}>
-        <Icfosslogo />
+          <View style={styles.logo}>
+            <Logo />
+          </View>
+          <View style={styles.loginfield}>
+            <LoginField loading={loading} setLoading={setLoading} />
+          </View>
+          <View style={styles.forgotandreset}>
+            <ForgotAndReset />
+          </View>
+          <View style={styles.register}>
+            <Register />
 
-        </View>          
+          </View>
+          {!keyboardVisible && (
+            <View style={styles.icfosslogo}>
+              <Icfosslogo />
+            </View>
+          )}
 
-          
-        
-          
+
+
+
+
         </>
       )}
     </View>
-  
+
   );
 };
 
