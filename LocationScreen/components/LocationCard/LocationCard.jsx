@@ -37,14 +37,24 @@ const LocationCard = ({
 
   return (
     <View style={styles.card}>
-      <Text style={styles.headText}  numberOfLines={1} ellipsizeMode="tail">{LocationName}</Text>
+      <Text style={styles.headText} numberOfLines={1} ellipsizeMode="tail">{LocationName}</Text>
       <View style={styles.line} />
 
       <View style={[styles.bottomRow, centerAlignStyle]}>
         {/* Value & Measurement Column */}
+        
+
         <View style={styles.valueContainer}>
-          <Text style={styles.value} numberOfLines={1} ellipsizeMode="tail">{displayValue}</Text>
-          {!hideDevice  && (
+          <Text
+            style={[styles.value, hideDevice && styles.maintenanceText]}
+            numberOfLines={hideDevice ? 2 : 1}
+            ellipsizeMode={hideDevice ? "clip" : "tail"}
+          >
+            {displayValue}
+          </Text>
+
+
+          {!hideDevice && (
             <Text style={styles.measurementText} numberOfLines={1} ellipsizeMode="tail">{Measurement}</Text>
           )}
         </View>
@@ -63,13 +73,13 @@ const LocationCard = ({
 
       {/* Time Display */}
       {!hideDevice && time && (
-        
+
         <View style={styles.timeContainer}>
           <Text style={styles.updatedText}>Last updated :</Text>
 
           <Text style={styles.timeText}>{formattedTime}</Text>
         </View>
-        
+
       )}
     </View>
   );

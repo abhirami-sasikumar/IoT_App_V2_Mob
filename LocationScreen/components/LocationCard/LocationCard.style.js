@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: moderateScale(2) },
     shadowRadius: moderateScale(4),
     width: "48%", // for 2 cards per row
-    height: verticalScale(130),
+    height: verticalScale(140),
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: verticalScale(10),
@@ -37,18 +37,20 @@ export const styles = StyleSheet.create({
   bottomRow: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "center",
     width: "100%",
     paddingHorizontal: scale(10),
+    flex:1
 
-    flex: 1,
+    
   },
   valueContainer: {
 
     flexDirection: "row", // changed to column
     justifyContent: "center",
 
-    alignItems: "flex-start",
+
+    alignItems: "center",
     flex: 3,
     
 
@@ -61,6 +63,7 @@ export const styles = StyleSheet.create({
     color: "#810541",
     fontFamily: "Roboto",
     justifyContent: "center",
+    
 
      // or "monospace"
     
@@ -74,7 +77,8 @@ export const styles = StyleSheet.create({
     color: "#810541",
     fontWeight: "bold",
     justifyContent: "center",
-    fontFamily:"Roboto"
+    fontFamily:"Roboto",
+    marginTop:verticalScale(2)
 
 
   },
@@ -120,6 +124,12 @@ export const styles = StyleSheet.create({
 
 
   },
+  maintenanceText:{
+    fontSize:scale(15),
+    textAlign:"center"
+
+  },
+  
 
   
 });
