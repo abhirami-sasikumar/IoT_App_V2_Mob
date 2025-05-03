@@ -84,7 +84,7 @@ export const styles = StyleSheet.create({
     shadowRadius: 5,
     width: "95%",
     alignSelf: "center",
-    height: verticalScale(35),
+    height: verticalScale(45),
     top:verticalScale(140)
 
 
