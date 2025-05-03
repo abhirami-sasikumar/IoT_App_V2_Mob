@@ -38,33 +38,36 @@ useEffect(() => {
 }, []);
 
 
-  const getUser = async () => {
-    try {
-      const storedUser = await AsyncStorage.getItem("@user");
-      if (storedUser) {
-        const parsedUser = JSON.parse(storedUser);
-        const res = await API.post("/refresh_token");
+const getUser = async () => {
+  try {
+    const storedUser = await AsyncStorage.getItem("@user");
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      const res = await API.post("/refresh_token");
 
 
-        const data = res.data;
+      const data = res.data;
+      const updatedUser = {
+        jwtToken: data.jwtToken,
+        email: data.email,
+        name: data.name,
+        userId: data._id, // Make sure your backend returns _id
+      };
+      
+      await AsyncStorage.setItem("@user", JSON.stringify(updatedUser));
+      setUser(updatedUser);
+      console.log("Storing user in AsyncStorage:", updatedUser);
 
-        await AsyncStorage.setItem("@user", JSON.stringify(data));
-        setUser({
-          jwtToken: data.jwtToken,
-          email: data.email,
-          name: data.name,
-          userId: data._id,
-        });
-
-        nav.replace("Clusters");
-      } else {
-        setLoading(false);
-      }
-    } catch (error) {
-      console.error("Token refresh failed:", error.message);
+      
+      nav.replace("Clusters");
+    } else {
       setLoading(false);
     }
-  };
+  } catch (error) {
+    console.error("Token refresh failed:", error.message);
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     const lockOrientation = async () => {

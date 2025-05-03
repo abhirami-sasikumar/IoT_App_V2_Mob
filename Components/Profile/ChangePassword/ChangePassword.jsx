@@ -43,6 +43,35 @@ const ChangePassword = () => {
     };
   }, []);
 
+  // Fetch user data from AsyncStorage and check validity
+  const getUserData = async () => {
+    try {
+      const userDataString = await AsyncStorage.getItem("@user");
+  
+      if (!userDataString) {
+        Alert.alert("Error", "User not logged in. Please log in again.");
+        return null;
+      }
+  
+      const userData = JSON.parse(userDataString);
+  
+      console.log("Read from AsyncStorage in ChangePassword:", userData); // ✅ Correct placement
+  
+      if (!userData?.email || !userData?.userId) {
+        Alert.alert("Error", "User info is incomplete. Please log in again.");
+        return null;
+      }
+  
+      return userData;
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      Alert.alert("Error", "Something went wrong. Please try again.");
+      return null;
+    }
+  };
+  
+
+
   const handleChangePassword = async () => {
     if (!currentPassword || !newPassword || !confirmPassword) {
       Alert.alert("Error", "Please fill in all fields.");
@@ -55,17 +84,13 @@ const ChangePassword = () => {
     }
 
     try {
-      const userDataString = await AsyncStorage.getItem("@user");
-      const userData = JSON.parse(userDataString);
+      const userData = await getUserData();
 
-      const email = userData?.email;
-      const userId = userData?.userId;
+      if (!userData) return; // If user data is invalid, return early
 
-      if (!email || !userId) {
-        Alert.alert("Error", "User info not found.");
-        return;
-      }
+      const { email, userId } = userData;
 
+      // Proceed with the password change request
       const response = await API.post(`/change_password/${userId}`, {
         currentPassword,
         newPassword,
