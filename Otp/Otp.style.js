@@ -6,11 +6,18 @@ export const styles = StyleSheet.create({
   container: {
     flex:1,
 
-    marginTop: verticalScale(30),
+  
+  },
+  logo:{
+
+  },
+  otpfield:{
+    marginTop:verticalScale(30)
+
   },
   button_view: {
     
-    marginTop: verticalScale(35),
+    marginTop: verticalScale(15),
     justifyContent: "center",
     alignItems: "center",
   },
@@ -28,6 +35,12 @@ export const styles = StyleSheet.create({
     fontFamily:"Roboto"
   },
   icfosslogo: { 
-    marginTop: scale(1)
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    alignItems: "center",
+    backgroundColor: "#fff",
+    paddingBottom: verticalScale(),
    },
 });

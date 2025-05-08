@@ -8,6 +8,8 @@ import Logo from "../Components/Logo/Logo";
 import Loading from "../Components/Loading/Loading";
 import { styles } from "./Otp.style";
 import * as ScreenOrientation from "expo-screen-orientation";
+import { Keyboard } from "react-native";
+
 
 export const Otp = ({ route }) => {
   const [otp, setOtp] = useState("");
@@ -15,7 +17,22 @@ export const Otp = ({ route }) => {
   const navigation = useNavigation();
   const email = route?.params?.email;
   const clusterCode = route?.params?.clusterID;
-
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+  
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardVisible(true);
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardVisible(false);
+    });
+  
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
+  
   // Lock screen orientation to portrait
   useEffect(() => {
     const lockOrientation = async () => {
@@ -73,7 +90,7 @@ export const Otp = ({ route }) => {
             <Logo />
           </View>
 
-          <View>
+          <View style={styles.otpfield}>
             <Otpfield otp={otp} setOtp={setOtp} />
           </View>
           <View style={styles.button_view}>
@@ -81,10 +98,12 @@ export const Otp = ({ route }) => {
               <Text style={styles.buttonText}>SUBMIT</Text>
             </TouchableOpacity>
           </View>
-          
-          <View style={styles.icfosslogo}>
-            <Icfosslogo />
-          </View>
+
+          {!keyboardVisible && (
+            <View style={styles.icfosslogo}>
+              <Icfosslogo />
+            </View>
+          )}
         </>
       )}
     </View>
