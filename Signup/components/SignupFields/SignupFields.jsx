@@ -29,7 +29,7 @@ const SignupField = () => {
       Alert.alert("Success", "Signup successful! Check your email for OTP.");
       
       // Navigate to OTP screen, passing email as a parameter
-      navigation.navigate("Otp", { email });
+      navigation.navigate("Otp", { email,clusterID });
     } catch (error) {
       Alert.alert("Signup Failed", error.response?.data?.message || "Please try again.");
     }

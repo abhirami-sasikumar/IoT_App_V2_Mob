@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
     fontSize: scale(20),
     fontFamily:"Roboto"
   },
-  logo: { 
+  icfosslogo: { 
     marginTop: scale(1)
    },
 });

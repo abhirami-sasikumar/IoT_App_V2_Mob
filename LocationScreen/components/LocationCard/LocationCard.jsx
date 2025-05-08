@@ -37,7 +37,7 @@ const LocationCard = ({
 
   return (
     <View style={styles.card}>
-      <Text style={styles.headText} numberOfLines={1} ellipsizeMode="tail">{LocationName}</Text>
+      <Text style={styles.headText} numberOfLines={1} ellipsizeMode="tail" adjustsFontSizeToFit={true}>{LocationName}</Text>
       <View style={styles.line} />
 
       <View style={[styles.bottomRow, centerAlignStyle]}>
@@ -47,7 +47,7 @@ const LocationCard = ({
         <View style={styles.valueContainer}>
           <Text
             style={[styles.value, hideDevice && styles.maintenanceText]}
-            numberOfLines={hideDevice ? 2 : 1}
+            numberOfLines={1}
             ellipsizeMode={hideDevice ? "clip" : "tail"}
           >
             {displayValue}

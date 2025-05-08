@@ -14,6 +14,7 @@ export const Otp = ({ route }) => {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
   const email = route?.params?.email;
+  const clusterCode = route?.params?.clusterID;
 
   // Lock screen orientation to portrait
   useEffect(() => {
@@ -38,7 +39,7 @@ export const Otp = ({ route }) => {
     setLoading(true);
 
     try {
-      const response = await API.post("/validate_otp", { email, otp });
+      const response = await API.post("/validate_otp", { email, otp, clusterCode });
 
       Alert.alert("Success", response.data.message, [
         {
@@ -67,7 +68,11 @@ export const Otp = ({ route }) => {
         <Loading />
       ) : (
         <>
-          <Logo />
+          <View style={styles.logo}>
+
+            <Logo />
+          </View>
+
           <View>
             <Otpfield otp={otp} setOtp={setOtp} />
           </View>
@@ -76,7 +81,8 @@ export const Otp = ({ route }) => {
               <Text style={styles.buttonText}>SUBMIT</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.logo}>
+          
+          <View style={styles.icfosslogo}>
             <Icfosslogo />
           </View>
         </>

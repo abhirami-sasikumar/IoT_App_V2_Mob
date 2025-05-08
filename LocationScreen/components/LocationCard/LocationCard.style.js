@@ -58,7 +58,7 @@ export const styles = StyleSheet.create({
   },
   value: {
 
-    fontSize: scale(25),
+    fontSize: scale(23),
     fontWeight: "bold",
     color: "#810541",
     fontFamily: "Roboto",
@@ -73,7 +73,7 @@ export const styles = StyleSheet.create({
 
   },
   measurementText: {
-    fontSize: scale(21),
+    fontSize: scale(20),
     color: "#810541",
     fontWeight: "bold",
     justifyContent: "center",
