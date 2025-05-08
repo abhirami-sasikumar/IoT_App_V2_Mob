@@ -56,7 +56,7 @@ export const Otp = ({ route }) => {
     setLoading(true);
 
     try {
-      const response = await API.post("/validate_otp", { email, otp, clusterCode });
+      const response = await API.post("/validate_otp", { email, otp, clustersCode: clusterCode });
 
       Alert.alert("Success", response.data.message, [
         {
