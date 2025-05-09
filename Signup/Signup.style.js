@@ -17,6 +17,8 @@ export const styles = StyleSheet.create({
     
   },
   logo: {
+    backgroundColor:'#fff'
+
     
     
   },

@@ -5,10 +5,14 @@ import { scale, verticalScale } from "react-native-size-matters";
 export const styles = StyleSheet.create({
   container: {
     flex:1,
+    backgroundColor:"#fff"
 
   
   },
-  logo:{
+  logo:{  
+      backgroundColor:'#fff'
+
+
 
   },
   otpfield:{

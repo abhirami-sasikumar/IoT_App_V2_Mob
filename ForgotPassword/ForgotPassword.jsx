@@ -81,7 +81,7 @@ useEffect(() => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={{ flex: 1 }}>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
-            <Logo />
+            <Logo style={{backgroundColor:"#fff"}}/>
             <View style={styles.container}>
               <Text style={styles.heading}>Forgot Password?</Text>
               <Text style={styles.label}>Enter your email address:</Text>

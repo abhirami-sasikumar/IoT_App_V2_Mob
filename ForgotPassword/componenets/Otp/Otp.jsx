@@ -92,7 +92,7 @@ useEffect(() => {
   return (
     <>
 
-      <View>
+      <View style={{backgroundColor:"#fff"}}>
         <Logo />
       </View>
       <View style={styles.container}>

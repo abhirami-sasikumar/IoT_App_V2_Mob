@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
                    // Optional background
   },
   logo:{
+    backgroundColor:'#fff'
     
 
 

@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { scale, verticalScale } from "react-native-size-matters";
+import { scale, verticalScale ,moderateVerticalScale } from "react-native-size-matters";
 
 const styles = StyleSheet.create({
   view: {
@@ -60,6 +60,23 @@ const styles = StyleSheet.create({
     fontSize: scale(20),
     fontFamily:"Roboto",
   },
+  privacyContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: moderateVerticalScale(25),
+    marginBottom: verticalScale(5),
+    flexWrap: "wrap",
+    marginTop:verticalScale(10)
+  },
+  privacyText: {
+    marginLeft: moderateVerticalScale(8),
+    flexShrink: 1
+  },
+  link: {
+    color: "blue",
+    textDecorationLine: "underline"
+  }
+  
 });
 
 export default styles;

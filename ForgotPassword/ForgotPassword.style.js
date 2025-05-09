@@ -1,5 +1,6 @@
 import { StyleSheet, Dimensions } from "react-native";
 import { scale, verticalScale } from "react-native-size-matters";
+import { Icfosslogo } from "../Components/Icfosslogo/Icfosslogo";
 
 const windowHeight = Dimensions.get("window").height;
 
@@ -63,5 +64,9 @@ export const styles = StyleSheet.create({
     
     
     
+  },
+  Icfosslogo:{
+    backgroundColor:"#fff"
+
   },
 });

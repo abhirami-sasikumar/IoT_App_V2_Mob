@@ -69,6 +69,7 @@ export const styles = StyleSheet.create({
     padding: scale(5),
   },
   footer: {
+    backgroundColor:"#fff"
     
   },
 
