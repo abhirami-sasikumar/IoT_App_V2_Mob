@@ -79,7 +79,7 @@ useEffect(() => {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1 ,backgroundColor:"#fff"}}>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
             <Logo style={{backgroundColor:"#fff"}}/>
             <View style={styles.container}>
