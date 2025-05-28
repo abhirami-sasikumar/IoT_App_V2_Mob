@@ -1,24 +1,27 @@
 import React, { useState } from "react";
-import { View, TextInput, TouchableOpacity, Text, Alert } from "react-native";
+import { View, TextInput, TouchableOpacity, Text, Alert, Linking } from "react-native";
 import API from "../../../Api"; // Import API
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation hook
 import styles from "./SignupFields.style"; // Import styles
 import Icon from "react-native-vector-icons/Feather";
-import { Linking } from "react-native";
 import Checkbox from 'expo-checkbox';
-// Install if not already
-
 
 const SignupField = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [clusterID, setClusterID] = useState(""); // Added Cluster ID input
-  const navigation = useNavigation(); // Initialize navigation hook
+  const [clusterID, setClusterID] = useState("");
+  const navigation = useNavigation();
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [agreeToPolicy, setAgreeToPolicy] = useState(false); // ✅ New checkbox state
+  const [agreeToPolicy, setAgreeToPolicy] = useState(false);
 
+  const validatePassword = (pwd) => {
+    const minLength = pwd.length >= 8;
+    const hasLetter = /[a-zA-Z]/.test(pwd);
+    const hasDigitOrSpecial = /[\d\W]/.test(pwd); // \W = non-word character (special chars)
+    return minLength && hasLetter && hasDigitOrSpecial;
+  };
 
   const handleSubmit = async () => {
     if (!agreeToPolicy) {
@@ -26,28 +29,40 @@ const SignupField = () => {
       return;
     }
 
-
     if (!name || !email || !password || !confirmPassword || !clusterID) {
       Alert.alert("Error", "All fields are required!");
       return;
     }
+
     if (password !== confirmPassword) {
       Alert.alert("Error", "Passwords do not match!");
       return;
     }
 
-    try {
-      const response = await API.post("/signup", { name, email, password, clustersCode: clusterID });
-      Alert.alert("Success", "Signup successful! Check your email for OTP.");
+    if (!validatePassword(password)) {
+      Alert.alert(
+        "Weak Password",
+        "Password must be at least 8 characters long and include both letters and numbers or special characters."
+      );
+      return;
+    }
 
-      // Navigate to OTP screen, passing email as a parameter
+    try {
+      const response = await API.post("/signup", {
+        name,
+        email,
+        password,
+        clustersCode: clusterID,
+      });
+      Alert.alert("Success", "Signup successful! Check your email for OTP.");
       navigation.navigate("Otp", { email, clusterID });
     } catch (error) {
       Alert.alert("Signup Failed", error.response?.data?.message || "Please try again.");
     }
   };
+
   const openPrivacyPolicy = () => {
-    Linking.openURL("https://devapp.v2.openiot.in/api/policy"); // Replace with actual URL
+    Linking.openURL("https://devapp.v2.openiot.in/api/policy");
   };
 
   return (
@@ -106,13 +121,13 @@ const SignupField = () => {
           autoCorrect={false}
         />
       </View>
+
       <View style={styles.privacyContainer}>
         <Checkbox
           value={agreeToPolicy}
           onValueChange={setAgreeToPolicy}
           color={agreeToPolicy ? "#007bff" : undefined}
         />
-
         <Text style={styles.privacyText}>
           I agree to the{" "}
           <Text style={styles.link} onPress={openPrivacyPolicy}>
@@ -121,13 +136,11 @@ const SignupField = () => {
         </Text>
       </View>
 
-
       <View style={styles.button_view}>
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>Sign up</Text>
         </TouchableOpacity>
       </View>
-
     </>
   );
 };

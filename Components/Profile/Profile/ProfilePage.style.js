@@ -149,5 +149,22 @@ export const styles = StyleSheet.create({
     color: "red",
     fontWeight: "roboto",
 
-  }
+  },
+  footerWrapper: {
+    alignItems: "center",
+    marginTop: scale(10),
+    marginBottom: scale(0),
+  },
+  
+  versionText: {
+    color: "grey",
+    fontFamily: "Roboto",
+    fontSize: scale(10),
+    marginTop: scale(4),
+    marginBottom: scale(5),
+
+
+    textAlign: "center",
+  },
+  
 });

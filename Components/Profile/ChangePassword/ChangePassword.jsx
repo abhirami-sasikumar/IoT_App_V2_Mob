@@ -10,7 +10,7 @@ import {
   Alert,
   ScrollView,
   Keyboard,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Footer from "../../Footer/Footer";
@@ -43,25 +43,24 @@ const ChangePassword = () => {
     };
   }, []);
 
-  // Fetch user data from AsyncStorage and check validity
   const getUserData = async () => {
     try {
       const userDataString = await AsyncStorage.getItem("@user");
-  
+
       if (!userDataString) {
         Alert.alert("Error", "User not logged in. Please log in again.");
         return null;
       }
-  
+
       const userData = JSON.parse(userDataString);
-  
-      console.log("Read from AsyncStorage in ChangePassword:", userData); // ✅ Correct placement
-  
+
+      console.log("Read from AsyncStorage in ChangePassword:", userData);
+
       if (!userData?.email || !userData?.userId) {
         Alert.alert("Error", "User info is incomplete. Please log in again.");
         return null;
       }
-  
+
       return userData;
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -69,8 +68,6 @@ const ChangePassword = () => {
       return null;
     }
   };
-  
-
 
   const handleChangePassword = async () => {
     if (!currentPassword || !newPassword || !confirmPassword) {
@@ -83,14 +80,34 @@ const ChangePassword = () => {
       return;
     }
 
+    // Password validation
+    if (newPassword.length < 8) {
+      Alert.alert("Error", "Password must be at least 8 characters long.");
+      return;
+    }
+
+    const hasLetter = /[A-Za-z]/.test(newPassword);
+    const hasDigit = /\d/.test(newPassword);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(newPassword);
+
+    if (
+      !(hasLetter && (hasDigit || hasSpecialChar)) ||
+      /^[A-Za-z]+$/.test(newPassword) ||
+      /^\d+$/.test(newPassword)
+    ) {
+      Alert.alert(
+        "Error",
+        "Password must contain a mix of letters and digits or special characters."
+      );
+      return;
+    }
+
     try {
       const userData = await getUserData();
+      if (!userData) return;
 
-      if (!userData) return; // If user data is invalid, return early
+      const { userId } = userData;
 
-      const { email, userId } = userData;
-
-      // Proceed with the password change request
       const response = await API.post(`/change_password/${userId}`, {
         currentPassword,
         newPassword,
@@ -112,16 +129,12 @@ const ChangePassword = () => {
   };
 
   return (
-    
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : undefined}
       style={styles.container}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView
-          contentContainerStyle={styles.scrollView}
-          keyboardShouldPersistTaps="handled"
-        >
+        <ScrollView contentContainerStyle={styles.scrollView} keyboardShouldPersistTaps="handled">
           <Text style={styles.header}>Change Password</Text>
 
           <View style={styles.inputContainer}>
@@ -132,15 +145,8 @@ const ChangePassword = () => {
               value={currentPassword}
               onChangeText={setCurrentPassword}
             />
-            <TouchableOpacity
-              style={styles.eyeIcon}
-              onPress={() => setShowCurrent(!showCurrent)}
-            >
-              <Ionicons
-                name={showCurrent ? "eye" : "eye-off"} // Corrected icon logic
-                size={22}
-                color="#999"
-              />
+            <TouchableOpacity style={styles.eyeIcon} onPress={() => setShowCurrent(!showCurrent)}>
+              <Ionicons name={showCurrent ? "eye" : "eye-off"} size={22} color="#999" />
             </TouchableOpacity>
           </View>
 
@@ -152,15 +158,8 @@ const ChangePassword = () => {
               value={newPassword}
               onChangeText={setNewPassword}
             />
-            <TouchableOpacity
-              style={styles.eyeIcon}
-              onPress={() => setShowNew(!showNew)}
-            >
-              <Ionicons
-                name={showNew ? "eye" : "eye-off"} // Corrected icon logic
-                size={22}
-                color="#999"
-              />
+            <TouchableOpacity style={styles.eyeIcon} onPress={() => setShowNew(!showNew)}>
+              <Ionicons name={showNew ? "eye" : "eye-off"} size={22} color="#999" />
             </TouchableOpacity>
           </View>
 
@@ -172,15 +171,8 @@ const ChangePassword = () => {
               value={confirmPassword}
               onChangeText={setConfirmPassword}
             />
-            <TouchableOpacity
-              style={styles.eyeIcon}
-              onPress={() => setShowConfirm(!showConfirm)}
-            >
-              <Ionicons
-                name={showConfirm ? "eye" : "eye-off"} // Corrected icon logic
-                size={22}
-                color="#999"
-              />
+            <TouchableOpacity style={styles.eyeIcon} onPress={() => setShowConfirm(!showConfirm)}>
+              <Ionicons name={showConfirm ? "eye" : "eye-off"} size={22} color="#999" />
             </TouchableOpacity>
           </View>
 
@@ -192,7 +184,6 @@ const ChangePassword = () => {
 
       {!isKeyboardVisible && <Footer />}
     </KeyboardAvoidingView>
-    
   );
 };
 

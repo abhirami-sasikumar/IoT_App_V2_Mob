@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, Alert,keyboardVisible, Keyboard,TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Alert,
+  Keyboard,
+  TouchableOpacity,
+} from "react-native";
 import { styles } from "./Otp.style";
 import { Icfosslogo } from "../../../Components/Icfosslogo/Icfosslogo";
 import * as ScreenOrientation from "expo-screen-orientation";
@@ -7,12 +14,8 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Feather";
 import SafeScreen from "../../../Components/SafeArea/SafeArea";
 
-
-
 import Logo from "../../../Components/Logo/Logo";
 import API from "../../../Api";
-
-
 
 const ResetOtp = () => {
   useEffect(() => {
@@ -24,39 +27,44 @@ const ResetOtp = () => {
       ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
     };
   }, []);
-  
 
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-
   const [keyboardVisible, setKeyboardVisible] = useState(false);
-
-useEffect(() => {
-  const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
-    setKeyboardVisible(true);
-  });
-  const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-    setKeyboardVisible(false);
-  });
-
-  return () => {
-    showSubscription.remove();
-    hideSubscription.remove();
-  };
-}, []);
-
 
   const route = useRoute();
   const nav = useNavigation();
   const email = route?.params?.email || "";
 
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardVisible(true);
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardVisible(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
+
   const handleResetPassword = async () => {
     if (!otp || !newPassword || !confirmPassword) {
       Alert.alert("Error", "Please fill out all fields.");
+      return;
+    }
+
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*[\d\W]).{8,}$/;
+    if (!passwordRegex.test(newPassword)) {
+      Alert.alert(
+        "Error",
+        "Password must be at least 8 characters long and contain at least one letter and one number or special character."
+      );
       return;
     }
 
@@ -91,8 +99,7 @@ useEffect(() => {
 
   return (
     <>
-
-      <View style={{backgroundColor:"#fff"}}>
+      <View style={{ backgroundColor: "#fff" }}>
         <Logo />
       </View>
       <View style={styles.container}>
@@ -150,14 +157,12 @@ useEffect(() => {
           <Text style={styles.buttonText}>Reset Password</Text>
         </TouchableOpacity>
       </View>
+
       {!keyboardVisible && (
         <View style={styles.icfosslogo}>
           <Icfosslogo />
         </View>
       )}
-
-
-
     </>
   );
 };

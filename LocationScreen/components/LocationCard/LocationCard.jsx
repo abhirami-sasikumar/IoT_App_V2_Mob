@@ -3,7 +3,6 @@ import { Text, Image, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { styles } from "./LocationCard.style";
 import chartIcon from "../../../assets/chart.png";
-import moment from "moment";  // Import moment for date formatting
 
 const LocationCard = ({
   LocationName,
@@ -13,7 +12,7 @@ const LocationCard = ({
   hideDevice,
   clusterId,
   parameterName,
-  time, // Include time here as prop
+  time, // Use directly from props without formatting
 }) => {
   const navigation = useNavigation();
 
@@ -27,9 +26,6 @@ const LocationCard = ({
     }
   };
 
-  // Show only the time, e.g., "5:33 AM"
-  const formattedTime = time ? moment(time).format("h:mm A") : "N/A";
-
   const displayValue = hideDevice ? "Under Maintenance" : Value;
 
   // Conditional styling based on hideDevice or isChart
@@ -37,13 +33,17 @@ const LocationCard = ({
 
   return (
     <View style={styles.card}>
-      <Text style={styles.headText} numberOfLines={1} ellipsizeMode="tail" adjustsFontSizeToFit={true}>{LocationName}</Text>
+      <Text
+        style={styles.headText}
+        numberOfLines={1}
+        ellipsizeMode="tail"
+        adjustsFontSizeToFit={true}
+      >
+        {LocationName}
+      </Text>
       <View style={styles.line} />
 
       <View style={[styles.bottomRow, centerAlignStyle]}>
-        {/* Value & Measurement Column */}
-        
-
         <View style={styles.valueContainer}>
           <Text
             style={[styles.value, hideDevice && styles.maintenanceText]}
@@ -53,18 +53,25 @@ const LocationCard = ({
             {displayValue}
           </Text>
 
-
           {!hideDevice && (
-            <Text style={styles.measurementText} numberOfLines={1} ellipsizeMode="tail">{Measurement}</Text>
+            <Text
+              style={styles.measurementText}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              {Measurement}
+            </Text>
           )}
         </View>
 
-        {/* Chart Icon Column */}
         {isChart && !hideDevice && (
           <View style={styles.chart}>
             <TouchableOpacity onPress={handleChartPress}>
               <View style={styles.chartIconContainer}>
-                <Image source={chartIcon} style={[styles.chartIcon, { tintColor: 'white' }]} />
+                <Image
+                  source={chartIcon}
+                  style={[styles.chartIcon, { tintColor: "white" }]}
+                />
               </View>
             </TouchableOpacity>
           </View>
@@ -73,13 +80,10 @@ const LocationCard = ({
 
       {/* Time Display */}
       {!hideDevice && time && (
-
         <View style={styles.timeContainer}>
           <Text style={styles.updatedText}>Last updated :</Text>
-
-          <Text style={styles.timeText}>{formattedTime}</Text>
+          <Text style={styles.timeText}>{time}</Text>
         </View>
-
       )}
     </View>
   );
