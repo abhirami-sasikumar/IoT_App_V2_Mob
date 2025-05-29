@@ -40,8 +40,8 @@ const Location = () => {
 
             return {
               ...location,
-              latestValue: latestValue.value ?? "N/A",
-              time: latestValue.time ?? "N/A",
+              latestValue: latestValue.value ?? "Under Maintenance",
+              time: latestValue.time ?? "Under Maintenance",
               unit,
               isChart,
               hideDevice,
