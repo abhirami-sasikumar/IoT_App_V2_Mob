@@ -79,12 +79,16 @@ const LocationCard = ({
       </View>
 
       {/* Time Display */}
+      {/* Time Display */}
       {!hideDevice && time && (
         <View style={styles.timeContainer}>
           <Text style={styles.updatedText}>Last updated :</Text>
-          <Text style={styles.timeText}>{time}</Text>
+          <Text style={styles.timeText}>
+            {new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          </Text>
         </View>
       )}
+
     </View>
   );
 };

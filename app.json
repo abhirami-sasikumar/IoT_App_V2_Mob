@@ -20,7 +20,7 @@
         "foregroundImage": "./assets/icon1.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.alameen1981eas --version.openiot"
+      "package": "com.abhirami_sasikumar.openiot"
     },
     "web": {
       "favicon": "./assets/favicon.png"
