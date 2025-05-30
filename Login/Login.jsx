@@ -56,7 +56,7 @@ const getUser = async () => {
       
       await AsyncStorage.setItem("@user", JSON.stringify(updatedUser));
       setUser(updatedUser);
-      console.log("Storing user in AsyncStorage:", updatedUser);
+      // console.log("Storing user in AsyncStorage:", updatedUser);
 
       
       nav.replace("Clusters");

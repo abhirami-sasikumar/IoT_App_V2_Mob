@@ -47,7 +47,7 @@ const Cluster = () => {
     // Set interval for polling
     const interval = setInterval(() => {
       fetchClusters();
-    }, 5000); // fetch every 5 seconds
+    }, 900000); // fetch every 5 seconds
 
     // Cleanup interval and lock orientation on unmount
     return () => {

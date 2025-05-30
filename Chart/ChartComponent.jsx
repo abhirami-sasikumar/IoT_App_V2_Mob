@@ -1,3 +1,4 @@
+// ...all imports remain the same
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -21,6 +22,7 @@ const ChartComponent = () => {
   const [min, setMin] = useState({ value: 0, time: "" });
   const [max, setMax] = useState({ value: 0, time: "" });
   const [unit, setUnit] = useState("");
+  const [total, setTotal] = useState(0);
   const [htmlContent, setHtmlContent] = useState("");
 
   useEffect(() => {
@@ -52,15 +54,25 @@ const ChartComponent = () => {
 
           let minEntry = values[0];
           let maxEntry = values[0];
+          let sum = 0;
 
           values.forEach((item) => {
             if (item.value < minEntry.value) minEntry = item;
             if (item.value > maxEntry.value) maxEntry = item;
+            sum += item.value;
           });
 
           setMin({ value: minEntry.value, time: minEntry.time });
           setMax({ value: maxEntry.value, time: maxEntry.time });
           setUnit(unit);
+
+          if (parameterName === "Rainfall") {
+            const totalStr = sum.toString();
+            const truncated =
+              totalStr.includes(".") ? totalStr.split(".")[0] + "." + totalStr.split(".")[1][0] : totalStr;
+            setTotal(truncated);
+          }
+          
 
           const chartHtml = generateHtmlContent(values, parameterName, unit);
           setHtmlContent(chartHtml);
@@ -129,7 +141,7 @@ const ChartComponent = () => {
                   },
                   y: {
                     title: { display: true, text: '${name} (${unit})' },
-                    min: 0 // This ensures the y-axis starts from zero
+                    min: 0
                   }
                 },
                 plugins: {
@@ -146,43 +158,53 @@ const ChartComponent = () => {
 
   return (
     <SafeScreen>
-    <View style={{ flex: 1 }}>
-      {loading ? (
-        <Loading />
-      ) : (
-        <>
-          <View style={styles.headerContainer}>
-            <TouchableOpacity onPress={() => nav.goBack()}>
-              <Image source={backArrow} style={styles.backArrow} />
-            </TouchableOpacity>
-           
-            <View style={styles.headerTextContainer}>
-              <Text style={styles.smallHeaderText}>{locationName} - {parameterName}</Text>
+      <View style={{ flex: 1 }}>
+        {loading ? (
+          <Loading />
+        ) : (
+          <>
+            <View style={styles.headerContainer}>
+              <TouchableOpacity onPress={() => nav.goBack()}>
+                <Image source={backArrow} style={styles.backArrow} />
+              </TouchableOpacity>
+              <View style={styles.headerTextContainer}>
+                <Text style={styles.smallHeaderText}>
+                  {locationName} - {parameterName}
+                </Text>
+              </View>
+              <DropDown time={time} setTime={setTime} disable={disable} />
             </View>
-            <DropDown time={time} setTime={setTime} disable={disable} />
-          </View>
-          <WebView
-            style={{ flex: 1 }}
-            originWhitelist={["*"]}
-            source={{ html: htmlContent }}
-          />
-          <View style={styles.rowContainer}>
-            <View style={styles.columnMin}>
-              <Text style={styles.columnText}>Min: {min.value} {unit}</Text>
-              <Text style={styles.columnTextSmall}>
-                {new Date(min.time).toLocaleString()}
-              </Text>
+
+            <WebView
+              style={{ flex: 1 }}
+              originWhitelist={["*"]}
+              source={{ html: htmlContent }}
+            />
+
+            <View style={styles.rowContainer}>
+              <View style={styles.columnMin}>
+                <Text style={styles.columnText}>Min: {min.value} {unit}</Text>
+                <Text style={styles.columnTextSmall}>
+                  {new Date(min.time).toLocaleString()}
+                </Text>
+              </View>
+
+              <View style={styles.columnMax}>
+                <Text style={styles.columnText}>Max: {max.value} {unit}</Text>
+                <Text style={styles.columnTextSmall}>
+                  {new Date(max.time).toLocaleString()}
+                </Text>
+              </View>
+
+              {parameterName === "Rainfall" && (
+                <View style={styles.columnMin}>
+                  <Text style={styles.columnText}>Total: {total} {unit}</Text>
+                </View>
+              )}
             </View>
-            <View style={styles.columnMax}>
-              <Text style={styles.columnText}>Max: {max.value} {unit}</Text>
-              <Text style={styles.columnTextSmall}>
-                {new Date(max.time).toLocaleString()}
-              </Text>
-            </View>
-          </View>
-        </>
-      )}
-    </View>
+          </>
+        )}
+      </View>
     </SafeScreen>
   );
 };
@@ -196,24 +218,7 @@ const styles = StyleSheet.create({
   backArrow: {
     width: verticalScale(24),
     height: scale(24),
-    tintColor: '#810541'
-  },
-  location:{
-    marginLeft:moderateVerticalScale(),
-    alignItems:"center"
-
-  },
-  locationtext:{
-    flex:1,
-    
-    alignItems:"center",
-    color: "#810541",
-    fontSize: verticalScale(19),
-    fontFamily: "Roboto",
-
-
-
-
+    tintColor: "#810541",
   },
   headerTextContainer: {
     flex: 1,

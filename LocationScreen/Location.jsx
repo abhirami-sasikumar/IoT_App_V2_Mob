@@ -32,7 +32,7 @@ const Location = () => {
               parameterName,
               location: location.name,
             });
-
+             console.log(clusterId,parameterName,location.name)
             const latestValue = latestValueResponse.data?.data?.latestValue || {};
             const unit = latestValueResponse.data?.data?.unit || "";
             const isChart = latestValueResponse.data?.data?.isChart ?? false;
@@ -73,12 +73,14 @@ const Location = () => {
   useEffect(() => {
     let interval;
 
+  console.log("Parameter Name:", parameterName); 
+
     if (clusterId && parameterName) {
       fetchLocations(); // initial load
 
       interval = setInterval(() => {
         fetchLocations();
-      }, 5000); // refresh every 5 seconds
+      }, 900000); // 15mins
     } else {
       console.error("Missing clusterId or parameterName in route params.");
       setError("Missing cluster or parameter info.");
@@ -93,9 +95,10 @@ const Location = () => {
   return (
     <SafeScreen>
       <View style={styles.screen}>
-        <View style={styles.header1}>
-          <Header title={parameterName || "Locations"} />
-        </View>
+      <View style={styles.header1}>
+  <Header title={parameterName === "Rainfall" ? "Rainfall [ last 24 h ]" : (parameterName || "Locations")} />
+</View>
+
 
         {loading ? (
           <Loading />

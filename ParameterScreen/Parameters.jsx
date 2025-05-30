@@ -41,7 +41,7 @@ const Parameters = () => {
 
     const interval = setInterval(() => {
       fetchParameters();
-    }, 5000); // fetch every 5 seconds
+    }, 900000); // 15mins
 
     return () => {
       clearInterval(interval); // cleanup on unmount

@@ -35,7 +35,8 @@
     "expo-checkbox": "~4.0.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "@types/react": "~18.3.12"
   },
   "private": true
 }
