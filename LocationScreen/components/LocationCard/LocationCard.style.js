@@ -37,55 +37,46 @@ export const styles = StyleSheet.create({
   bottomRow: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
     width: "100%",
     paddingHorizontal: scale(10),
-    flex:1
-
-    
+    flex: 1,
   },
+
   valueContainer: {
-
-    flexDirection: "row", // changed to column
-    justifyContent: "center",
-
-
+    flex: 3, // ensures it takes most of the space
     alignItems: "center",
-    flex: 3,
-    
-
-
+    justifyContent: "center",
+    paddingRight: scale(5),
   },
-  value: {
 
-    fontSize: scale(23),
+  value: {
+    fontSize: scale(22),
     fontWeight: "bold",
     color: "#810541",
     fontFamily: "Roboto",
-    justifyContent: "center",
-    
-
-     // or "monospace"
-    
-
-
-    
-
+    textAlign: "center",
+    flexShrink: 1,
+    width: "100%",
   },
+  
+
   measurementText: {
-    fontSize: scale(20),
+    fontSize: scale(18),
     color: "#810541",
     fontWeight: "bold",
-    justifyContent: "center",
-    fontFamily:"Roboto",
-    marginTop:verticalScale(2)
-
-
+    textAlign: "center",
+    fontFamily: "Roboto",
+    flexShrink: 1,
+    width: "100%",
   },
+
   chart: {
     flex: 1,
     alignItems: "flex-end",
+    justifyContent: "center",
   },
+
   chartIconContainer: {
     width: scale(20),
     height: verticalScale(20),

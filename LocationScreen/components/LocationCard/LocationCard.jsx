@@ -42,27 +42,21 @@ const LocationCard = ({
         {LocationName}
       </Text>
       <View style={styles.line} />
-
       <View style={[styles.bottomRow, centerAlignStyle]}>
         <View style={styles.valueContainer}>
           <Text
-            style={[styles.value, hideDevice && styles.maintenanceText]}
+            style={[
+              styles.value,
+              hideDevice && styles.maintenanceText
+            ]}
             numberOfLines={1}
-            ellipsizeMode={hideDevice ? "clip" : "tail"}
+            adjustsFontSizeToFit
+            ellipsizeMode="tail"
           >
-            {displayValue}
+            {`${displayValue}${!hideDevice && Measurement ? ` ${Measurement}` : ""}`}
           </Text>
-
-          {!hideDevice && (
-            <Text
-              style={styles.measurementText}
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              {Measurement}
-            </Text>
-          )}
         </View>
+
 
         {isChart && !hideDevice && (
           <View style={styles.chart}>
@@ -77,6 +71,7 @@ const LocationCard = ({
           </View>
         )}
       </View>
+
 
       {/* Time Display */}
       {/* Time Display */}

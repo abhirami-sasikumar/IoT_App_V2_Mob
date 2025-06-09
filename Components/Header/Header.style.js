@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     height: verticalScale(40),
     paddingHorizontal: scale(10),
+    backgroundColor:"dev"
     
     
     

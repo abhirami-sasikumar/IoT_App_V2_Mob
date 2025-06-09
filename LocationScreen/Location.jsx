@@ -47,7 +47,7 @@ const Location = () => {
               hideDevice,
             };
           } catch (err) {
-            console.error(`Error fetching latest value for ${location.name}:`, err.message);
+             console.error(`Error fetching latest value for ${location.name}:`, err.message);
             return {
               ...location,
               latestValue: "N/A",
