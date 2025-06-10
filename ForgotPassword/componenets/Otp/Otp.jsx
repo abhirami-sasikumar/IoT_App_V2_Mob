@@ -100,7 +100,7 @@ const ResetOtp = () => {
   return (
     <>
       <View style={{ backgroundColor: "#fff" }}>
-        <Logo />
+        <Logo style={{ backgroundColor: "#fff" }}/>
       </View>
       <View style={styles.container}>
         <Text style={styles.heading}>Reset Your Password</Text>
@@ -160,7 +160,7 @@ const ResetOtp = () => {
 
       {!keyboardVisible && (
         <View style={styles.icfosslogo}>
-          <Icfosslogo />
+          <Icfosslogo style={{ backgroundColor: "#fff" }}/>
         </View>
       )}
     </>
