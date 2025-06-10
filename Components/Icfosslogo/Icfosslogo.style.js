@@ -21,5 +21,6 @@ export const styles = StyleSheet.create({
   
     width: scale(110),
     height: verticalScale(55),
+    backgroundColor:"fff",
   },
 });

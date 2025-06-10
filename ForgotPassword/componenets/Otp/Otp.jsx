@@ -98,7 +98,7 @@ const ResetOtp = () => {
   };
 
   return (
-    <>
+    <View style={{ backgroundColor: "#fff" }}>
       <View style={{ backgroundColor: "#fff" }}>
         <Logo style={{ backgroundColor: "#fff" }}/>
       </View>
@@ -163,7 +163,7 @@ const ResetOtp = () => {
           <Icfosslogo style={{ backgroundColor: "#fff" }}/>
         </View>
       )}
-    </>
+    </View>
   );
 };
 
