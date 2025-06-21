@@ -17,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon1.png",
+        "foregroundImage": "./assets/newicon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.abhirami_sasikumar.openiot"
