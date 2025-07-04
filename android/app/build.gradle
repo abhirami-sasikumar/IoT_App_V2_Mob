@@ -86,9 +86,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.abhirami_sasikumar.openiot1'
+    namespace 'com.abhirami_sasikumar.openiot'
     defaultConfig {
-        applicationId 'com.abhirami_sasikumar.openiot1'
+        applicationId 'com.abhirami_sasikumar.openiot'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
