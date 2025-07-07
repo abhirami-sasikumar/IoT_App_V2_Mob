@@ -4,7 +4,7 @@
     "slug": "open-iot",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon1.png",
+    "icon": "./assets/newicon1.png.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
