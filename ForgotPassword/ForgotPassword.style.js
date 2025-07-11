@@ -65,8 +65,5 @@ export const styles = StyleSheet.create({
     
     
   },
-  icfosslogo:{
-    backgroundColor:"#fff"
-
-  },
+ 
 });

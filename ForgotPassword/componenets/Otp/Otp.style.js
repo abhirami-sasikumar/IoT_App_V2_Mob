@@ -69,9 +69,12 @@ export const styles = StyleSheet.create({
   eyeIcon: {
     padding: scale(5),
   },
-  footer: {
-    backgroundColor:"#fff"
+
     
+  
+   icfosslogo:{
+    backgroundColor:"#fff"
+
   },
 
 });

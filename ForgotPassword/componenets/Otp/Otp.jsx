@@ -5,6 +5,9 @@ import {
   TextInput,
   Alert,
   Keyboard,
+  Platform,
+  KeyboardAvoidingView,
+  keyboardVisible,
   TouchableOpacity,
 } from "react-native";
 import { styles } from "./Otp.style";
@@ -52,6 +55,7 @@ const ResetOtp = () => {
       hideSubscription.remove();
     };
   }, []);
+ 
 
   const handleResetPassword = async () => {
     if (!otp || !newPassword || !confirmPassword) {
@@ -98,6 +102,11 @@ const ResetOtp = () => {
   };
 
   return (
+    <>
+     <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
+        >
     <View style={{ backgroundColor: "#fff" }}>
       <View style={{ backgroundColor: "#fff" }}>
         <Logo style={{ backgroundColor: "#fff" }}/>
@@ -157,13 +166,17 @@ const ResetOtp = () => {
           <Text style={styles.buttonText}>Reset Password</Text>
         </TouchableOpacity>
       </View>
-
-      {!keyboardVisible && (
+      </View>
+          
+        </KeyboardAvoidingView>
+          {!keyboardVisible && (
         <View style={styles.icfosslogo}>
-          <Icfosslogo style={{ backgroundColor: "#fff" }}/>
+          <Icfosslogo  style={{backgroundColor: "#fff" }}/>
         </View>
       )}
-    </View>
+
+     </> 
+    
   );
 };
 

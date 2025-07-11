@@ -59,6 +59,7 @@ export const styles = StyleSheet.create({
 
   },
   UserName:{
+    marginTop:verticalScale(8),
     top:verticalScale(160),
     position:"absolute",
 
