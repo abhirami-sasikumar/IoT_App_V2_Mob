@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     marginBottom: verticalScale(15),
     textAlign: "center",
     color: "#810541",
-    backgroundColor:"#fff"
+    
   },
   label: {
     fontSize: scale(18),

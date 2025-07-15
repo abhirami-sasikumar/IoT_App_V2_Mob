@@ -108,7 +108,7 @@ useEffect(() => {
     </KeyboardAvoidingView>
     {!keyboardVisible && (
   <View style={styles.icfosslogo}>
-    <Icfosslogo  style={{backgroundColor: "#fff" }}/>
+    <Icfosslogo  />
   </View>
 )}
 
