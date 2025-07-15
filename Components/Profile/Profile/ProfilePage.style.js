@@ -59,9 +59,9 @@ export const styles = StyleSheet.create({
 
   },
   UserName:{
-    marginTop:verticalScale(8),
-    top:verticalScale(160),
-    position:"absolute",
+    marginTop:verticalScale(5),
+    
+    alignItems: "center",
 
   },
   Username:{
