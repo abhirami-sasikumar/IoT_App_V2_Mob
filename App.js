@@ -24,6 +24,7 @@ import ProfilePage from './Components/Profile/Profile/ProfilePage.jsx';
 import ChangePassword from "./Components/Profile/ChangePassword/ChangePassword.jsx";
 import Logout from "./Components/Profile/Logout/Logout.jsx";
 import ClusterRequest from "./Components/Profile/ClusterRequest/ClusterRequest.jsx";
+import About from './Components/Profile/About/About';
 import DeleteAccount from "./Components/Profile/DeleteAccount/DeleteAccount.jsx";
 import { SafeAreaView } from 'react-native';
 
@@ -79,6 +80,7 @@ export default function App() {
                 <Stack.Screen name="ClusterRequest" component={ClusterRequest} />
                 <Stack.Screen name="DeleteAccount" component={DeleteAccount} />
                 <Stack.Screen name="Logout" component={Logout} />
+                <Stack.Screen name="About" component={About}/>
               </Stack.Navigator>
 
           </SafeAreaProvider>

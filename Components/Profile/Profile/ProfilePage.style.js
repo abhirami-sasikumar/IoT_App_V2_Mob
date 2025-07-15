@@ -100,26 +100,23 @@ export const styles = StyleSheet.create({
   },
  
 
-  menuWrapper: {
-    
-    
-    
-    backgroundColor: "white",
-    paddingTop: moderateScale(5),
-    margin: moderateScale(5),
-    borderRadius: 15,
-    elevation: 3, // Shadow for Android
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    width: "95%",
-    alignSelf: "center",
-    height: verticalScale(160),
-    
-    marginTop: verticalScale(160),
-    width: "95%",
-  },
+menuWrapper: {
+  backgroundColor: "white",
+  paddingTop: moderateScale(5),
+  margin: moderateScale(5),
+  borderRadius: 15,
+  elevation: 3, // Shadow for Android
+  shadowColor: "#000",
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.1,
+  shadowRadius: 5,
+  width: "95%",
+  alignSelf: "center",
+  marginTop: verticalScale(160),
+
+  // ✅ Removed fixed height
+},
+
 
   menuButton: {
     flexDirection: "row",

@@ -82,37 +82,46 @@ const ProfilePage = ({ navigation }) => {
 
           {/* Menu Buttons */}
           <View style={styles.menuWrapper}>
-            <TouchableOpacity
-              style={styles.menuButton}
-              onPress={() => navigation.navigate("ClusterRequest")}
-            >
-              <MaterialIcons name="send" size={scale(15)} color="#c0c0c0" />
-              <Text style={styles.menuText}>Cluster Request</Text>
-            </TouchableOpacity>
+           <TouchableOpacity
+  style={styles.menuButton}
+  onPress={() => navigation.navigate("ClusterRequest")}
+>
+  <MaterialIcons name="send" size={scale(15)} color="#c0c0c0" />
+  <Text style={styles.menuText}>Cluster Request</Text>
+</TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.menuButton}
-              onPress={() => navigation.navigate("ChangePassword")}
-            >
-              <Ionicons name="lock-closed" size={scale(15)} color="#c0c0c0" />
-              <Text style={styles.menuText}>Change Password</Text>
-            </TouchableOpacity>
+<TouchableOpacity
+  style={styles.menuButton}
+  onPress={() => navigation.navigate("ChangePassword")}
+>
+  <Ionicons name="lock-closed" size={scale(15)} color="#c0c0c0" />
+  <Text style={styles.menuText}>Change Password</Text>
+</TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.menuButton}
-              onPress={() => navigation.navigate("Logout")}
-            >
-              <Ionicons name="power" size={scale(15)} color="#c0c0c0" />
-              <Text style={styles.menuText}>Logout</Text>
-            </TouchableOpacity>
+<TouchableOpacity
+  style={styles.menuButton}
+  onPress={() => navigation.navigate("Logout")}
+>
+  <Ionicons name="power" size={scale(15)} color="#c0c0c0" />
+  <Text style={styles.menuText}>Logout</Text>
+</TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.Deletebutton}
-              onPress={() => navigation.navigate("DeleteAccount")}
-            >
-              <MaterialIcons name="delete" size={scale(15)} color="#c0c0c0" />
-              <Text style={styles.Delete}>Delete Account</Text>
-            </TouchableOpacity>
+<TouchableOpacity
+  style={styles.menuButton}
+  onPress={() => navigation.navigate("About")}
+>
+  <Ionicons name="information-circle-outline" size={scale(15)} color="#c0c0c0" />
+  <Text style={styles.menuText}>About</Text>
+</TouchableOpacity>
+
+<TouchableOpacity
+  style={styles.Deletebutton}
+  onPress={() => navigation.navigate("DeleteAccount")}
+>
+  <MaterialIcons name="delete" size={scale(15)} color="#c0c0c0" />
+  <Text style={styles.Delete}>Delete Account</Text>
+</TouchableOpacity>
+
           </View>
         </ScrollView>
         <View style={styles.footerWrapper}>
