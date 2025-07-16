@@ -20,7 +20,7 @@
         "foregroundImage": "./assets/newicon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.abhirami_sasikumar.openiot"
+      "package": "com.icfoss.iotapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -29,6 +29,7 @@
       "eas": {
         "projectId": "f99a90fc-ffab-4ca0-815b-689ec00a7f43"
       }
-    }
+    },
+    "owner": "icfoss"
   }
 }
