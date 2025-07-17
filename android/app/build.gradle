@@ -88,7 +88,7 @@ android {
 
     namespace 'com.abhirami_sasikumar.openiot'
     defaultConfig {
-        applicationId 'com.abhirami_sasikumar.openiot'
+        applicationId 'com.icfoss.iotapp'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

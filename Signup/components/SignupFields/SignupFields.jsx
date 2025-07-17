@@ -62,7 +62,7 @@ const SignupField = () => {
   };
 
   const openPrivacyPolicy = () => {
-    Linking.openURL("https://devapp.v2.openiot.in/api/policy");
+    Linking.openURL("https://app.openiot.in/api/privacy-policy");
   };
 
   return (
