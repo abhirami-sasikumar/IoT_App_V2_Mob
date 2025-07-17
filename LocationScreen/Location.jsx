@@ -9,7 +9,7 @@ import Loading from "../Components/Loading/Loading";
 import Footer from "../Components/Footer/Footer";
 import SafeScreen from "../Components/SafeArea/SafeArea";
 
-// Define the wind direction mapping here, outside the component
+// Define the wind direction mapping here,outside the component
 const windDirectionMap = {
   "North": "N",
   "North-Northeast": "NNE",
