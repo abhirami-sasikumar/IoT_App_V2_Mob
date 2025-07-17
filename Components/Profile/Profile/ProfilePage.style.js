@@ -59,7 +59,9 @@ export const styles = StyleSheet.create({
 
   },
   UserName:{
-    marginTop:verticalScale(5),
+     marginTop:verticalScale(8),
+    top:verticalScale(160),
+    position:"absolute",
     
     alignItems: "center",
 
@@ -67,7 +69,8 @@ export const styles = StyleSheet.create({
   Username:{
     fontWeight:"bold",
     fontSize:scale(15),
-    color:"#1e1e1e"
+    color:"#1e1e1e",
+    textAlign: "center", 
 
   },
   Card:{

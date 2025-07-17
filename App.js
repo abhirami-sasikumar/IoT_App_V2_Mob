@@ -26,6 +26,7 @@ import Logout from "./Components/Profile/Logout/Logout.jsx";
 import ClusterRequest from "./Components/Profile/ClusterRequest/ClusterRequest.jsx";
 import About from './Components/Profile/About/About';
 import DeleteAccount from "./Components/Profile/DeleteAccount/DeleteAccount.jsx";
+import UnderMaintenance from './Undermaintance/Undermaintance';
 import { SafeAreaView } from 'react-native';
 
 const Stack = createNativeStackNavigator();
@@ -51,6 +52,7 @@ export default function App() {
   };
 
   return (
+    
     <UserContext.Provider value={{ user, setUser }}>
       <StatusBar />
       {isFontLoaded && (
