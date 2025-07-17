@@ -1,4 +1,4 @@
-package com.abhirami_sasikumar.openiot
+package com.icfoss.iotapp
 
 import android.os.Build
 import android.os.Bundle
