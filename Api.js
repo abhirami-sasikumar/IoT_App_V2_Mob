@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const API = axios.create({
 
   // baseURL: "http://192.168.65.237:3000/api/app", 
-     baseURL: "https://app.openiot.in/api/app",
+     baseURL: "https://api.app.openiot.in/api/app",
 
     });
 

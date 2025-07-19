@@ -33,6 +33,8 @@ const SignupField = () => {
       Alert.alert("Error", "All fields are required!");
       return;
     }
+    
+  
 
     if (password !== confirmPassword) {
       Alert.alert("Error", "Passwords do not match!");
@@ -114,7 +116,7 @@ const SignupField = () => {
 
         <TextInput
           style={styles.input}
-          placeholder="Cluster ID"
+          placeholder="Cluster ID (Default ID :: ONIT)"
           value={clusterID}
           onChangeText={setClusterID}
           autoCapitalize="none"
