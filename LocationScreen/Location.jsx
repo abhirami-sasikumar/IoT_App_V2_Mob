@@ -9,7 +9,7 @@ import Loading from "../Components/Loading/Loading";
 import Footer from "../Components/Footer/Footer";
 import SafeScreen from "../Components/SafeArea/SafeArea";
 
-// Define the wind direction mapping here,outside the component
+// Define the wind direction mapping here, outside the component
 const windDirectionMap = {
   "North": "N",
   "North-Northeast": "NNE",
@@ -29,6 +29,12 @@ const windDirectionMap = {
   "North-Northwest": "NNW",
   "EastNorth": "EN",
   "EastNorth-Northeast": "ENNE"
+};
+
+// Define the pump status mapping
+const pumpStatusMap = {
+  "1": "ON",
+  "0": "OFF"
 };
 
 const Location = () => {
@@ -56,11 +62,17 @@ const Location = () => {
             const latestValueData = latestValueResponse.data?.data;
             let valueToDisplay = latestValueData?.latestValue?.value ?? "Under Maintenance";
 
-            // --- Apply Wind Direction Conversion Here ---
+            // --- Apply Wind Direction Conversion ---
             if (parameterName === "Wind Direction" && typeof valueToDisplay === 'string') {
               valueToDisplay = windDirectionMap[valueToDisplay] || valueToDisplay; // Convert or use original
             }
             // --- End of Wind Direction Conversion ---
+
+            // --- Apply Pump Status Conversion ---
+            if (parameterName === "Pump Status" && (valueToDisplay === 0 || valueToDisplay === 1)) {
+              valueToDisplay = pumpStatusMap[String(valueToDisplay)] || valueToDisplay; // Convert 0/1 to "OFF"/"ON"
+            }
+            // --- End of Pump Status Conversion ---
 
             const unit = latestValueData?.unit || "";
             const isChart = latestValueData?.isChart ?? false;
@@ -139,7 +151,7 @@ const Location = () => {
                   <LocationCard
                     key={index} // Consider using a unique ID from location data if available, instead of index
                     LocationName={location.name}
-                    Value={location.latestValue} // This will now be the converted value for Wind Direction
+                    Value={location.latestValue} // This will now be the converted value for Wind Direction or Pump Status
                     Measurement={location.unit}
                     isChart={location.isChart}
                     hideDevice={location.hideDevice}
