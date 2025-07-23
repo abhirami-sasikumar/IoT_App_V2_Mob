@@ -5,8 +5,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
 import { enableScreens } from 'react-native-screens';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, View, Alert, Linking } from 'react-native';
+import VersionCheck from 'react-native-version-check'; // ✅ added
 import API from './Api'; // Axios instance
+import Constants from 'expo-constants';
 
 // Enable screen optimization
 enableScreens();
@@ -21,7 +23,8 @@ import Login from './Login/Login';
 import Cluster from './ClusterScreen/Cluster';
 import Parameters from './ParameterScreen/Parameters';
 import LocationScreen from './LocationScreen/Location';
-import ChartComponent from './Chart/ChartComponent';
+import ChartComponent from './Chart/ChartComponent';import constants from 'expo-constants';
+
 import ForgotPassword from './ForgotPassword/ForgotPassword';
 import ResetOtp from './ForgotPassword/componenets/Otp/Otp';
 import ForgotAndReset from './Login/components/ForgotAndReset/ForgotAndReset.jsx';
@@ -59,34 +62,57 @@ export default function App() {
     },
   };
 
-  // Check backend maintenance status
- useEffect(() => {
-  const checkMaintenance = async () => {
-    try {
-      // console.log(" Checking maintenance status...");
-      const res = await API.get("/maintenance_status");
-      // console.log("API Response:", res.data);
+  // ✅ Version check function
+ const checkAppUpdate = async () => {
+  try {
+    const currentVersion = Constants.expoConfig.version;
+    const latestVersion = '1.0.5'; // Manually set or fetch from your server
 
-      if (res.data?.maintenance === true) {
-        setIsUnderMaintenance(true);
-        // console.log(" App is under maintenance.");
-      } else {
-        setIsUnderMaintenance(false);
-        // console.log(" App is available.");
-      }
-    } catch (err) {
-      // console.error(" Maintenance check failed:", err.message);
-      setIsUnderMaintenance(false); // fallback to normal app
-    } finally {
-      setLoading(false);
+    console.log('Current Version:', currentVersion);
+    console.log('Latest Version:', latestVersion);
+
+    if (currentVersion !== latestVersion) {
+      Alert.alert(
+        'Update Available',
+        `A new version (${latestVersion}) is available.`,
+        [
+          {
+            text: 'Update',
+            onPress: () => {
+              Linking.openURL('https://your-playstore-url'); // Replace this
+            },
+          },
+          { text: 'Later', style: 'cancel' },
+        ]
+      );
     }
-  };
+  } catch (err) {
+    console.warn('Version check failed:', err);
+  }
+};
 
-  checkMaintenance();
-}, []);
+  // ✅ Check backend maintenance and version update
+  useEffect(() => {
+    const checkMaintenance = async () => {
+      try {
+        const res = await API.get("/maintenance_status");
 
+        if (res.data?.maintenance === true) {
+          setIsUnderMaintenance(true);
+        } else {
+          setIsUnderMaintenance(false);
+          await checkAppUpdate(); // ✅ Check version only if not under maintenance
+        }
+      } catch (err) {
+        setIsUnderMaintenance(false); // fallback to normal app
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // While loading fonts or maintenance check
+    checkMaintenance();
+  }, []);
+
   if (!isFontLoaded || loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -95,12 +121,10 @@ export default function App() {
     );
   }
 
-  // Show maintenance screen if backend says so
   if (isUnderMaintenance) {
     return <UnderMaintenance />;
   }
 
-  // Normal app
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <StatusBar />
