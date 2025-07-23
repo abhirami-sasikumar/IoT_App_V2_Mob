@@ -101,8 +101,8 @@ const ChartComponent = () => {
         <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <script src="https://api.app.openiot.in/static/chart.js@4.4.1"></script>
-          <script src="https://api.app.openiot.in/static/chartjs-adapter-date-fns@3.0.0"></script>
+          <script src="https://app.openiot.in/static/chart.js@4.4.1"></script>
+          <script src="https://app.openiot.in/static/chartjs-adapter-date-fns@3.0.0"></script>
           <style>
             html, body { margin: 0; padding: 0; height: 100%; }
             canvas { width: 100% !important; height: 100% !important; display: block; }

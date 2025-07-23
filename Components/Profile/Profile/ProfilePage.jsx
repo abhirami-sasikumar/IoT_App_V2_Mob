@@ -8,6 +8,8 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  Alert,
+  Linking,
 } from "react-native";
 
 import { scale } from "react-native-size-matters";
@@ -18,13 +20,16 @@ import UserIcon from "../../../assets/usericon.png";
 import SafeScreen from "../../SafeArea/SafeArea";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Ionicons, Entypo, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
-import Loading from "../../Loading/Loading"; // Add this import
+import API from "../../../Api";
+import Constants from "expo-constants";
+import Loading from "../../Loading/Loading";
 
 const ProfilePage = ({ navigation }) => {
   const [user, setUser] = useState({ name: "", email: "" });
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
+  const [latestVersion, setLatestVersion] = useState("");
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -40,14 +45,25 @@ const ProfilePage = ({ navigation }) => {
       } catch (error) {
         console.error("Error fetching user data:", error);
       } finally {
-        setLoading(false); // Stop loading after data fetched
+        setLoading(false);
+      }
+    };
+
+    const checkAppUpdate = async () => {
+      try {
+        const res = await API.get("/get-version");
+        const latest = res.data.version;
+        setLatestVersion(latest);
+      } catch (error) {
+        console.warn("Version check failed:", error);
+        setLatestVersion("Unavailable");
       }
     };
 
     fetchUser();
+    checkAppUpdate();
   }, []);
 
-  // Show loading spinner until data is ready
   if (loading) {
     return <Loading />;
   }
@@ -82,56 +98,59 @@ const ProfilePage = ({ navigation }) => {
 
           {/* Menu Buttons */}
           <View style={styles.menuWrapper}>
-           <TouchableOpacity
-  style={styles.menuButton}
-  onPress={() => navigation.navigate("ClusterRequest")}
->
-  <MaterialIcons name="send" size={scale(15)} color="#c0c0c0" />
-  <Text style={styles.menuText}>Cluster Request</Text>
-</TouchableOpacity>
+            <TouchableOpacity
+              style={styles.menuButton}
+              onPress={() => navigation.navigate("ClusterRequest")}
+            >
+              <MaterialIcons name="send" size={scale(15)} color="#c0c0c0" />
+              <Text style={styles.menuText}>Cluster Request</Text>
+            </TouchableOpacity>
 
-<TouchableOpacity
-  style={styles.menuButton}
-  onPress={() => navigation.navigate("ChangePassword")}
->
-  <Ionicons name="lock-closed" size={scale(15)} color="#c0c0c0" />
-  <Text style={styles.menuText}>Change Password</Text>
-</TouchableOpacity>
+            <TouchableOpacity
+              style={styles.menuButton}
+              onPress={() => navigation.navigate("ChangePassword")}
+            >
+              <Ionicons name="lock-closed" size={scale(15)} color="#c0c0c0" />
+              <Text style={styles.menuText}>Change Password</Text>
+            </TouchableOpacity>
 
-<TouchableOpacity
-  style={styles.menuButton}
-  onPress={() => navigation.navigate("Logout")}
->
-  <Ionicons name="power" size={scale(15)} color="#c0c0c0" />
-  <Text style={styles.menuText}>Logout</Text>
-</TouchableOpacity>
+            <TouchableOpacity
+              style={styles.menuButton}
+              onPress={() => navigation.navigate("Logout")}
+            >
+              <Ionicons name="power" size={scale(15)} color="#c0c0c0" />
+              <Text style={styles.menuText}>Logout</Text>
+            </TouchableOpacity>
 
-<TouchableOpacity
-  style={styles.menuButton}
-  onPress={() => navigation.navigate("About")}
->
-  <Ionicons name="information-circle-outline" size={scale(15)} color="#c0c0c0" />
-  <Text style={styles.menuText}>About</Text>
-</TouchableOpacity>
+            <TouchableOpacity
+              style={styles.menuButton}
+              onPress={() => navigation.navigate("About")}
+            >
+              <Ionicons
+                name="information-circle-outline"
+                size={scale(15)}
+                color="#c0c0c0"
+              />
+              <Text style={styles.menuText}>About</Text>
+            </TouchableOpacity>
 
-<TouchableOpacity
-  style={styles.Deletebutton}
-  onPress={() => navigation.navigate("DeleteAccount")}
->
-  <MaterialIcons name="delete" size={scale(15)} color="#c0c0c0" />
-  <Text style={styles.Delete}>Delete Account</Text>
-</TouchableOpacity>
-
+            <TouchableOpacity
+              style={styles.Deletebutton}
+              onPress={() => navigation.navigate("DeleteAccount")}
+            >
+              <MaterialIcons name="delete" size={scale(15)} color="#c0c0c0" />
+              <Text style={styles.Delete}>Delete Account</Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
+
+        {/* Footer with version */}
         <View style={styles.footerWrapper}>
-          <Text style={styles.versionText}>Open IoT for android v1</Text>
+          <Text style={styles.versionText}>
+            Open IoT for android ({latestVersion})
+          </Text>
           <Footer />
-
         </View>
-
-
-
       </KeyboardAvoidingView>
     </SafeScreen>
   );

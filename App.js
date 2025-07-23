@@ -66,7 +66,12 @@ export default function App() {
  const checkAppUpdate = async () => {
   try {
     const currentVersion = Constants.expoConfig.version;
-    const latestVersion = '1.0.5'; // Manually set or fetch from your server
+const res = await API.get('/get-version'); 
+// console.log(res.data.version)// your server URL
+    
+
+    // 🆕 3. Extract latest version from the API
+    const latestVersion = res.data.version;
 
     console.log('Current Version:', currentVersion);
     console.log('Latest Version:', latestVersion);
@@ -79,7 +84,7 @@ export default function App() {
           {
             text: 'Update',
             onPress: () => {
-              Linking.openURL('https://your-playstore-url'); // Replace this
+              Linking.openURL('https://play.google.com/store/apps/details?id=com.icfoss.iotapp'); // Replace this
             },
           },
           { text: 'Later', style: 'cancel' },
