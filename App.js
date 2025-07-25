@@ -101,7 +101,6 @@ const res = await API.get('/get-version');
     const checkMaintenance = async () => {
       try {
         const res = await API.get("/maintenance_status");
-
         if (res.data?.maintenance === true) {
           setIsUnderMaintenance(true);
         } else {
@@ -115,8 +114,15 @@ const res = await API.get('/get-version');
       }
     };
 
-    checkMaintenance();
-  }, []);
+      // Initial check when the component mounts
+      checkMaintenance();
+
+      // Set up interval to fetch maintenance status every 5 seconds (5000 milliseconds)
+      const intervalId = setInterval(checkMaintenance, 5000);
+  
+      // Clean up the interval when the component unmounts
+      return () => clearInterval(intervalId);
+    }, []); // Empty dependency array means this effect runs once on mount and cleans up on unmou
 
   if (!isFontLoaded || loading) {
     return (
