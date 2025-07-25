@@ -10,7 +10,7 @@ const UnderMaintenance = () => {
       {/* WebView supports animated GIFs reliably */}
       <WebView
         originWhitelist={['*']}
-        source={{ html: '<html><body style="margin:0;padding:0;"><img src="https://devapp.v2.openiot.in/static/maintenance.gif" style="width:100%;height:100%;object-fit:contain" /></body></html>' }}
+        source={{ html: '<html><body style="margin:0;padding:0;"><img src="https://app.openiot.in/static/maintenance.gif" style="width:100%;height:100%;object-fit:contain" /></body></html>' }}
         style={styles.gif}
         javaScriptEnabled={true}
         domStorageEnabled={true}
