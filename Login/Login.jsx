@@ -3,6 +3,8 @@ import { View, keyboardVisible,KeyboardAvoidingView, Keyboard, Platform } from "
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+
 
 import SafeScreen from "../Components/SafeArea/SafeArea";
 import Logo from "../Components/Logo/Logo";
@@ -22,6 +24,8 @@ const Login = () => {
   const { setUser } = useContext(UserContext);
   const nav = useNavigation();
   const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const insets = useSafeAreaInsets(); // ✅ This line is required
+
 
 useEffect(() => {
   const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
@@ -86,7 +90,7 @@ const getUser = async () => {
 
   return (
 
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {loading ? (
         <Loading />
       ) : (
@@ -106,7 +110,9 @@ const getUser = async () => {
 
           </View>
           {!keyboardVisible && (
-            <View style={styles.icfosslogo}>
+            <View style={[styles.icfosslogo,
+              {paddingBottom: insets.bottom }
+            ]}>
               <Icfosslogo />
             </View>
           )}
@@ -117,7 +123,7 @@ const getUser = async () => {
 
         </>
       )}
-    </View>
+    </SafeAreaView>
 
   );
 };

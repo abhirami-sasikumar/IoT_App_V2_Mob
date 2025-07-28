@@ -1,54 +1,39 @@
 import { StyleSheet } from "react-native";
 import { scale, verticalScale } from "react-native-size-matters";
-import LoginField from "./components/Loginfield/Loginfield";
 
 export const styles = StyleSheet.create({
   container: {
-    flex:1,
-    backgroundColor:'#fff'
-    
-                   // Optional background
+    flex: 1,
+    backgroundColor: '#fff'
   },
-  logo:{
-    backgroundColor:'#fff'
-    
 
-
+  logo: {
+    backgroundColor: '#fff'
   },
-  loginfield:{
-    
-    
-    
 
-
-
+  loginfield: {
+    // You can add margin or padding here if needed
   },
-  forgotandreset:{
-    
-    
 
-
+  forgotandreset: {
+    // Optional styling
   },
-  register:{
-    flexGrow:1
-    
-    
 
-
+  register: {
+    flexGrow: 1
   },
-  icfosslogo:{
+
+  icfosslogo: {
     position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
     alignItems: "center",
-    backgroundColor: "#fff",
-    paddingBottom: verticalScale(),
+    justifyContent: "center",
+    backgroundColor: "#fff", // Slight off-white for contrast
     
+  
+    paddingVertical: verticalScale(),
     
-
   },
-
-
-
 });
