@@ -6,9 +6,9 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
 import { enableScreens } from 'react-native-screens';
 import { ActivityIndicator, View, Alert, Linking } from 'react-native';
-import VersionCheck from 'react-native-version-check'; // ✅ added
+// Removed: import VersionCheck from 'react-native-version-check'; // No longer used, using Constants.expoConfig.version
 import API from './Api'; // Axios instance
-import Constants from 'expo-constants';
+import Constants from 'expo-constants'; // Correct import for Constants
 
 // Enable screen optimization
 enableScreens();
@@ -23,7 +23,7 @@ import Login from './Login/Login';
 import Cluster from './ClusterScreen/Cluster';
 import Parameters from './ParameterScreen/Parameters';
 import LocationScreen from './LocationScreen/Location';
-import ChartComponent from './Chart/ChartComponent';import constants from 'expo-constants';
+import ChartComponent from './Chart/ChartComponent';
 
 import ForgotPassword from './ForgotPassword/ForgotPassword';
 import ResetOtp from './ForgotPassword/componenets/Otp/Otp';
@@ -62,67 +62,78 @@ export default function App() {
     },
   };
 
-  // ✅ Version check function
- const checkAppUpdate = async () => {
-  try {
-    const currentVersion = Constants.expoConfig.version;
-const res = await API.get('/get-version'); 
-// console.log(res.data.version)// your server URL
-    
+  // Version check function - This function will be called only once on app launch
+  const checkAppUpdate = async () => {
+    try {
+      const currentVersion = Constants.expoConfig.version;
+      const res = await API.get('/get-version');
+      const latestVersion = res.data.version;
 
-    // 🆕 3. Extract latest version from the API
-    const latestVersion = res.data.version;
+      console.log('Current Version:', currentVersion);
+      console.log('Latest Version:', latestVersion);
 
-    console.log('Current Version:', currentVersion);
-    console.log('Latest Version:', latestVersion);
-
-    if (currentVersion !== latestVersion) {
-      Alert.alert(
-        'Update Available',
-        `A new version (${latestVersion}) is available.`,
-        [
-          {
-            text: 'Update',
-            onPress: () => {
-              Linking.openURL('https://play.google.com/store/apps/details?id=com.icfoss.iotapp'); // Replace this
+      if (currentVersion !== latestVersion) {
+        Alert.alert(
+          'Update Available',
+          `A new version (${latestVersion}) is available.`,
+          [
+            {
+              text: 'Update',
+              onPress: () => {
+                Linking.openURL('https://play.google.com/store/apps/details?id=com.icfoss.iotapp'); // Replace with your app's store URL
+              },
             },
-          },
-          { text: 'Later', style: 'cancel' },
-        ]
-      );
+            { text: 'Later', style: 'cancel' },
+          ]
+        );
+      }
+    } catch (err) {
+      console.warn('Version check failed:', err.message, err.response?.data);
     }
-  } catch (err) {
-    console.warn('Version check failed:', err);
-  }
-};
+  };
 
-  // ✅ Check backend maintenance and version update
+  // EFFECT 1: Runs ONLY ONCE on component mount for initial maintenance check and one-time version check
   useEffect(() => {
-    const checkMaintenance = async () => {
+    const initialLoadCheck = async () => {
       try {
         const res = await API.get("/maintenance_status");
         if (res.data?.maintenance === true) {
           setIsUnderMaintenance(true);
         } else {
           setIsUnderMaintenance(false);
-          await checkAppUpdate(); // ✅ Check version only if not under maintenance
+          await checkAppUpdate(); // Call version check ONLY HERE, once at app startup
         }
       } catch (err) {
-        setIsUnderMaintenance(false); // fallback to normal app
+        console.error("Initial maintenance/version check failed:", err.message, err.response?.data);
+        setIsUnderMaintenance(false); // Fallback to normal app if initial check fails
       } finally {
         setLoading(false);
       }
     };
 
-      // Initial check when the component mounts
-      checkMaintenance();
+    initialLoadCheck(); // Execute the initial check
+  }, []); // Empty dependency array means this effect runs ONLY ONCE
 
-      // Set up interval to fetch maintenance status every 5 seconds (5000 milliseconds)
-      const intervalId = setInterval(checkMaintenance, 5000);
-  
-      // Clean up the interval when the component unmounts
-      return () => clearInterval(intervalId);
-    }, []); // Empty dependency array means this effect runs once on mount and cleans up on unmou
+  // EFFECT 2: Runs for continuous maintenance status checking at an interval
+  useEffect(() => {
+    const checkMaintenanceStatusPeriodically = async () => {
+      try {
+        const res = await API.get("/maintenance_status");
+        setIsUnderMaintenance(res.data?.maintenance === true);
+      } catch (err) {
+        console.error("Interval maintenance check failed:", err.message, err.response?.data);
+        // If the interval check fails, you might want to handle this appropriately.
+        // For now, it will default to false if the API call fails on subsequent checks.
+        setIsUnderMaintenance(false);
+      }
+    };
+
+    // Set up interval to fetch maintenance status every 5 seconds
+    const intervalId = setInterval(checkMaintenanceStatusPeriodically, 5000);
+
+    // Clean up the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, []); // Empty dependency array means this effect runs ONLY ONCE to set up the interval
 
   if (!isFontLoaded || loading) {
     return (
