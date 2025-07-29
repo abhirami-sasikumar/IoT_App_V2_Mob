@@ -59,7 +59,7 @@ const Parameters = () => {
     <SafeScreen>
       <View style={styles.container}>
         <View style={styles.header1}>
-          <Header title="PARAMETERs" style={styles.header} />
+          <Header title="PARAMETERS" style={styles.header} />
         </View>
 
         {loading ? (

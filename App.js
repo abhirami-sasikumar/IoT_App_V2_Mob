@@ -69,8 +69,8 @@ export default function App() {
       const res = await API.get('/get-version');
       const latestVersion = res.data.version;
 
-      console.log('Current Version:', currentVersion);
-      console.log('Latest Version:', latestVersion);
+      // console.log('Current Version:', currentVersion);
+      // console.log('Latest Version:', latestVersion);
 
       if (currentVersion !== latestVersion) {
         Alert.alert(
@@ -88,7 +88,7 @@ export default function App() {
         );
       }
     } catch (err) {
-      console.warn('Version check failed:', err.message, err.response?.data);
+      // console.warn('Version check failed:', err.message, err.response?.data);
     }
   };
 

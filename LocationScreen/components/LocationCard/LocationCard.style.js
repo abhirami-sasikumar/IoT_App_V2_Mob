@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     marginVertical: verticalScale(5),
   },
   headText: {
-    fontSize: scale(11.5),
+    fontSize: scale(16),
     fontWeight: "700",
     textAlign: "center",
     color: "#810541",
