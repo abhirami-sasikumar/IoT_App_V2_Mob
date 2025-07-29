@@ -18,14 +18,18 @@ export const styles = StyleSheet.create({
     marginVertical: verticalScale(5),
   },
   headText: {
-    fontSize: scale(18),
-    fontWeight: "70",
+    fontSize: scale(11.5),
+    fontWeight: "700",
     textAlign: "center",
     color: "#810541",
     whiteSpace: "nowrap",      // Only works on web
     overflow: "hidden",
     textOverflow: "ellipsis",
-    fontFamily:"Roboto"
+    fontFamily:"Roboto",
+    height: verticalScale(28),
+      paddingHorizontal: scale(6),      // ✅ prevent clipping on sides
+ // <--- THIS IS THE CRUCIAL LINE FOR FIXED LINE POSITION
+
   },
   line: {
     width: scale(155),

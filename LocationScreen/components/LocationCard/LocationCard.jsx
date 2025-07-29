@@ -35,9 +35,10 @@ const LocationCard = ({
     <View style={styles.card}>
       <Text
         style={styles.headText}
-        numberOfLines={1}
-        ellipsizeMode="tail"
-        adjustsFontSizeToFit={true}
+  numberOfLines={1}
+  adjustsFontSizeToFit={true}
+  minimumFontScale={0.9} // Adjust as per how small you're okay with
+  ellipsizeMode="tail"
       >
         {LocationName}
       </Text>

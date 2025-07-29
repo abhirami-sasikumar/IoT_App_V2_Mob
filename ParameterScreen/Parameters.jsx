@@ -4,7 +4,7 @@ import Footer from "../Components/Footer/Footer";
 import Header from "../Components/Header/Header";
 import LongCard from "./components/LongCard/LongCard";
 import Loading from "../Components/Loading/Loading";
-import styles from "./Parameters.style";
+import styles from "./Parameters.style"; // <--- Make sure this is the correct import path
 import API from "../Api";
 import { useRoute } from "@react-navigation/native";
 import SafeScreen from "../Components/SafeArea/SafeArea";
@@ -57,37 +57,42 @@ const Parameters = () => {
 
   return (
     <SafeScreen>
-    <View style={styles.container}>
-      <View style={styles.header1}>
-        <Header title="PARAMETERS" style={styles.header} />
+      <View style={styles.container}>
+        <View style={styles.header1}>
+          <Header title="PARAMETERs" style={styles.header} />
+        </View>
+
+        {loading ? (
+          <Loading />
+        ) : (
+          <>
+            {/* Apply scrollViewStyle here */}
+            <ScrollView
+              style={styles.scrollViewStyle} // ADD THIS LINE
+              contentContainerStyle={styles.scrollContainer}
+              showsVerticalScrollIndicator={false}
+            >
+              <View style={styles.content}>
+                {error ? (
+                  <Text style={styles.errorText}>{error}</Text>
+                ) : uniqueParameters.length > 0 ? (
+                  uniqueParameters.map((parameter) => (
+                    <LongCard
+                      key={parameter._id || parameter.parameterName}
+                      clusterId={clusterId}
+                      parameterName={parameter.parameterName}
+                    />
+                  ))
+                ) : (
+                  <Text style={styles.noDataText}>No parameters found.</Text>
+                )}
+              </View>
+            </ScrollView>
+
+            <Footer />
+          </>
+        )}
       </View>
-
-      {loading ? (
-        <Loading />
-      ) : (
-        <>
-          <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
-            <View style={styles.content}>
-              {error ? (
-                <Text style={styles.errorText}>{error}</Text>
-              ) : uniqueParameters.length > 0 ? (
-                uniqueParameters.map((parameter) => (
-                  <LongCard
-                    key={parameter._id || parameter.parameterName}
-                    clusterId={clusterId}
-                    parameterName={parameter.parameterName}
-                  />
-                ))
-              ) : (
-                <Text style={styles.noDataText}>No parameters found.</Text>
-              )}
-            </View>
-          </ScrollView>
-
-          <Footer />
-        </>
-      )}
-    </View>
     </SafeScreen>
   );
 };
