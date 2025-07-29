@@ -6,11 +6,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
 import { enableScreens } from 'react-native-screens';
 import { ActivityIndicator, View, Alert, Linking } from 'react-native';
-// Removed: import VersionCheck from 'react-native-version-check'; // No longer used, using Constants.expoConfig.version
-import API from './Api'; // Axios instance
-import Constants from 'expo-constants'; // Correct import for Constants
-
-// Enable screen optimization
+import API from './Api';
+import Constants from 'expo-constants';
 enableScreens();
 
 // Context
@@ -24,7 +21,6 @@ import Cluster from './ClusterScreen/Cluster';
 import Parameters from './ParameterScreen/Parameters';
 import LocationScreen from './LocationScreen/Location';
 import ChartComponent from './Chart/ChartComponent';
-
 import ForgotPassword from './ForgotPassword/ForgotPassword';
 import ResetOtp from './ForgotPassword/componenets/Otp/Otp';
 import ForgotAndReset from './Login/components/ForgotAndReset/ForgotAndReset.jsx';
@@ -38,6 +34,24 @@ import UnderMaintenance from './Undermaintance/Undermaintance';
 import { navigationRef } from './LocationScreen/NavigationHelper/NavigationHelper';
 
 const Stack = createNativeStackNavigator();
+
+// ✅ Maintenance Gate Component
+const MaintenanceGate = ({ setIsUnderMaintenance, children }) => {
+  useEffect(() => {
+    const intervalId = setInterval(async () => {
+      try {
+        const res = await API.get("/maintenance_status");
+        setIsUnderMaintenance(res.data?.maintenance === true);
+      } catch (err) {
+        console.error("Interval maintenance check failed:", err.message);
+        setIsUnderMaintenance(false);
+      }
+    }, 5000);
+    return () => clearInterval(intervalId);
+  }, []);
+
+  return children;
+};
 
 export default function App() {
   const [user, setUser] = useState({
@@ -62,15 +76,11 @@ export default function App() {
     },
   };
 
-  // Version check function - This function will be called only once on app launch
   const checkAppUpdate = async () => {
     try {
       const currentVersion = Constants.expoConfig.version;
       const res = await API.get('/get-version');
       const latestVersion = res.data.version;
-
-      // console.log('Current Version:', currentVersion);
-      // console.log('Latest Version:', latestVersion);
 
       if (currentVersion !== latestVersion) {
         Alert.alert(
@@ -80,7 +90,7 @@ export default function App() {
             {
               text: 'Update',
               onPress: () => {
-                Linking.openURL('https://play.google.com/store/apps/details?id=com.icfoss.iotapp'); // Replace with your app's store URL
+                Linking.openURL('https://play.google.com/store/apps/details?id=com.icfoss.iotapp');
               },
             },
             { text: 'Later', style: 'cancel' },
@@ -88,11 +98,11 @@ export default function App() {
         );
       }
     } catch (err) {
-      // console.warn('Version check failed:', err.message, err.response?.data);
+      // console.warn('Version check failed:', err.message);
     }
   };
 
-  // EFFECT 1: Runs ONLY ONCE on component mount for initial maintenance check and one-time version check
+  // ✅ Initial maintenance and version check
   useEffect(() => {
     const initialLoadCheck = async () => {
       try {
@@ -101,39 +111,17 @@ export default function App() {
           setIsUnderMaintenance(true);
         } else {
           setIsUnderMaintenance(false);
-          await checkAppUpdate(); // Call version check ONLY HERE, once at app startup
+          await checkAppUpdate(); // Version check only once at startup
         }
       } catch (err) {
-        console.error("Initial maintenance/version check failed:", err.message, err.response?.data);
-        setIsUnderMaintenance(false); // Fallback to normal app if initial check fails
+        console.error("Initial maintenance/version check failed:", err.message);
+        setIsUnderMaintenance(false);
       } finally {
         setLoading(false);
       }
     };
-
-    initialLoadCheck(); // Execute the initial check
-  }, []); // Empty dependency array means this effect runs ONLY ONCE
-
-  // EFFECT 2: Runs for continuous maintenance status checking at an interval
-  useEffect(() => {
-    const checkMaintenanceStatusPeriodically = async () => {
-      try {
-        const res = await API.get("/maintenance_status");
-        setIsUnderMaintenance(res.data?.maintenance === true);
-      } catch (err) {
-        console.error("Interval maintenance check failed:", err.message, err.response?.data);
-        // If the interval check fails, you might want to handle this appropriately.
-        // For now, it will default to false if the API call fails on subsequent checks.
-        setIsUnderMaintenance(false);
-      }
-    };
-
-    // Set up interval to fetch maintenance status every 5 seconds
-    const intervalId = setInterval(checkMaintenanceStatusPeriodically, 5000);
-
-    // Clean up the interval when the component unmounts
-    return () => clearInterval(intervalId);
-  }, []); // Empty dependency array means this effect runs ONLY ONCE to set up the interval
+    initialLoadCheck();
+  }, []);
 
   if (!isFontLoaded || loading) {
     return (
@@ -143,44 +131,48 @@ export default function App() {
     );
   }
 
-  if (isUnderMaintenance) {
-    return <UnderMaintenance />;
-  }
-
   return (
     <UserContext.Provider value={{ user, setUser }}>
-      <StatusBar />
-      <NavigationContainer theme={navTheme} ref={navigationRef}>
-        <SafeAreaProvider>
-          <Stack.Navigator
-            initialRouteName="Login"
-            screenOptions={{
-              headerShown: false,
-              animation: 'slide_from_right',
-            }}
-          >
-            <Stack.Screen name="Signup" component={Signup} />
-            <Stack.Screen name="Otp" component={Otp} />
-            <Stack.Screen name="ForgotAndReset" component={ForgotAndReset} />
-            <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-            <Stack.Screen name="ResetPassword" component={ForgotAndReset} />
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="forgotpassword" component={ForgotPassword} />
-            <Stack.Screen name="resetotp" component={ResetOtp} />
-            <Stack.Screen name="Clusters" component={Cluster} />
-            <Stack.Screen name="Parameters" component={Parameters} />
-            <Stack.Screen name="Location" component={LocationScreen} />
-            <Stack.Screen name="Chart" component={ChartComponent} />
-            <Stack.Screen name="Profile" component={ProfilePage} />
-            <Stack.Screen name="ChangePassword" component={ChangePassword} />
-            <Stack.Screen name="ClusterRequest" component={ClusterRequest} />
-            <Stack.Screen name="DeleteAccount" component={DeleteAccount} />
-            <Stack.Screen name="Logout" component={Logout} />
-            <Stack.Screen name="About" component={About} />
-            <Stack.Screen name="UnderMaintenance" component={UnderMaintenance} />
-          </Stack.Navigator>
-        </SafeAreaProvider>
-      </NavigationContainer>
+      <MaintenanceGate setIsUnderMaintenance={setIsUnderMaintenance}>
+        {isUnderMaintenance ? (
+          <UnderMaintenance />
+        ) : (
+          <>
+            <StatusBar />
+            <NavigationContainer theme={navTheme} ref={navigationRef}>
+              <SafeAreaProvider>
+                <Stack.Navigator
+                  initialRouteName="Login"
+                  screenOptions={{
+                    headerShown: false,
+                    animation: 'slide_from_right',
+                  }}
+                >
+                  <Stack.Screen name="Signup" component={Signup} />
+                  <Stack.Screen name="Otp" component={Otp} />
+                  <Stack.Screen name="ForgotAndReset" component={ForgotAndReset} />
+                  <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+                  <Stack.Screen name="ResetPassword" component={ForgotAndReset} />
+                  <Stack.Screen name="Login" component={Login} />
+                  <Stack.Screen name="forgotpassword" component={ForgotPassword} />
+                  <Stack.Screen name="resetotp" component={ResetOtp} />
+                  <Stack.Screen name="Clusters" component={Cluster} />
+                  <Stack.Screen name="Parameters" component={Parameters} />
+                  <Stack.Screen name="Location" component={LocationScreen} />
+                  <Stack.Screen name="Chart" component={ChartComponent} />
+                  <Stack.Screen name="Profile" component={ProfilePage} />
+                  <Stack.Screen name="ChangePassword" component={ChangePassword} />
+                  <Stack.Screen name="ClusterRequest" component={ClusterRequest} />
+                  <Stack.Screen name="DeleteAccount" component={DeleteAccount} />
+                  <Stack.Screen name="Logout" component={Logout} />
+                  <Stack.Screen name="About" component={About} />
+                  <Stack.Screen name="UnderMaintenance" component={UnderMaintenance} />
+                </Stack.Navigator>
+              </SafeAreaProvider>
+            </NavigationContainer>
+          </>
+        )}
+      </MaintenanceGate>
     </UserContext.Provider>
   );
 }
