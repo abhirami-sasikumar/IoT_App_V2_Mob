@@ -114,26 +114,30 @@ export default function App() {
     initialLoadCheck(); // Execute the initial check
   }, []); // Empty dependency array means this effect runs ONLY ONCE
 
-  // EFFECT 2: Runs for continuous maintenance status checking at an interval
-  useEffect(() => {
-    const checkMaintenanceStatusPeriodically = async () => {
-      try {
-        const res = await API.get("/maintenance_status");
-        setIsUnderMaintenance(res.data?.maintenance === true);
-      } catch (err) {
-        console.error("Interval maintenance check failed:", err.message, err.response?.data);
-        // If the interval check fails, you might want to handle this appropriately.
-        // For now, it will default to false if the API call fails on subsequent checks.
-        setIsUnderMaintenance(false);
+// EFFECT 2: Live check every 5 seconds
+useEffect(() => {
+  const checkMaintenanceStatusPeriodically = async () => {
+    try {
+      const res = await API.get("/maintenance_status");
+      const isMaintenance = res.data?.maintenance === true;
+
+      // if app is not already on UnderMaintenance page, navigate
+      if (isMaintenance && !isUnderMaintenance) {
+        setIsUnderMaintenance(true);
+      } else if (!isMaintenance && isUnderMaintenance) {
+        setIsUnderMaintenance(false); // In case maintenance is turned off
       }
-    };
 
-    // Set up interval to fetch maintenance status every 5 seconds
-    const intervalId = setInterval(checkMaintenanceStatusPeriodically, 5000);
+    } catch (err) {
+      // If server is down, assume maintenance
+      console.error("Maintenance check failed, assuming maintenance mode");
+      setIsUnderMaintenance(true);
+    }
+  };
 
-    // Clean up the interval when the component unmounts
-    return () => clearInterval(intervalId);
-  }, []); // Empty dependency array means this effect runs ONLY ONCE to set up the interval
+  const intervalId = setInterval(checkMaintenanceStatusPeriodically, 5000);
+  return () => clearInterval(intervalId);
+}, [isUnderMaintenance]);
 
   if (!isFontLoaded || loading) {
     return (
