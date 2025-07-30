@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
 import { enableScreens } from 'react-native-screens';
-import { ActivityIndicator, View, Alert, Linking } from 'react-native';
+import { ActivityIndicator, View, Alert, Linking, AppState } from 'react-native';
 import API from './Api';
 import Constants from 'expo-constants';
 enableScreens();
@@ -35,19 +35,52 @@ import { navigationRef } from './LocationScreen/NavigationHelper/NavigationHelpe
 
 const Stack = createNativeStackNavigator();
 
-// ✅ Maintenance Gate Component
+// ✅ Maintenance Gate with AppState
 const MaintenanceGate = ({ setIsUnderMaintenance, children }) => {
-  useEffect(() => {
-    const intervalId = setInterval(async () => {
+  const appState = useRef(AppState.currentState);
+  const intervalRef = useRef(null);
+
+  const startMaintenanceCheck = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+
+    intervalRef.current = setInterval(async () => {
       try {
         const res = await API.get("/maintenance_status");
         setIsUnderMaintenance(res.data?.maintenance === true);
       } catch (err) {
-        console.error("Interval maintenance check failed:", err.message);
-        setIsUnderMaintenance(false);
+        console.error("Maintenance check failed:", err.message);
       }
     }, 5000);
-    return () => clearInterval(intervalId);
+  };
+
+  const stopMaintenanceCheck = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  };
+
+  useEffect(() => {
+    const handleAppStateChange = (nextAppState) => {
+      if (appState.current.match(/inactive|background/) && nextAppState === "active") {
+        startMaintenanceCheck();
+      } else if (nextAppState.match(/inactive|background/)) {
+        stopMaintenanceCheck();
+      }
+      appState.current = nextAppState;
+    };
+
+    const subscription = AppState.addEventListener("change", handleAppStateChange);
+
+    // Start initially if app is active
+    if (appState.current === 'active') {
+      startMaintenanceCheck();
+    }
+
+    return () => {
+      subscription.remove();
+      stopMaintenanceCheck();
+    };
   }, []);
 
   return children;
@@ -66,7 +99,7 @@ export default function App() {
   });
 
   const [loading, setLoading] = useState(true);
-  const [isUnderMaintenance, setIsUnderMaintenance] = useState(null); // null = unknown
+  const [isUnderMaintenance, setIsUnderMaintenance] = useState(null);
 
   const navTheme = {
     ...DefaultTheme,
@@ -98,11 +131,10 @@ export default function App() {
         );
       }
     } catch (err) {
-      // console.warn('Version check failed:', err.message);
+      // Silent fail
     }
   };
 
-  // ✅ Initial maintenance and version check
   useEffect(() => {
     const initialLoadCheck = async () => {
       try {
@@ -111,7 +143,7 @@ export default function App() {
           setIsUnderMaintenance(true);
         } else {
           setIsUnderMaintenance(false);
-          await checkAppUpdate(); // Version check only once at startup
+          await checkAppUpdate();
         }
       } catch (err) {
         console.error("Initial maintenance/version check failed:", err.message);
