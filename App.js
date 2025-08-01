@@ -34,7 +34,7 @@ import Logout from "./Components/Profile/Logout/Logout.jsx";
 import ClusterRequest from "./Components/Profile/ClusterRequest/ClusterRequest.jsx";
 import About from './Components/Profile/About/About';
 import DeleteAccount from "./Components/Profile/DeleteAccount/DeleteAccount.jsx";
-import UnderMaintenance from './Undermaintance/Undermaintance';
+import UnderMaintenance from './Undermaintenance/Undermaintenance';
 import { navigationRef } from './LocationScreen/NavigationHelper/NavigationHelper';
 
 const Stack = createNativeStackNavigator();

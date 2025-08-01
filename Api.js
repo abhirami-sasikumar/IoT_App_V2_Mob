@@ -4,7 +4,7 @@ import { navigate } from "./LocationScreen/NavigationHelper/NavigationHelper";
 
 const API = axios.create({
 
-     baseURL: "https://app.openiot.in/api/app",
+     baseURL: "https://devapp.v2.openiot.in/api/app",
 
     });
 
