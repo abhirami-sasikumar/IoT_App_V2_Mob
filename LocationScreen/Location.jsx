@@ -59,7 +59,9 @@ const Location = () => {
               location: location.name,
             });
 
+
             const latestValueData = latestValueResponse.data?.data;
+            console.log(latestValueData)
             let valueToDisplay = latestValueData?.latestValue?.value ?? "Under Maintenance";
 
             // --- Apply Wind Direction Conversion ---
@@ -77,6 +79,9 @@ const Location = () => {
             const unit = latestValueData?.unit || "";
             const isChart = latestValueData?.isChart ?? false;
             const hideDevice = latestValueData?.hideDevice ?? false;
+            const latitude = latestValueData?.latitude ?? null;
+            const longitude = latestValueData?.longitude ?? null;
+
 
             return {
               ...location,
@@ -85,6 +90,8 @@ const Location = () => {
               unit,
               isChart,
               hideDevice,
+              latitude,
+              longitude
             };
           } catch (err) {
             console.error(`Error fetching latest value for ${location.name}:`, err.message);
@@ -136,8 +143,9 @@ const Location = () => {
     <SafeScreen>
       <View style={styles.screen}>
         <View style={styles.header1}>
-          <Header title={parameterName === "Rainfall" ? "Rainfall [ last 24 h ]" : (parameterName || "Locations")} />
-        </View>
+         <Header title={parameterName === "Rainfall" ? "Rainfall [ last 24 h ]" :parameterName ==="Energy"?"Energy [Power consumption]" :(parameterName || "Locations")} />
+         
+        </View> 
 
         {loading ? (
           <Loading />
