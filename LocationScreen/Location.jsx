@@ -79,8 +79,7 @@ const Location = () => {
             const unit = latestValueData?.unit || "";
             const isChart = latestValueData?.isChart ?? false;
             const hideDevice = latestValueData?.hideDevice ?? false;
-            const latitude = latestValueData?.latitude ?? null;
-            const longitude = latestValueData?.longitude ?? null;
+            
 
 
             return {
@@ -90,8 +89,7 @@ const Location = () => {
               unit,
               isChart,
               hideDevice,
-              latitude,
-              longitude
+            
             };
           } catch (err) {
             console.error(`Error fetching latest value for ${location.name}:`, err.message);
