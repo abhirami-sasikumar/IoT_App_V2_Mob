@@ -19,7 +19,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import styles from "./ChangePassword.style";
 import SafeScreen from "../../SafeArea/SafeArea";
 
-const ChangePassword = () => {
+const ChangePassword = ({ navigation }) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -46,21 +46,16 @@ const ChangePassword = () => {
   const getUserData = async () => {
     try {
       const userDataString = await AsyncStorage.getItem("@user");
-
       if (!userDataString) {
         Alert.alert("Error", "User not logged in. Please log in again.");
         return null;
       }
-
       const userData = JSON.parse(userDataString);
-
       console.log("Read from AsyncStorage in ChangePassword:", userData);
-
       if (!userData?.email || !userData?.userId) {
         Alert.alert("Error", "User info is incomplete. Please log in again.");
         return null;
       }
-
       return userData;
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -74,22 +69,18 @@ const ChangePassword = () => {
       Alert.alert("Error", "Please fill in all fields.");
       return;
     }
-
     if (newPassword !== confirmPassword) {
       Alert.alert("Error", "New password and confirm password must match.");
       return;
     }
-
     // Password validation
     if (newPassword.length < 8) {
       Alert.alert("Error", "Password must be at least 8 characters long.");
       return;
     }
-
     const hasLetter = /[A-Za-z]/.test(newPassword);
     const hasDigit = /\d/.test(newPassword);
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(newPassword);
-
     if (
       !(hasLetter && (hasDigit || hasSpecialChar)) ||
       /^[A-Za-z]+$/.test(newPassword) ||
@@ -105,9 +96,7 @@ const ChangePassword = () => {
     try {
       const userData = await getUserData();
       if (!userData) return;
-
       const { userId } = userData;
-
       const response = await API.post(`/change_password/${userId}`, {
         currentPassword,
         newPassword,
@@ -115,7 +104,24 @@ const ChangePassword = () => {
       });
 
       if (response.status === 200) {
-        Alert.alert("Success", "Password changed successfully!");
+        await AsyncStorage.clear();
+
+
+        Alert.alert(
+          "Success",
+          "Password changed successfully! Please log in with your new password.",
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: "Login" }],
+                });
+              },
+            },
+          ]
+        );
         setCurrentPassword("");
         setNewPassword("");
         setConfirmPassword("");
@@ -136,7 +142,6 @@ const ChangePassword = () => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView contentContainerStyle={styles.scrollView} keyboardShouldPersistTaps="handled">
           <Text style={styles.header}>Change Password</Text>
-
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
@@ -149,7 +154,6 @@ const ChangePassword = () => {
               <Ionicons name={showCurrent ? "eye" : "eye-off"} size={22} color="#999" />
             </TouchableOpacity>
           </View>
-
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
@@ -162,7 +166,6 @@ const ChangePassword = () => {
               <Ionicons name={showNew ? "eye" : "eye-off"} size={22} color="#999" />
             </TouchableOpacity>
           </View>
-
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
@@ -175,13 +178,11 @@ const ChangePassword = () => {
               <Ionicons name={showConfirm ? "eye" : "eye-off"} size={22} color="#999" />
             </TouchableOpacity>
           </View>
-
           <TouchableOpacity style={styles.button} onPress={handleChangePassword}>
             <Text style={styles.buttonText}>Change Password</Text>
           </TouchableOpacity>
         </ScrollView>
       </TouchableWithoutFeedback>
-
       {!isKeyboardVisible && <Footer />}
     </KeyboardAvoidingView>
   );

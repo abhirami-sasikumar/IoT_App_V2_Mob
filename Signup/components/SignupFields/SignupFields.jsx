@@ -116,7 +116,7 @@ const SignupField = () => {
 
         <TextInput
           style={styles.input}
-          placeholder="Cluster ID (Default ID :: OIOT)"
+          placeholder="Cluster ID (Default ID :: OIOT) *"
           value={clusterID}
           onChangeText={setClusterID}
           autoCapitalize="none"
