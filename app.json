@@ -2,7 +2,7 @@
   "expo": {
     "name": "Open IoT",
     "slug": "open-iot",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -13,7 +13,8 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.icfoss.iotapp"
     },
     "android": {
       "adaptiveIcon": {
