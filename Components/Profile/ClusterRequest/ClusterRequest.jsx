@@ -70,7 +70,7 @@ const ClusterRequest = ({ navigation }) => {
   };
 
   return (
-    
+    <SafeScreen>
     <View style={styles.flexContainer}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <KeyboardAvoidingView
@@ -105,6 +105,7 @@ const ClusterRequest = ({ navigation }) => {
         </View>
       )}
     </View>
+    </SafeScreen>
     
   );
 };

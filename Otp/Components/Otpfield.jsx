@@ -1,8 +1,10 @@
 import { View, TextInput } from "react-native";
 import styles from "./Otpfield.style";
+import SafeScreen from "../../Components/SafeArea/SafeArea";
 
 export const Otpfield = ({ otp, setOtp }) => {
   return (
+    <SafeScreen>
     <View style={styles.view}>
       <TextInput
         style={styles.input}
@@ -12,5 +14,6 @@ export const Otpfield = ({ otp, setOtp }) => {
         autoCorrect={false}
       />
     </View>
+     </SafeScreen>
   );
 };

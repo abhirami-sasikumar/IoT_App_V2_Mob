@@ -51,6 +51,7 @@ export const Signup = () => {
   const [loading, setLoading] = useState(false);
 
   return (
+    <SafeScreen>
     <View style={styles.container}>
       {loading ? (
         <Loading />
@@ -88,5 +89,6 @@ export const Signup = () => {
         </>
       )}
     </View>
+    </SafeScreen>
   );
 };

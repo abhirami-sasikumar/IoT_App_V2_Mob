@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { styles } from "./About.style";
 import Footer from "../../Footer/Footer";
+import SafeScreen from "../../SafeArea/SafeArea";
 
 const About = () => {
     const [aboutText, setAboutText] = useState([]);
@@ -43,6 +44,7 @@ const About = () => {
     };
 
     return (
+        <SafeScreen>
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.contentWrapper}>
                 <Text style={styles.heading}>About Us</Text>
@@ -66,6 +68,7 @@ const About = () => {
                 <Footer />
             </View>
         </View>
+        </SafeScreen>
     );
 };
 

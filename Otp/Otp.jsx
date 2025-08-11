@@ -9,6 +9,7 @@ import Loading from "../Components/Loading/Loading";
 import { styles } from "./Otp.style";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { Keyboard } from "react-native";
+import SafeScreen from "../Components/SafeArea/SafeArea";
 
 
 export const Otp = ({ route }) => {
@@ -80,6 +81,7 @@ export const Otp = ({ route }) => {
   };
 
   return (
+    <SafeScreen>
     <View style={styles.container}>
       {loading ? (
         <Loading />
@@ -107,5 +109,6 @@ export const Otp = ({ route }) => {
         </>
       )}
     </View>
+    </SafeScreen>
   );
 };

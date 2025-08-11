@@ -85,6 +85,7 @@ const getUser = async () => {
   }, []);
 
   return (
+    <SafeScreen>
 
     <View style={styles.container}>
       {loading ? (
@@ -118,6 +119,7 @@ const getUser = async () => {
         </>
       )}
     </View>
+    </SafeScreen>
 
   );
 };

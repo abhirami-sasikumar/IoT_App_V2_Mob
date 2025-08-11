@@ -135,6 +135,9 @@ const ChangePassword = ({ navigation }) => {
   };
 
   return (
+    <SafeScreen>
+      <View style={styles.container}> 
+
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : undefined}
       style={styles.container}
@@ -185,6 +188,8 @@ const ChangePassword = ({ navigation }) => {
       </TouchableWithoutFeedback>
       {!isKeyboardVisible && <Footer />}
     </KeyboardAvoidingView>
+    </View>
+    </SafeScreen>
   );
 };
 
