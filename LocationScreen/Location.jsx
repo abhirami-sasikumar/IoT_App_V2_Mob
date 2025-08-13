@@ -61,7 +61,7 @@ const Location = () => {
 
 
             const latestValueData = latestValueResponse.data?.data;
-            console.log(latestValueData)
+            // console.log(latestValueData)
             let valueToDisplay = latestValueData?.latestValue?.value ?? "Under Maintenance";
 
             // --- Apply Wind Direction Conversion ---

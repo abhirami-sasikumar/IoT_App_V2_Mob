@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { navigate } from "./LocationScreen/NavigationHelper/NavigationHelper";
 
 const API = axios.create({
-  baseURL: "https://app.openiot.in/api/app",
+  baseURL: "http://192.168.66.80:3000/api/app",
 });
 
 API.interceptors.request.use(
