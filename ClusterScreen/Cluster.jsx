@@ -10,6 +10,7 @@ import Loading from "../Components/Loading/Loading";
 import SafeScreen from "../Components/SafeArea/SafeArea";
 import * as Location from 'expo-location';
 import { Alert } from 'react-native';
+import DeviceCard from "./components/LongCard/DeviceCard";
 
 const Cluster = () => {
   const [clusters, setClusters] = useState([]);
