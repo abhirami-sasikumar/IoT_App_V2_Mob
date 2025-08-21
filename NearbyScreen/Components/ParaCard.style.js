@@ -12,7 +12,7 @@ const Styles = (currentTheme) =>
       padding: scale(10),
       flexDirection: "row",
       alignItems: "center",
-      backgroundColor: '#000',
+      backgroundColor: '#810541',
       shadowOpacity: 0.1,
       shadowOffset: { width: 1, height: 2 },
       shadowRadius: 5,
