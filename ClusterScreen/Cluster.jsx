@@ -11,6 +11,8 @@ import SafeScreen from "../Components/SafeArea/SafeArea";
 import * as Location from 'expo-location';
 import { Alert } from 'react-native';
 
+import NearbyScreen from "../NearbyScreen/NearbyScreen";
+
 const Cluster = () => {
   const [clusters, setClusters] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -92,6 +94,10 @@ const Cluster = () => {
                 </Text>
               </View>
             )}
+
+                {clusters.length > 0 && (
+                  <NearbyScreen clusters={clusters} />
+                )}
           </ScrollView>
 
           <Footer />
