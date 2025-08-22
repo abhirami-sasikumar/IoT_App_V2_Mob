@@ -1,58 +1,45 @@
-import React from "react";
-import { Text, View } from "react-native";
-import { styles } from "./DeviceCard.style";
+import React from 'react';
+import { View, Text } from 'react-native';
+import styles from './DeviceCard.style';
 
-const DeviceCard = ({
-  LocationName,
-  Value,
-  Measurement,
-  hideDevice,
-  parameterName,
-  time,
+const DeviceCard = ({ 
+  parameterName, 
+  value, 
+  measurement, 
+  lastUpdatedTime, 
+  clusterName, 
+  deviceLocation 
 }) => {
-  const displayValue = hideDevice ? "Under Maintenance" : Value;
+
+  // Helper function to format the time for better readability
+  const formatTime = (isoString) => {
+    if (!isoString) return 'N/A';
+    try {
+      const date = new Date(isoString);
+      // Only show time with hour, minute, and AM/PM
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    } catch (e) {
+      console.error("Error formatting time:", e);
+      return 'Invalid Time';
+    }
+  };
 
   return (
     <View style={styles.card}>
-      {/* Parameter Name */}
-      <Text
-        style={styles.headText}
-        numberOfLines={1}
-        adjustsFontSizeToFit={true}
-        minimumFontScale={0.9}
-        ellipsizeMode="tail"
-      >
-        {parameterName}
-      </Text>
-
-      <View style={styles.line} />
-
-      {/* Value and Measurement / Maintenance Status */}
-      <View style={styles.bottomRow}>
-        <View style={styles.valueContainer}>
-          <Text
-            style={[
-              styles.value,
-              hideDevice && styles.maintenanceText
-            ]}
-            numberOfLines={1}
-            adjustsFontSizeToFit
-            ellipsizeMode="tail"
-          >
-            {`${displayValue}${!hideDevice && Measurement ? ` ${Measurement}` : ""}`}
-          </Text>
-        </View>
+      {/* Left side: Parameter Name, Value, Last Updated Time */}
+      <View style={styles.leftContent}>
+        <Text style={styles.parameterName}>{parameterName || 'Unknown Parameter'}</Text>
+        <Text style={styles.valueText}>
+          {value !== undefined ? value : 'N/A'} {measurement || ''}
+        </Text>
+        <Text style={styles.timeText}>Last Updated: {formatTime(lastUpdatedTime)}</Text>
       </View>
 
-      {/* Last Updated Time Display */}
-      {!hideDevice && time && (
-        <View style={styles.timeContainer}>
-          <Text style={styles.updatedText}>Last updated :</Text>
-          <Text style={styles.timeText}>
-            {new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-          </Text>
-        </View>
-      )}
+      {/* Right side: Cluster Name and Device Location */}
+      <View style={styles.rightContent}>
+        <Text style={styles.clusterName}>{clusterName || 'Unknown Cluster'}</Text>
+        <Text style={styles.deviceLocation}>{deviceLocation || 'Unknown Location'}</Text>
+      </View>
     </View>
   );
 };
