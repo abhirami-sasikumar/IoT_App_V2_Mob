@@ -3,15 +3,17 @@ import { View, Text, ScrollView, Alert } from "react-native";
 import Footer from "../Components/Footer/Footer";
 import LongCard from "./components/LongCard/LongCard";
 import styles from "./Cluster.style";
-import API from "../Api"; // Assuming API.js handles your axios or fetch calls
+import API from "../Api";
 import { UserContext } from "../Components/Context/Context";
 import * as ScreenOrientation from "expo-screen-orientation";
 import Loading from "../Components/Loading/Loading";
 import SafeScreen from "../Components/SafeArea/SafeArea";
 import * as Location from 'expo-location';
 import DeviceCard from "./components/LongCard/DeviceCard";
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useIsFocused } from '@react-navigation/native';
 
-// --- Placeholder Maps for Value Conversion (You'll replace these with actual values/imports) ---
+// --- Placeholder Maps for Value Conversion ---
 const windDirectionMap = {
   "N": "North",
   "NE": "North-East",
@@ -31,18 +33,19 @@ const pumpStatusMap = {
 
 const Cluster = () => {
   const [clusters, setClusters] = useState([]);
-  const [allApiDevices, setAllApiDevices] = useState([]); // Stores all enriched devices from API
-  const [nearbyDevices, setNearbyDevices] = useState([]); // Stores filtered nearby devices
+  const [allApiDevices, setAllApiDevices] = useState([]);
+  const [uniqueNearbyDevices, setUniqueNearbyDevices] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
-  const [fullAddress, setFullAddress] = useState(null); 
+  const [fullAddress, setFullAddress] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [hasFetchedInitialData, setHasFetchedInitialData] = useState(false);
+  const isFocused = useIsFocused();
 
   const { user } = useContext(UserContext);
 
-  // Haversine formula to calculate distance between two points on Earth
   const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
-    const R = 6371; // Radius of Earth in kilometers
+    const R = 6371;
     const dLat = (lat2 - lat1) * (Math.PI / 180);
     const dLon = (lon2 - lon1) * (Math.PI / 180);
     const a =
@@ -56,27 +59,16 @@ const Cluster = () => {
     return distance;
   };
 
-  // Function to filter devices based on user's location
-  const filterNearbyDevices = useCallback((devicesToFilter, location) => {
-    console.log("--- filterNearbyDevices ---");
-    console.log("User Location (lat, lon):", location?.latitude, location?.longitude);
-    console.log("Total API Devices to filter:", devicesToFilter.length);
-
+  const filterUniqueNearestDevices = useCallback((devicesToFilter, location) => {
     if (!location || !devicesToFilter || devicesToFilter.length === 0) {
-      console.log("Filter skipped: User location or device data is missing.");
       return [];
     }
     
     const { latitude: userLat, longitude: userLon } = location;
-    const nearby = [];
-    const MAX_DISTANCE_KM = 20; // 5 km radius
+    const uniqueNearestDevices = {};
+    const MAX_DISTANCE_KM = 5;
 
-    devicesToFilter.forEach((device, index) => {
-      console.log(`  Processing device ${index + 1}: ${device.deviceLocation} (Cluster: ${device.clusterName})`);
-      console.log(`    Device Coords (lat, lon): ${device.latitude}, ${device.longitude}`);
-      console.log(`    HideDevice flag: ${device.hideDevice}`);
-
-      // Ensure device has valid latitude and longitude for filtering
+    devicesToFilter.forEach((device) => {
       if (
         typeof device.latitude === 'number' &&
         typeof device.longitude === 'number' &&
@@ -89,224 +81,124 @@ const Cluster = () => {
           device.latitude,
           device.longitude
         );
-        console.log(`    Calculated Distance: ${distance.toFixed(2)} km (Max: ${MAX_DISTANCE_KM} km)`);
         
         if (distance <= MAX_DISTANCE_KM && !device.hideDevice) {
-          nearby.push(device);
-          console.log("    => Device ADDED to nearbyDevices.");
-        } else {
-          console.log("    => Device SKIPPED (Reason: Too far or hideDevice is true).");
+          const { parameterName } = device;
+          if (
+            !uniqueNearestDevices[parameterName] || 
+            distance < uniqueNearestDevices[parameterName].distance
+          ) {
+            uniqueNearestDevices[parameterName] = { ...device, distance };
+          }
         }
-      } else {
-        console.log(`    => Device SKIPPED (Reason: Invalid coordinates or type).`);
       }
     });
-    console.log("--- Filter Nearby Devices COMPLETE. Found:", nearby.length, "devices ---");
-    return nearby;
+
+    const result = Object.values(uniqueNearestDevices);
+    return result;
   }, []);
 
-  // Comprehensive function to fetch all cluster, parameter, location, and latest value data
   const fetchAllData = useCallback(async () => {
     setLoading(true);
     let allProcessedDevices = [];
-    console.log("fetchAllData: Starting data fetching process.");
-
     try {
       if (!user.jwtToken || !user.userId) {
-        console.warn("fetchAllData: Missing user credentials. Skipping API calls.");
         setError("Missing user credentials. Please log in.");
         setLoading(false);
         return;
       }
-      console.log("fetchAllData: User credentials found. Proceeding with API calls.");
-
-      // 1. Fetch all clusters for the user
+ 
       const clustersResponse = await API.get(`/get_clusters/${user.userId}`);
       const fetchedClusters = clustersResponse.data.clusters || [];
-      console.log("fetchAllData: Fetched Clusters (count):", fetchedClusters.length);
-      console.log("fetchAllData: Fetched Clusters data:", fetchedClusters); // <--- THIS LINE IS NOW UNCOMMENTED FOR DEBUGGING
-      setClusters(fetchedClusters); // Keep clusters state for LongCard rendering
-
-      // Process each cluster to get its parameters, locations, and latest values
-      for (const cluster of fetchedClusters) {
-        console.log(`fetchAllData: Processing Cluster: ${cluster.clusterName} (ID: ${cluster._id})`);
-        // 2. Fetch parameters for the current cluster
-        const parametersResponse = await API.get(`/get_parameter/${cluster._id}`);
-        const parameters = parametersResponse.data.parameters || [];
-        console.log(`fetchAllData:   Parameters for ${cluster.clusterName} (count):`, parameters.length);
-        // console.log(`fetchAllData:   Parameters data for ${cluster.clusterName}:`, parameters); // Uncomment for full parameters data debug
-
-        for (const param of parameters) {
-          const parameterName = param.parameterName;
-          const measurementUnit = param.measurement; // Unit from get_parameter API
-          // console.log(`fetchAllData:     Processing Parameter: ${parameterName}`);
-
-          // 3. Fetch locations for the current parameter within the current cluster
-          const locationsResponse = await API.get(`/get_location/${cluster._id}/${encodeURIComponent(parameterName)}`);
-          const locationData = locationsResponse.data.locations || [];
-          console.log(`fetchAllData:       Locations for ${parameterName} (count):`, locationData.length);
-          // console.log(`fetchAllData:       Locations data for ${parameterName}:`, locationData); // Uncomment for full locations data debug
-
-          // For each location, fetch its latest value
-          for (const location of locationData) {
-            try {
-              const latestValueResponse = await API.post(`/get_latest_value`, {
-                clusterId: cluster._id,
-                parameterName,
-                location: location.name,
-              });
-              const latestValueData = latestValueResponse.data?.data;
-              // console.log(`fetchAllData:         Latest value for ${location.name} (${parameterName}):`, latestValueData); // Uncomment for full latest value data debug
-
-              let valueToDisplay = latestValueData?.latestValue?.value ?? "Under Maintenance";
-
-              // Apply Wind Direction Conversion
-              if (parameterName === "Wind Direction" && typeof valueToDisplay === 'string') {
-                valueToDisplay = windDirectionMap[valueToDisplay] || valueToDisplay;
-              }
-              // Apply Pump Status Conversion
-              if (parameterName === "Pump Status" && (valueToDisplay === 0 || valueToDisplay === 1)) {
-                valueToDisplay = pumpStatusMap[String(valueToDisplay)] || valueToDisplay;
-              }
-
-              const time = latestValueData?.latestValue?.time ?? "N/A";
-              const hideDevice = latestValueData?.hideDevice ?? false;
-              
-              // Construct the enriched device object with all necessary props for DeviceCard
-              allProcessedDevices.push({
-                _id: `${cluster._id}-${parameterName}-${location.name}`, // Unique ID for each device reading
-                parameterName: parameterName,
-                value: valueToDisplay,
-                measurement: measurementUnit || latestValueData?.unit || "", // Prioritize unit from get_parameter, then get_latest_value
-                lastUpdatedTime: time,
-                clusterName: cluster.clusterName,
-                deviceLocation: location.name, // This is the location name from get_location API
-                latitude: location.latitude,
-                longitude: location.longitude,
-                hideDevice: hideDevice,
-              });
-
-            } catch (latestValueError) {
-              console.error(`Error fetching latest value for ${cluster.clusterName}, ${parameterName}, ${location.name}:`, latestValueError.message);
-              // Push a device object even if fetching its latest value fails
-              allProcessedDevices.push({
-                _id: `${cluster._id}-${parameterName}-${location.name}`,
-                parameterName: parameterName,
-                value: "N/A",
-                measurement: measurementUnit || "",
-                lastUpdatedTime: "N/A",
-                clusterName: cluster.clusterName,
-                deviceLocation: location.name,
-                latitude: location.latitude,
-                longitude: location.longitude,
-                hideDevice: false,
-              });
+      setClusters(fetchedClusters);
+ 
+      const allParametersPromises = fetchedClusters.map(cluster =>
+        API.get(`/get_parameter/${cluster._id}`).then(res => ({
+          clusterId: cluster._id,
+          clusterName: cluster.clusterName,
+          parameters: res.data.parameters || []
+        }))
+      );
+ 
+      const allParametersResults = await Promise.all(allParametersPromises);
+      const allLocationsPromises = allParametersResults.flatMap(clusterData =>
+        clusterData.parameters.map(param =>
+          API.get(`/get_location/${clusterData.clusterId}/${encodeURIComponent(param.parameterName)}`).then(res => ({
+            ...clusterData,
+            parameterName: param.parameterName,
+            measurementUnit: param.measurement,
+            locations: res.data.locations || []
+          }))
+        )
+      );
+ 
+      const allLocationsResults = await Promise.all(allLocationsPromises);
+      const allLatestValuesPromises = allLocationsResults.flatMap(paramData =>
+        paramData.locations.map(location =>
+          API.post(`/get_latest_value`, {
+            clusterId: paramData.clusterId,
+            parameterName: paramData.parameterName,
+            location: location.name,
+          }).then(res => {
+            const latestValueData = res.data?.data;
+            let valueToDisplay = latestValueData?.latestValue?.value ?? "Under Maintenance";
+ 
+            if (paramData.parameterName === "Wind Direction" && typeof valueToDisplay === 'string') {
+              valueToDisplay = windDirectionMap[valueToDisplay] || valueToDisplay;
             }
-          }
-        }
-      }
-      console.log("fetchAllData: All processed devices (total count):", allProcessedDevices.length);
-      setAllApiDevices(allProcessedDevices); // Update state with all fetched and enriched devices
+            if (paramData.parameterName === "Pump Status" && (valueToDisplay === 0 || valueToDisplay === 1)) {
+              valueToDisplay = pumpStatusMap[String(valueToDisplay)] || valueToDisplay;
+            }
+            const time = latestValueData?.latestValue?.time ?? "N/A";
+            const hideDevice = latestValueData?.hideDevice ?? false;
+ 
+            return {
+              _id: `${paramData.clusterId}-${paramData.parameterName}-${location.name}`,
+              parameterName: paramData.parameterName,
+              value: valueToDisplay,
+              measurement: paramData.measurementUnit || latestValueData?.unit || "",
+              lastUpdatedTime: time,
+              clusterName: paramData.clusterName,
+              deviceLocation: location.name,
+              latitude: location.latitude,
+              longitude: location.longitude,
+              hideDevice: hideDevice,
+            };
+          }).catch(latestValueError => {
+            console.error(`Error fetching latest value for ${paramData.clusterName}, ${paramData.parameterName}, ${location.name}:`, latestValueError.message);
+            return {
+              _id: `${paramData.clusterId}-${paramData.parameterName}-${location.name}`,
+              parameterName: paramData.parameterName,
+              value: "N/A",
+              measurement: paramData.measurementUnit || "",
+              lastUpdatedTime: "N/A",
+              clusterName: paramData.clusterName,
+              deviceLocation: location.name,
+              latitude: location.latitude,
+              longitude: location.longitude,
+              hideDevice: false,
+            };
+          })
+        )
+      );
+      allProcessedDevices = await Promise.all(allLatestValuesPromises);
+      setAllApiDevices(allProcessedDevices);
       setError(null);
     } catch (generalError) {
       console.error("fetchAllData: Error fetching all cluster data:", generalError.message);
       setError("Failed to fetch all cluster data: " + generalError.message);
     } finally {
       setLoading(false);
-      console.log("fetchAllData: Data fetching process completed.");
     }
-  }, [user.jwtToken, user.userId]); // Dependencies for useCallback
+  }, [user.jwtToken, user.userId]);
 
-  // Main effect for initial app setup, location, and data fetching
-  useEffect(() => {
-    const initializeApp = async () => {
-      setLoading(true);
-      await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
-      console.log("initializeApp: Starting app initialization.");
-
-      // 1. Get Location Permissions and User Location
-      let locationCoords;
-      try {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-          Alert.alert(
-            "Permission Denied",
-            "Permission to access location was denied. Cannot show nearby devices.",
-            [{ text: "OK" }]
-          );
-          setError("Location access denied.");
-          setLoading(false);
-          return;
-        }
-        const location = await Location.getCurrentPositionAsync({});
-        locationCoords = location.coords;
-        setUserLocation(locationCoords); // Set real user location
-        console.log("initializeApp: User Location obtained:", locationCoords);
-
-        // Reverse geocode the obtained location to get full address details
-        await reverseGeocode(locationCoords.latitude, locationCoords.longitude);
-        console.log("initializeApp: Reverse geocoding completed.");
-
-      } catch (locErr) {
-        console.error("initializeApp: Error getting location:", locErr.message);
-        Alert.alert(
-          "Location Error",
-          "Could not get your current location. Please ensure GPS is enabled.",
-          [{ text: "OK" }]
-        );
-        setError("Failed to get current location.");
-        setLoading(false);
-        return;
-      }
-
-      // 2. Fetch all data from APIs (clusters, parameters, locations, latest values)
-      await fetchAllData();
-      console.log("initializeApp: All data fetched from APIs.");
-
-      setLoading(false);
-      console.log("initializeApp: App initialization completed. Loading set to false.");
-    };
-
-    initializeApp();
-
-    // Set interval for polling new data every 15 minutes
-    const interval = setInterval(() => {
-      console.log("Interval: Re-initializing app to refresh data.");
-      initializeApp(); // Re-initialize to refresh location and data
-    }, 900000); // Polling every 15 minutes (900000 ms)
-
-    // Cleanup interval and orientation lock on unmount
-    return () => {
-      console.log("Cleanup: Clearing interval and unlocking screen orientation.");
-      clearInterval(interval);
-      ScreenOrientation.unlockAsync(); // Unlock orientation on component unmount
-    };
-  }, [fetchAllData, reverseGeocode]); // Dependencies for useEffect
-
-  // Effect to filter nearby devices whenever allApiDevices or userLocation changes
-  useEffect(() => {
-    console.log("useEffect [allApiDevices, userLocation]: Running filter for nearby devices.");
-    if (allApiDevices.length > 0 && userLocation) {
-      const filtered = filterNearbyDevices(allApiDevices, userLocation); // Filter from all fetched devices
-      setNearbyDevices(filtered);
-      console.log("useEffect [allApiDevices, userLocation]: Updated nearbyDevices count:", filtered.length);
-    } else {
-      setNearbyDevices([]);
-      console.log("useEffect [allApiDevices, userLocation]: allApiDevices or userLocation is empty. nearbyDevices set to empty.");
-    }
-  }, [allApiDevices, userLocation, filterNearbyDevices]);
-
-  // Helper function to get full address details from reverse geocoding
   const reverseGeocode = useCallback(async (latitude, longitude) => {
-    console.log("reverseGeocode: Attempting to reverse geocode Lat:", latitude, "Lon:", longitude);
     try {
       let result = await Location.reverseGeocodeAsync({ latitude, longitude });
       if (result && result.length > 0) {
         setFullAddress(result[0]); 
-        console.log("reverseGeocode: Full address found:", result[0]);
       } else {
         setFullAddress(null);
-        console.log("reverseGeocode: No address found for the given coordinates.");
       }
     } catch (err) {
       console.error("reverseGeocode: Error reverse geocoding:", err);
@@ -314,23 +206,86 @@ const Cluster = () => {
     }
   }, []);
 
-  // Helper function to format the full address for display
   const formatFullAddress = (address) => {
     if (!address) {
       return "Location details not available.";
     }
-    const { name, street, city, subregion, district, region, country } = address;
+    const { name, street, city, district } = address;
     const addressParts = [
       name,
       street,
       district, 
-      city,
-      subregion,
-      region,
-      country
+      city
     ].filter(part => part);
     return addressParts.join(', ');
   };
+
+  useEffect(() => {
+    // This condition is the key to caching.
+    // It runs only if the screen is focused AND the initial data hasn't been fetched yet.
+    if (isFocused && !hasFetchedInitialData) {
+      const initializeApp = async () => {
+        setLoading(true);
+        await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+
+        let locationCoords;
+        try {
+          let { status } = await Location.requestForegroundPermissionsAsync();
+          if (status !== 'granted') {
+            Alert.alert(
+              "Permission Denied",
+              "Permission to access location was denied. Cannot show nearby devices.",
+              [{ text: "OK" }]
+            );
+            setError("Location access denied.");
+            setLoading(false);
+            return;
+          }
+          const location = await Location.getCurrentPositionAsync({});
+          locationCoords = location.coords;
+          setUserLocation(locationCoords);
+          await reverseGeocode(locationCoords.latitude, locationCoords.longitude);
+        } catch (locErr) {
+          console.error("initializeApp: Error getting location:", locErr.message);
+          Alert.alert(
+            "Location Error",
+            "Could not get your current location. Please ensure GPS is enabled.",
+            [{ text: "OK" }]
+          );
+          setError("Failed to get current location.");
+          setLoading(false);
+          return;
+        }
+        
+        await fetchAllData();
+        setHasFetchedInitialData(true);
+        setLoading(false);
+      };
+
+      initializeApp();
+    }
+
+    // This interval provides a periodic refresh, separate from navigation.
+    const interval = setInterval(() => {
+      if (isFocused) {
+        fetchAllData();
+      }
+    }, 900000);
+
+    return () => {
+      clearInterval(interval);
+      ScreenOrientation.unlockAsync();
+    };
+  }, [isFocused, hasFetchedInitialData, fetchAllData, reverseGeocode]);
+
+  useEffect(() => {
+    if (allApiDevices.length > 0 && userLocation) {
+      const filtered = filterUniqueNearestDevices(allApiDevices, userLocation);
+      setUniqueNearbyDevices(filtered);
+    } else {
+      setUniqueNearbyDevices([]);
+    }
+  }, [allApiDevices, userLocation, filterUniqueNearestDevices]);
 
   return (
     <SafeScreen>
@@ -342,7 +297,7 @@ const Cluster = () => {
             <View style={styles.headerContainer}>
               <Text style={styles.header}>CLUSTERS</Text>
             </View>
-
+ 
             <ScrollView
               style={styles.scrollView}
               contentContainerStyle={styles.scrollContent}
@@ -350,7 +305,6 @@ const Cluster = () => {
               {error ? (
                 <Text style={styles.emptyMessage}>{error}</Text>
               ) : clusters.length > 0 ? (
-                // Section 1: All LongCards fetched from API
                 clusters.map((cluster) => (
                   <LongCard
                     key={cluster._id}
@@ -366,31 +320,35 @@ const Cluster = () => {
                   </Text>
                 </View>
               )}
-
-              {/* User Location Section (real data, left-aligned with icon) */}
-              <View style={styles.userLocationSection}>
-                <View style={styles.locationLineCombined}> 
-                  <Text style={styles.locationIcon}>📍</Text>
-                  {userLocation ? (
-                    <Text style={styles.userLocationSubText} numberOfLines={2}> 
-                      {formatFullAddress(fullAddress)}
-                    </Text>
-                  ) : (
-                    <Text style={styles.userLocationText} numberOfLines={2}> 
-                      Fetching location...
-                    </Text>
-                  )}
-                </View>
-              </View>
-
-              {/* Section 2: Device Readings */}
-              <View> {/* This View ensures the heading and grid are grouped */}
+ 
                 <Text style={styles.allNearbyDevicesHeading}>
                     Nearby Device Readings
                 </Text>
-                {nearbyDevices.length > 0 ? (
+ 
+                <View style={styles.userLocationSection}>
+                    <View style={styles.locationLineCombined}>
+                      <Text style={styles.locationIcon}>
+                        <Icon name="location" size={15} color="#810541" />
+                        <Text style={styles.userLocationHeading}>Your Location</Text>
+                      </Text>
+                      {userLocation ? (
+                        <Text style={styles.userLocationSubText} numberOfLines={2}>
+                          {formatFullAddress(fullAddress)}
+                        </Text>
+                      ) : (
+                        <Text style={styles.userLocationText} numberOfLines={2}>
+                          Fetching location...
+                        </Text>
+                      )}
+                    </View>
+                  </View>
+            
+ 
+              <View>
+ 
+                {uniqueNearbyDevices.length > 0 ? (
                     <View style={styles.deviceCardsGrid}>
-                        {nearbyDevices.map((device) => (
+                        {uniqueNearbyDevices.map((device) => (
                             <DeviceCard
                                 key={device._id}
                                 parameterName={device.parameterName}
@@ -402,16 +360,16 @@ const Cluster = () => {
                             />
                         ))}
                     </View>
-                ) : ( // Display message if no nearby devices are found
+                ) : (
                   <View style={styles.emptyCard}>
                     <Text style={styles.emptyMessage}>
-                      No nearby devices found within 5km or API data not available.
+                      No nearby devices found within 5km. 
                     </Text>
                   </View>
                 )}
               </View>
             </ScrollView>
-
+ 
             <Footer />
           </>
         )}
@@ -419,5 +377,175 @@ const Cluster = () => {
     </SafeScreen>
   );
 };
-
+ 
 export default Cluster;
+
+
+
+
+// Cluster.js (Conceptual update)
+// Cluster.js
+// import React, { useEffect } from "react";
+// import { View, Text, ScrollView } from "react-native"; // Alert is handled in DataStoreContext
+// import Footer from "../Components/Footer/Footer";
+// import LongCard from "./components/LongCard/LongCard";
+// import styles from "./Cluster.style";
+// // API, UserContext, ScreenOrientation, Location are no longer directly used here
+// import Loading from "../Components/Loading/Loading";
+// import SafeScreen from "../Components/SafeArea/SafeArea"; // Uncommented this import
+// import DeviceCard from "./components/LongCard/DeviceCard";
+// import Icon from 'react-native-vector-icons/Ionicons';
+// import { useIsFocused } from '@react-navigation/native';
+// import { useDataStore } from "./DataStoreContext"; // <-- Corrected path again
+
+// // --- Placeholder Maps for Value Conversion (Can be removed if only used in DataStoreContext) ---
+// // If these maps are only used inside DataStoreContext.js, you can remove them from here.
+// // Keeping them here for completeness if other components might also use them directly.
+// const windDirectionMap = {
+//   "N": "North",
+//   "NE": "North-East",
+//   "E": "East",
+//   "SE": "South-East",
+//   "S": "South",
+//   "SW": "South-West",
+//   "W": "West",
+//   "NW": "North-West",
+// };
+
+// const pumpStatusMap = {
+//   "0": "OFF",
+//   "1": "ON",
+// };
+// // --- End Placeholder Maps ---
+
+// const Cluster = () => {
+//   // Pull all necessary state and functions from the global store
+//   const { 
+//     clusters, 
+//     allApiDevices, // Still useful for debugging or if Cluster needed to re-filter
+//     uniqueNearbyDevices, 
+//     userLocation, 
+//     fullAddress, 
+//     loadingGlobal,    // Overall loading state for the data store
+//     loadingNearby,    // Loading state specifically for location/nearby devices
+//     errorGlobal,      // Overall error state from the data store
+//     hasFetchedInitialData, // Flag from data store
+//     fetchAllDataOptimized, // Function to trigger a full data fetch (if needed)
+//     updateNearbyDevices,   // Function to trigger location/nearby device update (if needed)
+//     formatFullAddress      // Helper function from context
+//   } = useDataStore();
+
+//   const isFocused = useIsFocused();
+
+//   useEffect(() => {
+//     // This useEffect ensures that if the user logs in while the app is running,
+//     // and the DataStore hasn't fetched data yet, it initiates the fetch.
+//     // The DataStoreContext's own useEffect handles the primary "on mount" fetch.
+//     if (isFocused && !hasFetchedInitialData) {
+//       // You can optionally call fetchAllDataOptimized() and updateNearbyDevices() here
+//       // if you need to explicitly trigger a re-fetch when the screen becomes focused
+//       // and initial data is still missing (e.g., after a login).
+//       // However, the DataStoreContext's useEffect should already manage this if `user.jwtToken` changes.
+//       // For a robust setup, the `DataStoreContext` handles the main fetch lifecycle.
+//     }
+//   }, [isFocused, hasFetchedInitialData, fetchAllDataOptimized, updateNearbyDevices]);
+
+
+//   return (
+//     <SafeScreen> {/* SafeScreen is now correctly imported */}
+//       <View style={styles.container}>
+//         {loadingGlobal ? ( // Use loadingGlobal for the main app data loading indicator
+//           <Loading />
+//         ) : (
+//           <>
+//             <View style={styles.headerContainer}>
+//               <Text style={styles.header}>CLUSTERS</Text>
+//             </View>
+ 
+//             <ScrollView
+//               style={styles.scrollView}
+//               contentContainerStyle={styles.scrollContent}
+//             >
+//               {errorGlobal ? ( // Use errorGlobal here
+//                 <Text style={styles.emptyMessage}>{errorGlobal}</Text>
+//               ) : (clusters && clusters.length > 0) ? ( // Added check for clusters
+//                 clusters.map((cluster) => (
+//                   <LongCard
+//                     key={cluster._id}
+//                     clusterName={cluster.clusterName}
+//                     clusterId={cluster._id}
+//                     clusterDescription={cluster.description}
+//                   />
+//                 ))
+//               ) : (
+//                 <View style={styles.emptyCard}>
+//                   <Text style={styles.emptyMessage}>
+//                     "Thanks for your request! It has been sent to the admin and is awaiting approval."
+//                   </Text>
+//                 </View>
+//               )}
+ 
+//               <Text style={styles.allNearbyDevicesHeading}>
+//                   Nearby Device Readings
+//               </Text>
+ 
+//               <View style={styles.userLocationSection}>
+//                   <View style={styles.locationLineCombined}>
+//                     <Text style={styles.locationIcon}>
+//                       <Icon name="location" size={15} color="#810541" />
+//                       <Text style={styles.userLocationHeading}>Your Location</Text>
+//                     </Text>
+//                     {loadingNearby ? ( // Use loadingNearby here
+//                       <Text style={styles.userLocationText} numberOfLines={2}>
+//                           Fetching location...
+//                       </Text>
+//                     ) : userLocation ? (
+//                       <Text style={styles.userLocationSubText} numberOfLines={2}>
+//                         {formatFullAddress(fullAddress)}
+//                       </Text>
+//                     ) : (
+//                       <Text style={styles.userLocationText} numberOfLines={2}>
+//                         Location details not available.
+//                       </Text>
+//                     )}
+//                   </View>
+//                 </View>
+          
+//               <View>
+//                 {loadingNearby ? ( // Use loadingNearby here
+//                     <Loading />
+//                 ) : (uniqueNearbyDevices && uniqueNearbyDevices.length > 0) ? ( // Added check for uniqueNearbyDevices
+//                     <View style={styles.deviceCardsGrid}>
+//                         {uniqueNearbyDevices.map((device) => (
+//                             <DeviceCard
+//                                 key={device._id}
+//                                 parameterName={device.parameterName}
+//                                 value={device.value} 
+//                                 measurement={device.measurement} 
+//                                 lastUpdatedTime={device.lastUpdatedTime} 
+//                                 clusterName={device.clusterName}
+//                                 deviceLocation={device.deviceLocation}
+//                             />
+//                         ))}
+//                     </View>
+//                 ) : (
+//                   <View style={styles.emptyCard}>
+//                     <Text style={styles.emptyMessage}>
+//                       No nearby devices found within 5km. 
+//                     </Text>
+//                   </View>
+//                 )}
+//               </View>
+//             </ScrollView>
+ 
+//             <Footer />
+//           </>
+//         )}
+//       </View>
+//     </SafeScreen>
+//   );
+// };
+
+// export default Cluster;
+
+
