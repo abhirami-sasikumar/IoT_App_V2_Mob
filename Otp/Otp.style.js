@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
   },
   button_view: {
     
-    marginTop: verticalScale(15),
+    marginTop: verticalScale(380),
     justifyContent: "center",
     alignItems: "center",
   },
