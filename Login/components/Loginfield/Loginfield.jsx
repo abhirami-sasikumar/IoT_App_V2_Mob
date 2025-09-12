@@ -40,7 +40,7 @@ const LoginField = () => {
       // Update Context
       setUser(userData);
 
-      Alert.alert("Success", `Welcome ${name}!`);
+      Alert.alert("Welcome", `Hi ${name}!`);
 
       navigation.dispatch(
         CommonActions.reset({
