@@ -34,14 +34,14 @@ const styles = StyleSheet.create({
   buttonCancel: {    justifyContent:"center",
 
     backgroundColor: "#810541",
-    width: scale(310),
+    width: scale(340),
     borderRadius: moderateScale(30),
     alignItems: "center",
     height:verticalScale(40)
   },
   buttonText: {
     color: "#fff",
-    fontSize: scale(20),
+    fontSize: scale(19),
     
     fontfamily:"Roboto"
   },

@@ -64,12 +64,24 @@ const Cluster = () => {
       return [];
     }
     
+    // 👇 ADD THIS LIST OF ALLOWED PARAMETERS
+    const allowedParameters = [
+      "Temperature",
+      "Rainfall",
+      "Humidity",
+      "Wind Speed",
+      "Wind Direction",
+      "Pressure",
+      "Soil Moisture",
+    ];
+
     const { latitude: userLat, longitude: userLon } = location;
     const uniqueNearestDevices = {};
     const MAX_DISTANCE_KM = 5;
 
     devicesToFilter.forEach((device) => {
-      if (
+      // 👇 ADD THE CHECK FOR THE ALLOWED PARAMETERS
+      if (allowedParameters.includes(device.parameterName) &&
         typeof device.latitude === 'number' &&
         typeof device.longitude === 'number' &&
         !isNaN(device.latitude) &&
@@ -221,8 +233,6 @@ const Cluster = () => {
   };
 
   useEffect(() => {
-    // This condition is the key to caching.
-    // It runs only if the screen is focused AND the initial data hasn't been fetched yet.
     if (isFocused && !hasFetchedInitialData) {
       const initializeApp = async () => {
         setLoading(true);
@@ -265,7 +275,6 @@ const Cluster = () => {
       initializeApp();
     }
 
-    // This interval provides a periodic refresh, separate from navigation.
     const interval = setInterval(() => {
       if (isFocused) {
         fetchAllData();
@@ -363,7 +372,7 @@ const Cluster = () => {
                 ) : (
                   <View style={styles.emptyCard}>
                     <Text style={styles.emptyMessage}>
-                      No nearby devices found within 5km. 
+                      No nearby devices found. 
                     </Text>
                   </View>
                 )}
@@ -379,173 +388,3 @@ const Cluster = () => {
 };
  
 export default Cluster;
-
-
-
-
-// Cluster.js (Conceptual update)
-// Cluster.js
-// import React, { useEffect } from "react";
-// import { View, Text, ScrollView } from "react-native"; // Alert is handled in DataStoreContext
-// import Footer from "../Components/Footer/Footer";
-// import LongCard from "./components/LongCard/LongCard";
-// import styles from "./Cluster.style";
-// // API, UserContext, ScreenOrientation, Location are no longer directly used here
-// import Loading from "../Components/Loading/Loading";
-// import SafeScreen from "../Components/SafeArea/SafeArea"; // Uncommented this import
-// import DeviceCard from "./components/LongCard/DeviceCard";
-// import Icon from 'react-native-vector-icons/Ionicons';
-// import { useIsFocused } from '@react-navigation/native';
-// import { useDataStore } from "./DataStoreContext"; // <-- Corrected path again
-
-// // --- Placeholder Maps for Value Conversion (Can be removed if only used in DataStoreContext) ---
-// // If these maps are only used inside DataStoreContext.js, you can remove them from here.
-// // Keeping them here for completeness if other components might also use them directly.
-// const windDirectionMap = {
-//   "N": "North",
-//   "NE": "North-East",
-//   "E": "East",
-//   "SE": "South-East",
-//   "S": "South",
-//   "SW": "South-West",
-//   "W": "West",
-//   "NW": "North-West",
-// };
-
-// const pumpStatusMap = {
-//   "0": "OFF",
-//   "1": "ON",
-// };
-// // --- End Placeholder Maps ---
-
-// const Cluster = () => {
-//   // Pull all necessary state and functions from the global store
-//   const { 
-//     clusters, 
-//     allApiDevices, // Still useful for debugging or if Cluster needed to re-filter
-//     uniqueNearbyDevices, 
-//     userLocation, 
-//     fullAddress, 
-//     loadingGlobal,    // Overall loading state for the data store
-//     loadingNearby,    // Loading state specifically for location/nearby devices
-//     errorGlobal,      // Overall error state from the data store
-//     hasFetchedInitialData, // Flag from data store
-//     fetchAllDataOptimized, // Function to trigger a full data fetch (if needed)
-//     updateNearbyDevices,   // Function to trigger location/nearby device update (if needed)
-//     formatFullAddress      // Helper function from context
-//   } = useDataStore();
-
-//   const isFocused = useIsFocused();
-
-//   useEffect(() => {
-//     // This useEffect ensures that if the user logs in while the app is running,
-//     // and the DataStore hasn't fetched data yet, it initiates the fetch.
-//     // The DataStoreContext's own useEffect handles the primary "on mount" fetch.
-//     if (isFocused && !hasFetchedInitialData) {
-//       // You can optionally call fetchAllDataOptimized() and updateNearbyDevices() here
-//       // if you need to explicitly trigger a re-fetch when the screen becomes focused
-//       // and initial data is still missing (e.g., after a login).
-//       // However, the DataStoreContext's useEffect should already manage this if `user.jwtToken` changes.
-//       // For a robust setup, the `DataStoreContext` handles the main fetch lifecycle.
-//     }
-//   }, [isFocused, hasFetchedInitialData, fetchAllDataOptimized, updateNearbyDevices]);
-
-
-//   return (
-//     <SafeScreen> {/* SafeScreen is now correctly imported */}
-//       <View style={styles.container}>
-//         {loadingGlobal ? ( // Use loadingGlobal for the main app data loading indicator
-//           <Loading />
-//         ) : (
-//           <>
-//             <View style={styles.headerContainer}>
-//               <Text style={styles.header}>CLUSTERS</Text>
-//             </View>
- 
-//             <ScrollView
-//               style={styles.scrollView}
-//               contentContainerStyle={styles.scrollContent}
-//             >
-//               {errorGlobal ? ( // Use errorGlobal here
-//                 <Text style={styles.emptyMessage}>{errorGlobal}</Text>
-//               ) : (clusters && clusters.length > 0) ? ( // Added check for clusters
-//                 clusters.map((cluster) => (
-//                   <LongCard
-//                     key={cluster._id}
-//                     clusterName={cluster.clusterName}
-//                     clusterId={cluster._id}
-//                     clusterDescription={cluster.description}
-//                   />
-//                 ))
-//               ) : (
-//                 <View style={styles.emptyCard}>
-//                   <Text style={styles.emptyMessage}>
-//                     "Thanks for your request! It has been sent to the admin and is awaiting approval."
-//                   </Text>
-//                 </View>
-//               )}
- 
-//               <Text style={styles.allNearbyDevicesHeading}>
-//                   Nearby Device Readings
-//               </Text>
- 
-//               <View style={styles.userLocationSection}>
-//                   <View style={styles.locationLineCombined}>
-//                     <Text style={styles.locationIcon}>
-//                       <Icon name="location" size={15} color="#810541" />
-//                       <Text style={styles.userLocationHeading}>Your Location</Text>
-//                     </Text>
-//                     {loadingNearby ? ( // Use loadingNearby here
-//                       <Text style={styles.userLocationText} numberOfLines={2}>
-//                           Fetching location...
-//                       </Text>
-//                     ) : userLocation ? (
-//                       <Text style={styles.userLocationSubText} numberOfLines={2}>
-//                         {formatFullAddress(fullAddress)}
-//                       </Text>
-//                     ) : (
-//                       <Text style={styles.userLocationText} numberOfLines={2}>
-//                         Location details not available.
-//                       </Text>
-//                     )}
-//                   </View>
-//                 </View>
-          
-//               <View>
-//                 {loadingNearby ? ( // Use loadingNearby here
-//                     <Loading />
-//                 ) : (uniqueNearbyDevices && uniqueNearbyDevices.length > 0) ? ( // Added check for uniqueNearbyDevices
-//                     <View style={styles.deviceCardsGrid}>
-//                         {uniqueNearbyDevices.map((device) => (
-//                             <DeviceCard
-//                                 key={device._id}
-//                                 parameterName={device.parameterName}
-//                                 value={device.value} 
-//                                 measurement={device.measurement} 
-//                                 lastUpdatedTime={device.lastUpdatedTime} 
-//                                 clusterName={device.clusterName}
-//                                 deviceLocation={device.deviceLocation}
-//                             />
-//                         ))}
-//                     </View>
-//                 ) : (
-//                   <View style={styles.emptyCard}>
-//                     <Text style={styles.emptyMessage}>
-//                       No nearby devices found within 5km. 
-//                     </Text>
-//                   </View>
-//                 )}
-//               </View>
-//             </ScrollView>
- 
-//             <Footer />
-//           </>
-//         )}
-//       </View>
-//     </SafeScreen>
-//   );
-// };
-
-// export default Cluster;
-
-
