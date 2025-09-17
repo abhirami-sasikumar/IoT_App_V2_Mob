@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
-import { View, Text, ScrollView, Alert } from "react-native";
+import { View, Text, ScrollView, Alert, TouchableOpacity } from "react-native";
 import Footer from "../Components/Footer/Footer";
 import LongCard from "./components/LongCard/LongCard";
 import styles from "./Cluster.style";
@@ -64,7 +64,6 @@ const Cluster = () => {
       return [];
     }
     
-    // 👇 ADD THIS LIST OF ALLOWED PARAMETERS
     const allowedParameters = [
       "Temperature",
       "Rainfall",
@@ -80,7 +79,6 @@ const Cluster = () => {
     const MAX_DISTANCE_KM = 5;
 
     devicesToFilter.forEach((device) => {
-      // 👇 ADD THE CHECK FOR THE ALLOWED PARAMETERS
       if (allowedParameters.includes(device.parameterName) &&
         typeof device.latitude === 'number' &&
         typeof device.longitude === 'number' &&
@@ -119,11 +117,11 @@ const Cluster = () => {
         setLoading(false);
         return;
       }
- 
+
       const clustersResponse = await API.get(`/get_clusters/${user.userId}`);
       const fetchedClusters = clustersResponse.data.clusters || [];
       setClusters(fetchedClusters);
- 
+
       const allParametersPromises = fetchedClusters.map(cluster =>
         API.get(`/get_parameter/${cluster._id}`).then(res => ({
           clusterId: cluster._id,
@@ -131,7 +129,7 @@ const Cluster = () => {
           parameters: res.data.parameters || []
         }))
       );
- 
+
       const allParametersResults = await Promise.all(allParametersPromises);
       const allLocationsPromises = allParametersResults.flatMap(clusterData =>
         clusterData.parameters.map(param =>
@@ -143,7 +141,7 @@ const Cluster = () => {
           }))
         )
       );
- 
+
       const allLocationsResults = await Promise.all(allLocationsPromises);
       const allLatestValuesPromises = allLocationsResults.flatMap(paramData =>
         paramData.locations.map(location =>
@@ -154,7 +152,7 @@ const Cluster = () => {
           }).then(res => {
             const latestValueData = res.data?.data;
             let valueToDisplay = latestValueData?.latestValue?.value ?? "Under Maintenance";
- 
+
             if (paramData.parameterName === "Wind Direction" && typeof valueToDisplay === 'string') {
               valueToDisplay = windDirectionMap[valueToDisplay] || valueToDisplay;
             }
@@ -163,7 +161,7 @@ const Cluster = () => {
             }
             const time = latestValueData?.latestValue?.time ?? "N/A";
             const hideDevice = latestValueData?.hideDevice ?? false;
- 
+
             return {
               _id: `${paramData.clusterId}-${paramData.parameterName}-${location.name}`,
               parameterName: paramData.parameterName,
@@ -230,6 +228,41 @@ const Cluster = () => {
       city
     ].filter(part => part);
     return addressParts.join(', ');
+  };
+
+  const handleRefresh = async () => {
+    setLoading(true);
+    let locationCoords;
+    try {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert(
+          "Permission Denied",
+          "Permission to access location was denied. Cannot refresh devices.",
+          [{ text: "OK" }]
+        );
+        setError("Location access denied.");
+        setLoading(false);
+        return;
+      }
+      const location = await Location.getCurrentPositionAsync({});
+      locationCoords = location.coords;
+      setUserLocation(locationCoords);
+      await reverseGeocode(locationCoords.latitude, locationCoords.longitude);
+    } catch (locErr) {
+      console.error("handleRefresh: Error getting location:", locErr.message);
+      Alert.alert(
+        "Location Error",
+        "Could not get your current location. Please ensure GPS is enabled.",
+        [{ text: "OK" }]
+      );
+      setError("Failed to get current location.");
+      setLoading(false);
+      return;
+    }
+
+    await fetchAllData();
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -306,7 +339,7 @@ const Cluster = () => {
             <View style={styles.headerContainer}>
               <Text style={styles.header}>CLUSTERS</Text>
             </View>
- 
+
             <ScrollView
               style={styles.scrollView}
               contentContainerStyle={styles.scrollContent}
@@ -329,16 +362,15 @@ const Cluster = () => {
                   </Text>
                 </View>
               )}
- 
-                <Text style={styles.allNearbyDevicesHeading}>
-                    Nearby Device Readings
-                </Text>
- 
-                <View style={styles.userLocationSection}>
-                    <View style={styles.locationLineCombined}>
-                      <Text style={styles.locationIcon}>
-                        <Icon name="location" size={15} color="#810541" />
-                        <Text style={styles.userLocationHeading}>Your Location</Text>
+
+              <Text style={styles.allNearbyDevicesHeading}>
+                  Nearby Device Readings
+              </Text>
+
+              <View style={styles.userLocationSection}>
+                  <View style={styles.locationLineLeft}>
+                      <Text style={styles.userLocationHeading}>
+                          <Icon name="location" size={15} color="#810541" /> Your Location
                       </Text>
                       {userLocation ? (
                         <Text style={styles.userLocationSubText} numberOfLines={2}>
@@ -349,12 +381,15 @@ const Cluster = () => {
                           Fetching location...
                         </Text>
                       )}
-                    </View>
                   </View>
-            
- 
+                  <View style={styles.refreshButtonContainer}>
+                      <TouchableOpacity onPress={handleRefresh} style={styles.refreshButton}>
+                          <Icon name="refresh" size={24} color="#810541" />
+                      </TouchableOpacity>
+                  </View>
+              </View>
+          
               <View>
- 
                 {uniqueNearbyDevices.length > 0 ? (
                     <View style={styles.deviceCardsGrid}>
                         {uniqueNearbyDevices.map((device) => (
@@ -378,7 +413,7 @@ const Cluster = () => {
                 )}
               </View>
             </ScrollView>
- 
+
             <Footer />
           </>
         )}
@@ -386,5 +421,5 @@ const Cluster = () => {
     </SafeScreen>
   );
 };
- 
+
 export default Cluster;

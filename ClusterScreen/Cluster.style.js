@@ -81,11 +81,12 @@ export default StyleSheet.create({
     backgroundColor: "#F4F7FC",
     paddingVertical: verticalScale(15),
     paddingHorizontal: moderateScale(20),
-    alignItems: "flex-start",
-    justifyContent: "center",
     width: '100%',
     marginTop: verticalScale(15),
     marginBottom: verticalScale(15),
+    flexDirection: 'row', // Align children horizontally
+    justifyContent: 'space-between', // Push children to the ends
+    alignItems: 'center', // Align children vertically
   },
   locationLineWithIcon: {
     flexDirection: 'row',
@@ -105,7 +106,7 @@ export default StyleSheet.create({
   },
   locationLineLeft: {
     marginBottom: verticalScale(2),
-    width: '100%',
+    width: '80%', // Allocate space for location text
     alignItems: 'flex-start',
   },
   userLocationHeading: {
@@ -132,6 +133,15 @@ export default StyleSheet.create({
     textAlign: 'left',
     numberOfLines: 2,
     ellipsizeMode: 'tail',
+  },
+  refreshButtonContainer: {
+    // This container will hold the refresh button and position it on the right
+    width: '20%', // Allocate space for the button
+    alignItems: 'flex-end', // Align the button to the right within its container
+  },
+  refreshButton: {
+    padding: moderateScale(8),
+    borderRadius: 50,
   },
   locationRow: {
     flexDirection: 'row',

@@ -104,7 +104,7 @@ const Login = () => {
             {!keyboardVisible && (
               <View style={styles.icfosslogo}>
                 <Text style={styles.versionText}>
-                  Open IoT for android ({latestVersion})
+                  V {latestVersion}
                 </Text>
                 <Icfosslogo />
               </View>
