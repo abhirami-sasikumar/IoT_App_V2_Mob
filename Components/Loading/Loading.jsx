@@ -5,7 +5,9 @@ const Loading = () => {
     return (
         <View style={styles.container}>
             <View style={styles.rowContainer}>
-                <ActivityIndicator size="large" color="#810541" style={styles.loader} />
+                <View style={styles.loaderShadow}>
+                    <ActivityIndicator size="large" color="#fff" />
+                </View>
                 <Text style={styles.loadingText}>Fetching nearby devices...</Text>
             </View>
         </View>

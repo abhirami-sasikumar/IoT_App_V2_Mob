@@ -12,6 +12,8 @@ import * as Location from 'expo-location';
 import DeviceCard from "./components/LongCard/DeviceCard";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useIsFocused } from '@react-navigation/native';
+import { ImageBackground } from "react-native";
+
 
 // --- Placeholder Maps for Value Conversion ---
 const windDirectionMap = {
@@ -37,10 +39,16 @@ const Cluster = () => {
   const [uniqueNearbyDevices, setUniqueNearbyDevices] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
   const [fullAddress, setFullAddress] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [hasFetchedInitialData, setHasFetchedInitialData] = useState(false);
   const isFocused = useIsFocused();
+  const [clusterLoading, setClusterLoading] = useState(true);
+  const [nearbyLoading, setNearbyLoading] = useState(true);
+  const [initialLocationLoaded, setInitialLocationLoaded] = useState(false);
+  
+  
+  
+
 
   const { user } = useContext(UserContext);
 
@@ -51,9 +59,9 @@ const Cluster = () => {
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos(lat1 * (Math.PI / 180)) *
-        Math.cos(lat2 * (Math.PI / 180)) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
+      Math.cos(lat2 * (Math.PI / 180)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = R * c;
     return distance;
@@ -63,7 +71,7 @@ const Cluster = () => {
     if (!location || !devicesToFilter || devicesToFilter.length === 0) {
       return [];
     }
-    
+
     const allowedParameters = [
       "Temperature",
       "Rainfall",
@@ -91,11 +99,11 @@ const Cluster = () => {
           device.latitude,
           device.longitude
         );
-        
+
         if (distance <= MAX_DISTANCE_KM && !device.hideDevice) {
           const { parameterName } = device;
           if (
-            !uniqueNearestDevices[parameterName] || 
+            !uniqueNearestDevices[parameterName] ||
             distance < uniqueNearestDevices[parameterName].distance
           ) {
             uniqueNearestDevices[parameterName] = { ...device, distance };
@@ -108,13 +116,26 @@ const Cluster = () => {
     return result;
   }, []);
 
+  // ✅ Fetch clusters only
+  const fetchClusters = useCallback(async () => {
+    setClusterLoading(true);
+    try {
+      const clustersResponse = await API.get(`/get_clusters/${user.userId}`);
+      const fetchedClusters = clustersResponse.data.clusters || [];
+      setClusters(fetchedClusters);
+    } catch (err) {
+      setError("Failed to fetch clusters: " + err.message);
+    } finally {
+      setClusterLoading(false);
+    }
+  }, [user.userId]);
+
+  // ✅ Fetch all device data
   const fetchAllData = useCallback(async () => {
-    setLoading(true);
     let allProcessedDevices = [];
     try {
       if (!user.jwtToken || !user.userId) {
         setError("Missing user credentials. Please log in.");
-        setLoading(false);
         return;
       }
 
@@ -197,16 +218,30 @@ const Cluster = () => {
     } catch (generalError) {
       console.error("fetchAllData: Error fetching all cluster data:", generalError.message);
       setError("Failed to fetch all cluster data: " + generalError.message);
-    } finally {
-      setLoading(false);
     }
+    return allProcessedDevices; // ✅ important
   }, [user.jwtToken, user.userId]);
+
+  const fetchNearbyDevices = useCallback(async (locationCoords) => {
+    setNearbyLoading(true);
+    try {
+      const allDevices = await fetchAllData(); // ✅ capture latest list
+      if (locationCoords) {
+        const filtered = filterUniqueNearestDevices(allDevices, locationCoords);
+        setUniqueNearbyDevices(filtered);
+      }
+    } catch (err) {
+      console.error("fetchNearbyDevices:", err);
+    } finally {
+      setNearbyLoading(false);
+    }
+  }, [fetchAllData, filterUniqueNearestDevices]);
 
   const reverseGeocode = useCallback(async (latitude, longitude) => {
     try {
       let result = await Location.reverseGeocodeAsync({ latitude, longitude });
       if (result && result.length > 0) {
-        setFullAddress(result[0]); 
+        setFullAddress(result[0]);
       } else {
         setFullAddress(null);
       }
@@ -216,101 +251,62 @@ const Cluster = () => {
     }
   }, []);
 
+  const handleLocationAndNearby = async () => {
+    try {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setError("Location access denied.");
+        return;
+      }
+
+      const location = await Location.getCurrentPositionAsync({});
+      const { latitude, longitude } = location.coords;
+
+      // Run reverse geocode and nearby fetch in parallel
+      const [_, __] = await Promise.all([
+        reverseGeocode(latitude, longitude),
+        fetchNearbyDevices({ latitude, longitude }),
+      ]);
+
+      // ✅ Only update state once, after everything is ready
+      setUserLocation({ latitude, longitude });
+      setInitialLocationLoaded(true);
+
+    } catch (locErr) {
+      console.error("handleLocationAndNearby:", locErr.message);
+    }
+  };
+
+
+  const handleRefresh = async () => {
+    setNearbyLoading(true);
+    await handleLocationAndNearby(); // ✅ reuse logic
+    setNearbyLoading(false);
+  };
+
   const formatFullAddress = (address) => {
     if (!address) {
       return "Location details not available.";
     }
     const { name, street, city, district } = address;
-    const addressParts = [
-      name,
-      street,
-      district, 
-      city
-    ].filter(part => part);
+    const addressParts = [name, street, district, city].filter(part => part);
     return addressParts.join(', ');
-  };
-
-  const handleRefresh = async () => {
-    setLoading(true);
-    let locationCoords;
-    try {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert(
-          "Permission Denied",
-          "Permission to access location was denied. Cannot refresh devices.",
-          [{ text: "OK" }]
-        );
-        setError("Location access denied.");
-        setLoading(false);
-        return;
-      }
-      const location = await Location.getCurrentPositionAsync({});
-      locationCoords = location.coords;
-      setUserLocation(locationCoords);
-      await reverseGeocode(locationCoords.latitude, locationCoords.longitude);
-    } catch (locErr) {
-      console.error("handleRefresh: Error getting location:", locErr.message);
-      Alert.alert(
-        "Location Error",
-        "Could not get your current location. Please ensure GPS is enabled.",
-        [{ text: "OK" }]
-      );
-      setError("Failed to get current location.");
-      setLoading(false);
-      return;
-    }
-
-    await fetchAllData();
-    setLoading(false);
   };
 
   useEffect(() => {
     if (isFocused && !hasFetchedInitialData) {
       const initializeApp = async () => {
-        setLoading(true);
         await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
-
-        let locationCoords;
-        try {
-          let { status } = await Location.requestForegroundPermissionsAsync();
-          if (status !== 'granted') {
-            Alert.alert(
-              "Permission Denied",
-              "Permission to access location was denied. Cannot show nearby devices.",
-              [{ text: "OK" }]
-            );
-            setError("Location access denied.");
-            setLoading(false);
-            return;
-          }
-          const location = await Location.getCurrentPositionAsync({});
-          locationCoords = location.coords;
-          setUserLocation(locationCoords);
-          await reverseGeocode(locationCoords.latitude, locationCoords.longitude);
-        } catch (locErr) {
-          console.error("initializeApp: Error getting location:", locErr.message);
-          Alert.alert(
-            "Location Error",
-            "Could not get your current location. Please ensure GPS is enabled.",
-            [{ text: "OK" }]
-          );
-          setError("Failed to get current location.");
-          setLoading(false);
-          return;
-        }
-        
-        await fetchAllData();
+        await fetchClusters();
+        await handleLocationAndNearby();
         setHasFetchedInitialData(true);
-        setLoading(false);
       };
-
       initializeApp();
     }
 
     const interval = setInterval(() => {
-      if (isFocused) {
-        fetchAllData();
+      if (isFocused && userLocation) {
+        fetchNearbyDevices(userLocation);
       }
     }, 900000);
 
@@ -318,7 +314,7 @@ const Cluster = () => {
       clearInterval(interval);
       ScreenOrientation.unlockAsync();
     };
-  }, [isFocused, hasFetchedInitialData, fetchAllData, reverseGeocode]);
+  }, [isFocused, hasFetchedInitialData, userLocation]);
 
   useEffect(() => {
     if (allApiDevices.length > 0 && userLocation) {
@@ -329,97 +325,121 @@ const Cluster = () => {
     }
   }, [allApiDevices, userLocation, filterUniqueNearestDevices]);
 
+
   return (
     <SafeScreen>
-      <View style={styles.container}>
-        {loading ? (
-          <Loading />
-        ) : (
-          <>
-            <View style={styles.headerContainer}>
-              <Text style={styles.header}>CLUSTERS</Text>
-            </View>
+      {/* <ImageBackground
+        source={require("../assets/nemomnew.jpg")}
+        style={styles.backgroundImage}
+        resizeMode="cover"
+        imageStyle={{ opacity: 1 }} // optional: makes it soft/faded
+      > */}
+      <View style={[styles.container, { backgroundColor: 'transparent' }]}>
+        {/* { backgroundColor: 'rgba(255,255,255,0.85)' } */}
 
-            <ScrollView
-              style={styles.scrollView}
-              contentContainerStyle={styles.scrollContent}
-            >
-              {error ? (
-                <Text style={styles.emptyMessage}>{error}</Text>
-              ) : clusters.length > 0 ? (
-                clusters.map((cluster) => (
-                  <LongCard
-                    key={cluster._id}
-                    clusterName={cluster.clusterName}
-                    clusterId={cluster._id}
-                    clusterDescription={cluster.description}
-                  />
-                ))
-              ) : (
-                <View style={styles.emptyCard}>
-                  <Text style={styles.emptyMessage}>
-                    "Thanks for your request! It has been sent to the admin and is awaiting approval."
-                  </Text>
-                </View>
-              )}
+        <>
 
-              <Text style={styles.allNearbyDevicesHeading}>
-                  Nearby Device Readings
-              </Text>
+          <View style={styles.headerContainer}>
+            <Text style={styles.header}>Open IoT ICFOSS</Text>
+          </View>
 
-              <View style={styles.userLocationSection}>
-                  <View style={styles.locationLineLeft}>
-                      <Text style={styles.userLocationHeading}>
-                          <Icon name="location" size={15} color="#810541" /> Your Location
-                      </Text>
-                      {userLocation ? (
-                        <Text style={styles.userLocationSubText} numberOfLines={2}>
-                          {formatFullAddress(fullAddress)}
-                        </Text>
-                      ) : (
-                        <Text style={styles.userLocationText} numberOfLines={2}>
-                          Fetching location...
-                        </Text>
-                      )}
-                  </View>
-                  <View style={styles.refreshButtonContainer}>
-                      <TouchableOpacity onPress={handleRefresh} style={styles.refreshButton}>
-                          <Icon name="refresh" size={24} color="#810541" />
-                      </TouchableOpacity>
-                  </View>
+          <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent} scrollEnabled={!nearbyLoading && initialLocationLoaded}>
+            {clusterLoading ? (
+              <Text style={styles.emptyMessage}>{error}</Text>
+            ) : clusters.length > 0 ? (
+              clusters.map((cluster) => (
+                <LongCard
+                  key={cluster._id}
+                  clusterName={cluster.clusterName}
+                  clusterId={cluster._id}
+                  clusterDescription={cluster.description}
+                />
+              ))
+            ) : (
+              <View style={styles.emptyCard}>
+                <Text style={styles.emptyMessage}>
+                  "Thanks for your request! It has been sent to the admin and is awaiting approval."
+                </Text>
               </View>
-          
-              <View>
-                {uniqueNearbyDevices.length > 0 ? (
-                    <View style={styles.deviceCardsGrid}>
-                        {uniqueNearbyDevices.map((device) => (
-                            <DeviceCard
-                                key={device._id}
-                                parameterName={device.parameterName}
-                                value={device.value} 
-                                measurement={device.measurement} 
-                                lastUpdatedTime={device.lastUpdatedTime} 
-                                clusterName={device.clusterName}
-                                deviceLocation={device.deviceLocation}
-                            />
-                        ))}
-                    </View>
+            )}
+
+            <Text style={styles.allNearbyDevicesHeading}>Nearby Device Readings</Text>
+
+            <View style={styles.userLocationSection}>
+              <View style={styles.locationLineLeft}>
+                <Text style={styles.userLocationHeading}>
+                  <Icon name="location" size={15} color="#810541" /> Your Location
+                </Text>
+                {userLocation ? (
+                  <Text style={styles.userLocationSubText} numberOfLines={2}>
+                    {formatFullAddress(fullAddress)}
+                  </Text>
                 ) : (
-                  <View style={styles.emptyCard}>
-                    <Text style={styles.emptyMessage}>
-                      No nearby devices found. 
-                    </Text>
-                  </View>
+                  <Text style={styles.userLocationText} numberOfLines={2}>
+                    Fetching location...
+                  </Text>
                 )}
               </View>
-            </ScrollView>
+              <View style={styles.refreshButtonContainer}>
+                <TouchableOpacity onPress={handleRefresh} style={styles.refreshButton}>
+                  <Icon name="refresh" size={24} color="#810541" />
+                </TouchableOpacity>
+              </View>
+            </View>
 
-            <Footer />
-          </>
-        )}
+            <View style={styles.loadingWrapper}>
+              {(!initialLocationLoaded || nearbyLoading) ? (
+                // 🔹 Show background image only during fetching
+                <ImageBackground
+                  source={require("../assets/nemom4.jpg")}
+                  
+                  style={[styles.loadingBackground]}
+                  resizeMode="cover"
+                  imageStyle={{ opacity: 0.8, }}
+                >
+                  <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                    {!initialLocationLoaded ? (
+                      <Text style={styles.loadingText}>
+                        Fetching your location...
+                      </Text>
+                    ) : (
+                      <Loading />
+                    )}
+                  </View>
+                </ImageBackground>
+              ) : uniqueNearbyDevices.length > 0 ? (
+                // 🔹 Normal white section after data fetched
+                <View style={[styles.deviceCardsGrid, { backgroundColor: "#fff" }]}>
+                  {uniqueNearbyDevices.map((device) => (
+                    <DeviceCard
+                      key={device._id}
+                      parameterName={device.parameterName}
+                      value={device.value}
+                      measurement={device.measurement}
+                      lastUpdatedTime={device.lastUpdatedTime}
+                      clusterName={device.clusterName}
+                      deviceLocation={device.deviceLocation}
+                    />
+                  ))}
+                </View>
+              ) : (
+                // 🔹 Show "no nearby devices" message (white background)
+                <View style={[styles.emptyCard, { backgroundColor: "#fff" }]}>
+                  <Text style={styles.emptyMessage}>Look's like you,re bit far . no devices found near current loaction</Text>
+                </View>
+              )}
+            </View>
+
+
+          </ScrollView>
+
+          <Footer />
+        </>
       </View>
+      {/* </ImageBackground> */}
     </SafeScreen>
   );
+
 };
 
 export default Cluster;

@@ -48,7 +48,14 @@ export const styles = StyleSheet.create({
     
 
   },
+versionText:{
+  color: "grey",
+  fontFamily: "Roboto",
+  
 
+
+
+},
 
 
 });
