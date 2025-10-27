@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Open IoT",
-    "slug": "open-iot",
+    "name": "IoT Nemom",
+    "slug": "iotnemom",
     "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,23 +14,23 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.icfoss.iotapp"
+      "bundleIdentifier": "com.softwareopeniot.iotnemom"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/newicon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.icfoss.iotapp"
+      "package": "com.softwareopeniot.iotnemom"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "f99a90fc-ffab-4ca0-815b-689ec00a7f43"
+        "projectId": "d46ddad3-c9e4-464e-85e6-ac091ba57c3d"
       }
     },
-    "owner": "icfoss"
+    "owner": "softwareopeniot"
   }
 }
