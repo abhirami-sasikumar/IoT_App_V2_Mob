@@ -86,7 +86,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.iotnemon"
+    namespace "com.iotnemom"
     defaultConfig {
         applicationId 'com.softwareopeniot.iotnemom'
         minSdkVersion rootProject.ext.minSdkVersion

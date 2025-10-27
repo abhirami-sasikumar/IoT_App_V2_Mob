@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "IoT Nemom",
-    "slug": "IoT Nemom",
+    "slug": "iotnemom",
     "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
