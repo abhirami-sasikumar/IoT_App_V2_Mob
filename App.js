@@ -63,34 +63,34 @@ export default function App() {
   };
 
   // Version check function - This function will be called only once on app launch
-  const checkAppUpdate = async () => {
-    try {
-      const currentVersion = Constants.expoConfig.version;
-      const res = await API.get('/get-version');
-      const latestVersion = res.data.version;
+  // const checkAppUpdate = async () => {
+  //   try {
+  //     const currentVersion = Constants.expoConfig.version;
+  //     const res = await API.get('/get-version');
+  //     const latestVersion = res.data.version;
 
-      // console.log('Current Version:', currentVersion);
-      // console.log('Latest Version:', latestVersion);
+  //     // console.log('Current Version:', currentVersion);
+  //     // console.log('Latest Version:', latestVersion);
 
-      if (currentVersion !== latestVersion) {
-        Alert.alert(
-          'Update Available',
-          `A new version (${latestVersion}) is available.`,
-          [
-            {
-              text: 'Update',
-              onPress: () => {
-                Linking.openURL('https://play.google.com/store/apps/details?id=com.icfoss.iotapp'); // Replace with your app's store URL
-              },
-            },
-            { text: 'Later', style: 'cancel' },
-          ]
-        );
-      }
-    } catch (err) {
-      // console.warn('Version check failed:', err.message, err.response?.data);
-    }
-  };
+  //     if (currentVersion !== latestVersion) {
+  //       Alert.alert(
+  //         'Update Available',
+  //         `A new version (${latestVersion}) is available.`,
+  //         [
+  //           {
+  //             text: 'Update',
+  //             onPress: () => {
+  //               Linking.openURL('https://play.google.com/store/apps/details?id=com.icfoss.iotapp'); // Replace with your app's store URL
+  //             },
+  //           },
+  //           { text: 'Later', style: 'cancel' },
+  //         ]
+  //       );
+  //     }
+  //   } catch (err) {
+  //     // console.warn('Version check failed:', err.message, err.response?.data);
+  //   }
+  // };
 
   // EFFECT 1: Runs ONLY ONCE on component mount for initial maintenance check and one-time version check
   useEffect(() => {
@@ -104,7 +104,7 @@ export default function App() {
           await checkAppUpdate(); // Call version check ONLY HERE, once at app startup
         }
       } catch (err) {
-        console.error("Initial maintenance/version check failed:", err.message, err.response?.data);
+        
         setIsUnderMaintenance(false); // Fallback to normal app if initial check fails
       } finally {
         setLoading(false);

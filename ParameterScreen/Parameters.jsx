@@ -3,7 +3,7 @@ import { View, Text, ScrollView } from "react-native";
 import Footer from "../Components/Footer/Footer";
 import Header from "../Components/Header/Header";
 import LongCard from "./components/LongCard/LongCard";
-import Loading from "../Components/Loading/Loading";
+import Loading from "../Components/Loading2/Loading2";
 import styles from "./Parameters.style"; // <--- Make sure this is the correct import path
 import API from "../Api";
 import { useRoute } from "@react-navigation/native";

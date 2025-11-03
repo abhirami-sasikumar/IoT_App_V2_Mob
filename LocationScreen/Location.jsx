@@ -5,7 +5,7 @@ import LocationCard from "./components/LocationCard/LocationCard";
 import { styles } from "./Location.style"; // Assuming styles are exported this way
 import Header from "../Components/Header/Header";
 import API from "../Api";
-import Loading from "../Components/Loading/Loading";
+import Loading from "../Components/Loading2/Loading2";
 import Footer from "../Components/Footer/Footer";
 import SafeScreen from "../Components/SafeArea/SafeArea";
 
@@ -146,7 +146,7 @@ const Location = () => {
         </View> 
 
         {loading ? (
-          <Loading />
+          <Loading/>
         ) : error ? (
           <Text style={styles.errorText}>{error}</Text>
         ) : (
