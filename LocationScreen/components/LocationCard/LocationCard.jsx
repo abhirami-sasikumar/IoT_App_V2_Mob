@@ -12,7 +12,7 @@ const LocationCard = ({
   hideDevice,
   clusterId,
   parameterName,
-  time, // Use directly from props without formatting
+  time,
 }) => {
   const navigation = useNavigation();
 
@@ -28,20 +28,39 @@ const LocationCard = ({
 
   const displayValue = hideDevice ? "Under Maintenance" : Value;
 
-  // Conditional styling based on hideDevice or isChart
+  // Function to split location name at comma
+  const renderLocationName = (name) => {
+    const parts = name.split(',');
+    
+    if (parts.length === 1) {
+      // Single line - no comma
+      return (
+        <Text style={styles.singleLineText} numberOfLines={1}>
+          {name}
+        </Text>
+      );
+    } else {
+      // Multiple parts - split at comma
+      return (
+        <View style={styles.multiLineContainer}>
+          <Text style={styles.firstLine} numberOfLines={1}>
+            {parts[0].trim()}
+          </Text>
+          <Text style={styles.secondLine} numberOfLines={1}>
+            {parts.slice(1).join(',').trim()}
+          </Text>
+        </View>
+      );
+    }
+  };
+
   const centerAlignStyle = hideDevice || !isChart ? styles.centerContent : null;
 
   return (
     <View style={styles.card}>
-      <Text
-        style={styles.headText}
-  numberOfLines={1}
-  adjustsFontSizeToFit={true}
-  minimumFontScale={0.9} // Adjust as per how small you're okay with
-  ellipsizeMode="tail"
-      >
-        {LocationName}
-      </Text>
+      {/* Render location name with comma splitting */}
+      {renderLocationName(LocationName)}
+      
       <View style={styles.line} />
       <View style={[styles.bottomRow, centerAlignStyle]}>
         <View style={styles.valueContainer}>
@@ -58,7 +77,6 @@ const LocationCard = ({
           </Text>
         </View>
 
-
         {isChart && !hideDevice && (
           <View style={styles.chart}>
             <TouchableOpacity onPress={handleChartPress}>
@@ -73,8 +91,6 @@ const LocationCard = ({
         )}
       </View>
 
-
-      {/* Time Display */}
       {/* Time Display */}
       {!hideDevice && time && (
         <View style={styles.timeContainer}>
@@ -84,7 +100,6 @@ const LocationCard = ({
           </Text>
         </View>
       )}
-
     </View>
   );
 };

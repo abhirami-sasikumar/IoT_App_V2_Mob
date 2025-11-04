@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 import { scale, verticalScale, moderateScale, moderateVerticalScale } from "react-native-size-matters";
 
 export const styles = StyleSheet.create({
@@ -17,19 +17,72 @@ export const styles = StyleSheet.create({
     paddingVertical: verticalScale(10),
     marginVertical: verticalScale(5),
   },
-  headText: {
+  // Multi-line container for split text
+  multiLineContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: verticalScale(40),
+    paddingHorizontal: scale(6),
+  },
+  // Single line text (no comma)
+  singleLineText: {
     fontSize: scale(16),
     fontWeight: "700",
     textAlign: "center",
     color: "#810541",
-    whiteSpace: "nowrap",      // Only works on web
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    fontFamily:"Roboto",
-    height: verticalScale(28),
-      paddingHorizontal: scale(6),      // ✅ prevent clipping on sides
- // <--- THIS IS THE CRUCIAL LINE FOR FIXED LINE POSITION
-
+    fontFamily: "Roboto",
+    minHeight: verticalScale(40),
+    paddingHorizontal: scale(6),
+    textAlignVertical: "center",
+    ...Platform.select({
+      web: {
+        overflow: "hidden",
+        whiteSpace: "nowrap",
+        textOverflow: "ellipsis",
+        lineHeight: verticalScale(40),
+      },
+      native: {
+        overflow: "hidden",
+        lineHeight: verticalScale(40),
+      }
+    }),
+  },
+  // First line (before comma)
+  firstLine: {
+    fontSize: scale(16),
+    fontWeight: "700",
+    textAlign: "center",
+    color: "#810541",
+    fontFamily: "Roboto",
+    ...Platform.select({
+      web: {
+        overflow: "hidden",
+        whiteSpace: "nowrap",
+        textOverflow: "ellipsis",
+      },
+      native: {
+        overflow: "hidden",
+      }
+    }),
+  },
+  // Second line (after comma)
+  secondLine: {
+    fontSize: scale(14),
+    fontWeight: "600",
+    textAlign: "center",
+    color: "#810541",
+    fontFamily: "Roboto",
+    marginTop: verticalScale(2),
+    ...Platform.select({
+      web: {
+        overflow: "hidden",
+        whiteSpace: "nowrap",
+        textOverflow: "ellipsis",
+      },
+      native: {
+        overflow: "hidden",
+      }
+    }),
   },
   line: {
     width: scale(155),
@@ -46,14 +99,12 @@ export const styles = StyleSheet.create({
     paddingHorizontal: scale(10),
     flex: 1,
   },
-
   valueContainer: {
     flex: 3, // ensures it takes most of the space
     alignItems: "center",
     justifyContent: "center",
     paddingRight: scale(5),
   },
-
   value: {
     fontSize: scale(22),
     fontWeight: "bold",
@@ -63,8 +114,6 @@ export const styles = StyleSheet.create({
     flexShrink: 1,
     width: "100%",
   },
-  
-
   measurementText: {
     fontSize: scale(18),
     color: "#810541",
@@ -74,13 +123,11 @@ export const styles = StyleSheet.create({
     flexShrink: 1,
     width: "100%",
   },
-
   chart: {
     flex: 1,
     alignItems: "flex-end",
     justifyContent: "center",
   },
-
   chartIconContainer: {
     width: scale(20),
     height: verticalScale(20),
@@ -100,31 +147,22 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems:"center",
     justifyContent:"space-between"
-
-
   },
   timeText: {
-    fontSize: scale(10), // You can adjust this value as needed
-    color: "#810541", // Same as other text color or change it
-    marginTop: verticalScale(1), // Space between value and time
+    fontSize: scale(10),
+    color: "#810541",
+    marginTop: verticalScale(1),
     fontFamily:"Roboto",
     justifyContent:"space-between"
-
   },
   updatedText:{
     fontFamily:"Roboto",
     fontSize:scale(11),
     color: "#810541",
-    marginRight:moderateScale(3) // Same as other text color or change it
-
-
+    marginRight:moderateScale(3)
   },
   maintenanceText:{
     fontSize:scale(15),
     textAlign:"center"
-
   },
-  
-
-  
 });
