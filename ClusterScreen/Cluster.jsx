@@ -391,7 +391,7 @@ const Cluster = () => {
               {(!initialLocationLoaded || nearbyLoading) ? (
                 // 🔹 Show background image only during fetching
                 <ImageBackground
-                  source={require("../assets/nemom4.jpg")}
+                  source={require("../assets/Nemom.png")}
                   
                   style={[styles.loadingBackground]}
                   resizeMode="cover"
