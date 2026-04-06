@@ -2,7 +2,7 @@
   "expo": {
     "name": "Open IoT",
     "slug": "open-iot",
-    "version": "1.0.2",
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -31,6 +31,6 @@
         "projectId": "f99a90fc-ffab-4ca0-815b-689ec00a7f43"
       }
     },
-    "owner": "icfoss"
+    "owner": "softwareopeniot"
   }
 }
